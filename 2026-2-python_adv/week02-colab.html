@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2주차. Google Colab 시작하기</title>
+    <link rel="stylesheet" href="../assets/site.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 파이썬고급프로그래밍</a> / 2주차</p>
+        <h1>Google Colab 시작하기</h1>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <article class="lesson">
+        <p class="meta">원본: teaching/materials/tools/colab/colab_intro2.md</p>
+
+        <table>
+          <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><img src="./images/2026-09-01-03-02-50.png" alt="Colab 첫 화면"></td><td><a href="https://colab.research.google.com/">Colab 바로가기</a></td></tr>
+          </tbody>
+        </table>
+
+        <h2>1. Colab이란?</h2>
+        <p>Colab은 웹 브라우저에서 Python 코드를 실행할 수 있는 실습 환경입니다.</p>
+        <p>별도의 Python 설치나 개발환경 설정 없이 사용할 수 있기 때문에, 이번 수업에서는 <strong>Python 문법 실습 환경</strong>으로 사용합니다.</p>
+
+        <pre><code>Python 설치 필요 없음
+별도 개발환경 설정 필요 없음
+
+Google 계정 + 웹 브라우저
+        ↓
+      Colab
+        ↓
+   Python 바로 실행</code></pre>
+
+        <h2>2. Colab의 특징</h2>
+        <ul>
+          <li>브라우저에서 바로 Python 코드를 실행할 수 있습니다.</li>
+          <li>코드와 설명을 하나의 노트북 파일에 함께 저장할 수 있습니다.</li>
+          <li>표, 그래프, 이미지 같은 실행 결과를 바로 확인할 수 있습니다.</li>
+          <li>GPU가 필요한 실험도 비교적 쉽게 시작할 수 있습니다.</li>
+          <li>최근에는 Gemini, Learn Mode, MCP, CLI 같은 AI 관련 기능도 함께 확장되고 있습니다.</li>
+        </ul>
+
+        <p>💡 참고: <strong>MCP(Model Context Protocol)</strong>는 AI가 외부 도구나 데이터를 연결해서 사용할 수 있도록 돕는 표준 방식입니다.</p>
+
+        <h2>3. 예전 Colab과 지금 Colab</h2>
+        <table>
+          <thead><tr><th>예전</th><th>현재</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>브라우저에서 Python 실행, GPU 실습, <code>.ipynb</code> 저장 중심</td>
+              <td>AI가 코드 작성, 실행, 오류 수정, 결과 분석까지 이어서 도와주는 환경으로 확장</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table>
+          <thead><tr><th>기능</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td>Gemini Agent</td><td>노트북 안에서 AI와 대화하며 작업</td></tr>
+            <tr><td>Data Science Agent</td><td>데이터 분석을 계획하고 실행한 뒤 결과 정리</td></tr>
+            <tr><td>Custom Instructions</td><td>노트북별 AI 작업 규칙 저장</td></tr>
+            <tr><td>Learn Mode</td><td>답을 바로 생성하기보다 단계별 학습 지원</td></tr>
+            <tr><td>Colab MCP Server</td><td>외부 Agent가 Colab을 조작할 수 있게 연결</td></tr>
+            <tr><td>Colab CLI</td><td>터미널에서 Colab GPU/TPU runtime 사용</td></tr>
+            <tr><td>VS Code 연계</td><td>로컬 개발 환경과 Colab runtime 연결</td></tr>
+          </tbody>
+        </table>
+
+        <h2>4. 연습문제</h2>
+        <p>1부터 100까지 자연수 중 짝수의 합을 구하시오.</p>
+
+        <h2>5. 방법 1: 기본 코드 실행하기</h2>
+        <pre><code class="language-python">total = 0
+
+for i in range(1, 101):
+    if i % 2 == 0:
+        total += i
+
+print(total)</code></pre>
+
+        <table><thead><tr><th>이미지</th><th>설명</th></tr></thead><tbody>
+          <tr><td><img src="./image.png" alt="기본 코드 실행"></td><td>실행화면</td></tr>
+          <tr><td><img src="./images/2026-09-01-03-24-00.png" alt="셀로 나누기"></td><td>셀로 나누어 실행한 화면</td></tr>
+          <tr><td><img src="./images/2026-09-01-03-28-15.png" alt="코드와 텍스트 분리"></td><td>코드 셀과 텍스트 셀을 분리한 화면</td></tr>
+        </tbody></table>
+
+        <h2>6. 방법 2: 코드를 간결하게 쓰고 표로 보기</h2>
+        <pre><code class="language-python">sum(range(2, 101, 2))</code></pre>
+        <pre><code class="language-python">evens = [n for n in range(1, 101) if n % 2 == 0]
+
+print(evens)
+print(sum(evens))</code></pre>
+        <p>💡 참고: <strong>List Comprehension</strong>은 리스트를 만드는 짧은 문법입니다.</p>
+
+        <pre><code class="language-python">import pandas as pd
+
+numbers = range(1, 21)
+
+df = pd.DataFrame({
+    "숫자": numbers,
+    "구분": ["짝수" if n % 2 == 0 else "홀수" for n in numbers]
+})
+
+df</code></pre>
+        <table><thead><tr><th>이미지</th><th>설명</th></tr></thead><tbody>
+          <tr><td><img src="./images/2026-09-01-03-42-13.png" alt="표로 보기"></td><td>실행화면</td></tr>
+        </tbody></table>
+
+        <h2>7. 방법 3: 결과를 시각화하고 파일로 저장하기</h2>
+        <pre><code class="language-python">import matplotlib.pyplot as plt
+
+x = range(1, 11)
+y = [n ** 2 for n in x]
+
+plt.plot(x, y)
+plt.show()</code></pre>
+        <table><thead><tr><th>이미지</th><th>설명</th></tr></thead><tbody>
+          <tr><td><img src="./images/2026-09-01-03-44-04.png" alt="그래프 실행"></td><td>그래프 실행화면</td></tr>
+        </tbody></table>
+
+        <pre><code class="language-python">with open("result.txt", "w") as f:
+    f.write("1부터 100까지 짝수의 합 = 2550")</code></pre>
+        <table><thead><tr><th>이미지</th><th>설명</th></tr></thead><tbody>
+          <tr><td><img src="./images/2026-09-01-03-46-07.png" alt="파일 만들기"></td><td>실행화면</td></tr>
+          <tr><td><img src="./images/2026-09-01-03-47-17.png" alt="result 파일"></td><td><code>result.txt</code> 파일</td></tr>
+          <tr><td><img src="./images/2026-09-01-03-48-46.png" alt="파일 다운로드"></td><td>파일 다운로드</td></tr>
+          <tr><td><img src="./images/2026-09-01-04-07-13.png" alt="Google Drive 마운트"></td><td>Google Drive 마운트 실행</td></tr>
+          <tr><td><img src="./images/2026-09-01-03-56-20.png" alt="Google Drive 마운트 위치"></td><td>Google Drive 마운트 위치</td></tr>
+        </tbody></table>
+
+        <p>💡 참고: Colab runtime은 작업이 끝나면 초기화될 수 있습니다. 오래 보관해야 하는 파일은 다운로드하거나 Google Drive에 저장합니다.</p>
+
+        <h2>8. 방법 4: AI를 활용하고 GPU 확인하기</h2>
+        <p>Colab에서는 AI에게 코드 설명, 오류 수정, 추가 질문 생성을 요청할 수 있습니다.</p>
+        <table><thead><tr><th>이미지</th><th>설명</th></tr></thead><tbody>
+          <tr><td><img src="./images/2026-09-01-03-58-34.png" alt="AI 질문하기"></td><td>AI 질문하기</td></tr>
+          <tr><td><img src="./images/2026-09-01-04-09-00.png" alt="AI 답변"></td><td>AI 답변 확인</td></tr>
+          <tr><td><img src="./images/2026-09-01-04-09-20.png" alt="추가 질문"></td><td>추가 질문 생성</td></tr>
+          <tr><td><img src="./images/2026-09-01-04-10-08.png" alt="선택 질의"></td><td>선택 질의</td></tr>
+          <tr><td><img src="./images/2026-09-01-04-10-22.png" alt="코드 수정"></td><td>코드 수정</td></tr>
+        </tbody></table>
+
+        <div class="checklist">
+          <strong>✅ AI를 사용할 때 확인할 점</strong>
+          <ul>
+            <li>AI가 만든 코드가 문제 조건과 맞는지 확인합니다.</li>
+            <li>실행 결과가 예상과 같은지 확인합니다.</li>
+            <li>모르는 문법이 나오면 바로 복사하지 말고 의미를 먼저 물어봅니다.</li>
+          </ul>
+        </div>
+
+        <h3>GPU 세팅과 확인</h3>
+        <ol>
+          <li>상단 메뉴에서 <code>런타임</code>을 선택합니다.</li>
+          <li><code>런타임 유형 변경</code>을 선택합니다.</li>
+          <li>하드웨어 가속기를 <code>GPU</code>로 선택합니다.</li>
+          <li>아래 코드를 실행해서 GPU가 연결되었는지 확인합니다.</li>
+        </ol>
+        <table><thead><tr><th>이미지</th><th>설명</th></tr></thead><tbody>
+          <tr><td><img src="./images/2026-09-01-05-38-33.png" alt="GPU runtime 설정"></td><td>GPU runtime 설정 화면</td></tr>
+        </tbody></table>
+        <pre><code class="language-python">import torch
+
+if torch.cuda.is_available():
+    print("GPU 사용 가능")
+    print(torch.cuda.get_device_name(0))
+else:
+    print("GPU를 사용할 수 없습니다.")</code></pre>
+        <p>⚠️ 주의: GPU가 연결되지 않았다면 런타임 유형을 다시 확인합니다.</p>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>
