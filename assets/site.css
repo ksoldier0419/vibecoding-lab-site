@@ -64,6 +64,11 @@ h1 {
   font-size: 2rem;
 }
 
+.lede {
+  margin: 8px 0 0;
+  color: #d7deeb;
+}
+
 h2 {
   margin-top: 40px;
   padding-bottom: 8px;
@@ -98,6 +103,12 @@ main {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 14px 16px;
+}
+
+.item-note {
+  margin: 4px 16px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .week-list .empty {
@@ -170,4 +181,8 @@ pre code {
   color: var(--muted);
   border-top: 1px solid var(--line);
   padding: 24px 0;
+}
+
+.subnav {
+  padding-bottom: 32px;
 }
