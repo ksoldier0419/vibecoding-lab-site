@@ -47,6 +47,10 @@ a:hover {
   margin: 0 auto;
 }
 
+.lesson-layout.wrap {
+  width: min(100% - 32px, 1280px);
+}
+
 .eyebrow {
   margin: 0 0 4px;
   color: #b9c4d8;
@@ -77,6 +81,13 @@ h2 {
 
 main {
   padding: 28px 0 56px;
+}
+
+.lesson-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
 }
 
 .panel,
@@ -120,9 +131,103 @@ main {
 }
 
 .toc {
-  background: var(--accent-soft);
+  position: sticky;
+  top: 16px;
+  width: auto;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 16px 20px;
+  padding: 14px 12px 20px;
+}
+
+.toc-title {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.toc ol,
+.toc-section-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc-section {
+  margin: 0;
+}
+
+.toc-section summary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  list-style: none;
+  padding: 4px 8px;
+}
+
+.toc-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc-section summary::before {
+  content: ">";
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1;
+  transform: rotate(0deg);
+}
+
+.toc-section[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.toc-section summary:hover,
+.toc a:hover {
+  background: #eef2f7;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.toc-section summary a,
+.toc a {
+  display: block;
+  min-width: 0;
+  border-radius: 4px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toc a {
+  padding: 4px 8px;
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.toc-section summary a:hover {
+  text-decoration: none;
+}
+
+.toc-section-list a {
+  padding-left: 26px;
+  color: var(--muted);
+}
+
+.lesson h2,
+.lesson h3 {
+  scroll-margin-top: 16px;
 }
 
 img {
@@ -185,4 +290,25 @@ pre code {
 
 .subnav {
   padding-bottom: 32px;
+}
+
+@media (max-width: 860px) {
+  .lesson-layout.wrap {
+    width: min(100% - 32px, 960px);
+    margin: 0 auto;
+  }
+
+  .lesson-layout {
+    display: block;
+  }
+
+  .toc {
+    position: static;
+    width: auto;
+    max-height: none;
+    margin-bottom: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+  }
 }

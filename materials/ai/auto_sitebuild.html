@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="ko">
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>교안 파일을 자동으로 배포하는 방법 | 강의자료</title><link rel="stylesheet" href="../../assets/site.css"></head>
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>교안 파일을 자동으로 배포하는 방법 | 강의자료</title><link rel="stylesheet" href="../../assets/site.css?v=20260908-sidebar"></head>
   <body>
     <header class="site-header"><div class="wrap"><p class="eyebrow"><a href="../../">강의자료</a> / <a href="../">자료실</a> / AI</p><h1>교안 파일을 자동으로 배포하는 방법</h1></div></header>
     <main class="wrap"><article class="lesson">
       <p class="meta">원본: teaching/materials/ai/auto_sitebuild.md</p>
-      <h2>저장소 역할 나누기</h2>
+      <h2 id="저장소-역할-나누기">저장소 역할 나누기</h2>
       <table><thead><tr><th>저장소</th><th>역할</th></tr></thead><tbody><tr><td><code>vibecoding-lab</code></td><td>개인 자료와 원본을 보관하는 비공개 저장소</td></tr><tr><td><code>vibecoding-lab-site</code></td><td>학생에게 공개하는 정적 사이트 저장소</td></tr></tbody></table>
-      <h2>출판 흐름</h2>
+      <h2 id="출판-흐름">출판 흐름</h2>
       <pre><code>teaching/materials 수정
         ↓
 teaching/site 재구성
@@ -17,7 +17,7 @@ publish_teaching_site.ps1 실행
 vibecoding-lab-site에 push
         ↓
 Vercel 자동 배포</code></pre>
-      <h2>Vercel 설정</h2>
+      <h2 id="vercel-설정">Vercel 설정</h2>
       <ul><li>저장소: <code>vibecoding-lab-site</code></li><li>Framework Preset: <code>Other</code></li><li>Root Directory: <code>./</code></li><li>Build Command와 Output Directory: 비워 둡니다.</li></ul>
       <p><a href="https://vibecoding-lab-site.vercel.app/">배포된 사이트 열기</a></p>
     </article></main>

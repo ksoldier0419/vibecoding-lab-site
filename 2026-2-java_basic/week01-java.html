@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Java 개발 환경 준비 | 1주차</title>
-    <link rel="stylesheet" href="../assets/site.css">
+    <link rel="stylesheet" href="../assets/site.css?v=20260908-sidebar">
   </head>
   <body>
     <header class="site-header">
@@ -13,10 +13,30 @@
         <h1>Java 개발 환경 준비</h1>
       </div>
     </header>
-    <main class="wrap">
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-java-설치-확인">1. Java 설치 확인</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-jdk-수동-설치">2. JDK 수동 설치</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-설치-결과-확인">3. 설치 결과 확인</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
       <article class="lesson">
         <p class="meta">원본: teaching/materials/tools/javajdk/ch1.md</p>
-        <h2>1. Java 설치 확인</h2>
+        <h2 id="1-java-설치-확인">1. Java 설치 확인</h2>
         <pre><code class="language-powershell">java -version
 javac -version</code></pre>
         <pre><code class="language-powershell">java -version
@@ -25,7 +45,7 @@ where.exe java
 where.exe javac
 echo $env:JAVA_HOME</code></pre>
 
-        <h2>2. JDK 수동 설치</h2>
+        <h2 id="2-jdk-수동-설치">2. JDK 수동 설치</h2>
         <table>
           <thead><tr><th>이미지</th><th>설명</th></tr></thead>
           <tbody>
@@ -35,7 +55,7 @@ echo $env:JAVA_HOME</code></pre>
           </tbody>
         </table>
 
-        <h2>3. 설치 결과 확인</h2>
+        <h2 id="3-설치-결과-확인">3. 설치 결과 확인</h2>
         <table>
           <thead><tr><th>실행 결과</th><th>설명</th></tr></thead>
           <tbody>
