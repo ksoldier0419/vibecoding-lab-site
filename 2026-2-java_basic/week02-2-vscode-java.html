@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2-2주차. VSCode + Java 실습 환경 준비(1)</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260908-sidebar">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 2-2주차</p>
+        <h1>VSCode + Java 실습 환경 준비(1)</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-vscode-java">1. VSCode + Java</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#1-1-vscode-폴더-위치에서-터미널-열기">1.1 VSCode 폴더 위치에서 터미널 열기</a></li>
+              <li><a href="#1-2-inlay-off">1.2 inlay off</a></li>
+              </ol>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<p class="meta">원본: teaching/materials/tools/vscode_java/vscode_java01.md</p>
+<h2 id="1-vscode-java">1. VSCode + Java</h2>
+<h3 id="1-1-vscode-폴더-위치에서-터미널-열기">1.1 VSCode 폴더 위치에서 터미널 열기</h3>
+<p>VS Code <strong>탐색기(Explorer)</strong> 에서 폴더 위치 기준으로 터미널 여는 방법은 이겁니다.</p>
+<ol>
+  <li>왼쪽 <strong>탐색기</strong>에서 원하는 폴더를 찾습니다.</li>
+  <li>예: <code>src &gt; ch01 &gt; sec08</code></li>
+  <li><code>sec08</code> 폴더 위에서 <strong>마우스 오른쪽 클릭</strong></li>
+  <li><strong>통합 터미널에서 열기</strong> 또는 <strong>Open in Integrated Terminal</strong> 선택</li>
+</ol>
+<p>그러면 VS Code 아래쪽 터미널이 열리고, 현재 위치가 바로 그 폴더가 됩니다.</p>
+<pre><code class="language-java">/*
+장제목: 1장 자바 시작하기
+작성일: 2024.01.01
+*/
+public class Hello {
+	//프로그램 실행 진입점
+	public static void main(String[] args) {
+		//콘솔에 출력하는 실행문
+		System.out.println(&quot;Hello, Java&quot;);
+	} 
+}
+</code></pre>
+<p>실행방법</p>
+<table>
+  <tr>
+    <th>실행 결과</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td>
+      <pre><code>javac Hello.java
+java Hello
+Hello, Java</code></pre>
+    </td>
+    <td>
+      <p><strong>[Hello 실행]</strong></p>
+      <p><code>javac Hello.java</code> 명령어로 <code>Hello.java</code>를 컴파일해서 <code>Hello.class</code> 파일을 만든다.</p>
+      <p><code>java Hello</code> 명령어로 컴파일된 <code>Hello.class</code>의 <code>main()</code> 메소드를 실행한다.</p>
+      <p>정상 실행되면 콘솔에 <code>Hello, Java</code>가 출력되는지 확인한다.</p>
+    </td>
+  </tr>
+</table>
+<pre><code class="language-java">public class Calculator {
+	public static void main(String[] args) {
+		int x = 1;						//변수 x를 선언하고 1을 저장
+		int y = 2;						//변수 y를 선언하고 2를 저장
+		int result = x + y;				//변수 result를 선언하고 x와 y를 더한 값을 저장
+		System.out.println(result);		//모니터에 출력하는 메소드 호출
+	}
+}</code></pre>
+<p>실행방법</p>
+<table>
+  <tr>
+    <th>실행 결과</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td>
+      <pre><code>javac Calculator.java
+java Calculator
+3</code></pre>
+    </td>
+    <td>
+      <p><strong>[Calculator 실행]</strong></p>
+      <p><code>javac Calculator.java</code> 명령어로 <code>Calculator.java</code>를 컴파일해서 <code>Calculator.class</code> 파일을 만든다.</p>
+      <p><code>java Calculator</code> 명령어로 컴파일된 <code>Calculator.class</code>의 <code>main()</code> 메소드를 실행한다.</p>
+      <p>정상 실행되면 <code>1 + 2</code>의 결과인 <code>3</code>이 출력되는지 확인한다.</p>
+    </td>
+  </tr>
+</table>
+<h3 id="1-2-inlay-off">1.2 inlay off</h3>
+<p><img src="./images/2026-09-09-23-51-45.png" alt=""></p>
+<pre><code>Ctrl + ,
+inlay off</code></pre>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>
