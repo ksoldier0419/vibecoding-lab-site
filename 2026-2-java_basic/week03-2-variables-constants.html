@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>3주차(2). 3-2. 변수와 상수</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260917-current-week-links">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 3주차(2)</p>
+        <h1>3-2. 변수와 상수</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-시작-예제-calculator-java">1. 시작 예제: Calculator.java</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-코드-살펴보기">2. 코드 살펴보기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-변수의-기본-모양">3. 변수의 기본 모양</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-변수-값-바꾸기">4. 변수 값 바꾸기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-상수-사용하기">5. 상수 사용하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-변수와-상수-비교">6. 변수와 상수 비교</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#7-다른-예제-1-물건-가격-계산">7. 다른 예제 1: 물건 가격 계산</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#8-다른-예제-2-고정-배송비-더하기">8. 다른 예제 2: 고정 배송비 더하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#9-연습">9. 연습</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>프로그램에서는 값을 저장해 두고 다시 사용할 일이 많습니다. Java에서는 값을 저장하는 이름을 만들 때 <strong>변수</strong>와 <strong>상수</strong>를 사용합니다.</p>
+<ul>
+  <li>변수: 값을 저장하고, 필요하면 나중에 바꿀 수 있습니다.</li>
+  <li>상수: 값을 한 번 정하면 바꾸지 않는 값입니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-시작-예제-calculator-java">1. 시작 예제: Calculator.java</h2>
+<p>파일 이름은 <code>Calculator.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-c4353c0303b3.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-4a1a55f854ec.png" alt="text 코드 예제"></p>
+<h2 id="2-코드-살펴보기">2. 코드 살펴보기</h2>
+<table>
+  <thead><tr>
+<th>코드</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>int x = 1;</code></td>
+<td>정수 값을 저장할 수 있는 변수 <code>x</code>를 만들고 <code>1</code>을 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>int y = 2;</code></td>
+<td>정수 값을 저장할 수 있는 변수 <code>y</code>를 만들고 <code>2</code>를 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>int result = x + y;</code></td>
+<td><code>x</code>와 <code>y</code>를 더한 값을 <code>result</code>에 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>System.out.printf(&quot;%d%n&quot;, result);</code></td>
+<td><code>result</code>에 저장된 정수 값을 출력하고 줄을 바꿉니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>💡 참고: <code>int</code>는 정수를 저장하는 자료형입니다. <code>1</code>, <code>2</code>, <code>100</code>처럼 소수점이 없는 숫자를 저장할 때 사용합니다.</p>
+<p>⚠️ 보안 참고: 이 교안에서는 출력할 때 <code>println()</code> 대신 <code>printf()</code>를 사용합니다. 포맷 문자열은 <code>&quot;%d%n&quot;</code>처럼 코드에 고정하고, 출력할 값은 뒤쪽 인자로 전달합니다.</p>
+<h2 id="3-변수의-기본-모양">3. 변수의 기본 모양</h2>
+<p>변수는 보통 다음 순서로 작성합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-fc1a5ff4bc6d.png" alt="java 코드 예제"></p>
+<p>예:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-f75944eb6d32.png" alt="java 코드 예제"></p>
+<table>
+  <thead><tr>
+<th>부분</th>
+<th>의미</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>int</code></td>
+<td>저장할 값의 종류입니다. 여기서는 정수입니다.</td>
+</tr>
+    <tr>
+<td><code>score</code></td>
+<td>값을 저장할 변수 이름입니다.</td>
+</tr>
+    <tr>
+<td><code>80</code></td>
+<td>변수에 저장할 값입니다.</td>
+</tr>
+  </tbody>
+</table>
+<h2 id="4-변수-값-바꾸기">4. 변수 값 바꾸기</h2>
+<p>변수는 값을 다시 저장할 수 있습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-4644bd34c260.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-f6c6d5144073.png" alt="text 코드 예제"></p>
+<p>처음에는 <code>score</code>에 <code>80</code>이 저장됩니다. 그다음 <code>score = 90;</code>이 실행되면 <code>score</code>의 값이 <code>90</code>으로 바뀝니다.</p>
+<h2 id="5-상수-사용하기">5. 상수 사용하기</h2>
+<p>상수는 값을 바꾸지 않기로 정한 이름입니다. Java에서는 <code>final</code>을 붙여 상수를 만듭니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-c22547e62f3e.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-9bb428f7826b.png" alt="text 코드 예제"></p>
+<table>
+  <thead><tr>
+<th>코드</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>final int BONUS = 10;</code></td>
+<td><code>BONUS</code>라는 상수를 만들고 <code>10</code>을 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>int total = score + BONUS;</code></td>
+<td>변수 <code>score</code>와 상수 <code>BONUS</code>를 더해 <code>total</code>에 저장합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>⚠️ 주의: <code>final</code>로 만든 상수는 나중에 값을 다시 바꿀 수 없습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-60c2303bd7d0.png" alt="java 코드 예제"></p>
+<p>💡 참고: 언어마다 상수를 만드는 방법이 조금씩 다릅니다.</p>
+<table>
+  <thead><tr>
+<th>언어</th>
+<th>상수 표현 예</th>
+<th>특징</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>Java</td>
+<td><code>final int BONUS = 10;</code></td>
+<td><code>final</code>을 붙이면 값을 다시 바꿀 수 없습니다.</td>
+</tr>
+    <tr>
+<td>JavaScript</td>
+<td><code>const bonus = 10;</code></td>
+<td><code>const</code>로 선언한 이름에는 값을 다시 대입할 수 없습니다.</td>
+</tr>
+    <tr>
+<td>C</td>
+<td><code>const int BONUS = 10;</code></td>
+<td><code>const</code>를 붙여 값을 바꾸지 않겠다고 표시합니다.</td>
+</tr>
+    <tr>
+<td>C++</td>
+<td><code>const int BONUS = 10;</code></td>
+<td><code>const</code>를 사용하거나, 상황에 따라 <code>constexpr</code>를 사용할 수 있습니다.</td>
+</tr>
+    <tr>
+<td>Python</td>
+<td><code>BONUS = 10</code></td>
+<td>문법적으로 상수를 강제하지 않습니다. 대문자 이름으로 상수처럼 사용한다는 약속을 둡니다.</td>
+</tr>
+    <tr>
+<td>Kotlin</td>
+<td><code>const val BONUS = 10</code></td>
+<td>컴파일 시점에 정해지는 상수는 <code>const val</code>을 사용합니다.</td>
+</tr>
+  </tbody>
+</table>
+<h2 id="6-변수와-상수-비교">6. 변수와 상수 비교</h2>
+<table>
+  <thead><tr>
+<th>구분</th>
+<th>변수</th>
+<th>상수</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>값 변경</td>
+<td>가능</td>
+<td>불가능</td>
+</tr>
+    <tr>
+<td>Java 표현</td>
+<td><code>int score = 80;</code></td>
+<td><code>final int BONUS = 10;</code></td>
+</tr>
+    <tr>
+<td>이름 예</td>
+<td><code>score</code>, <code>age</code>, <code>result</code></td>
+<td><code>BONUS</code>, <code>MAX_COUNT</code>, <code>PI</code></td>
+</tr>
+    <tr>
+<td>사용 상황</td>
+<td>계산 중 값이 바뀔 수 있을 때</td>
+<td>프로그램에서 계속 같은 값으로 사용할 때</td>
+</tr>
+  </tbody>
+</table>
+<h2 id="7-다른-예제-1-물건-가격-계산">7. 다른 예제 1: 물건 가격 계산</h2>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-20e5fcf37a95.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-69c12411db41.png" alt="text 코드 예제"></p>
+<p>확인할 것:</p>
+<ul>
+  <li><code>price</code>에는 물건 하나의 가격이 저장됩니다.</li>
+  <li><code>count</code>에는 개수가 저장됩니다.</li>
+  <li><code>total</code>에는 가격과 개수를 곱한 값이 저장됩니다.</li>
+</ul>
+<h2 id="8-다른-예제-2-고정-배송비-더하기">8. 다른 예제 2: 고정 배송비 더하기</h2>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-6c3bb586e29a.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-5183b97886f7.png" alt="text 코드 예제"></p>
+<p><code>DELIVERY_FEE</code>는 배송비입니다. 배송비처럼 프로그램 안에서 고정해서 사용할 값은 상수로 두면 의미가 분명해집니다.</p>
+<h2 id="9-연습">9. 연습</h2>
+<p>다음 조건에 맞는 프로그램을 작성해 봅니다.</p>
+<ul>
+  <li>파일 이름은 <code>BookCalculator.java</code>로 저장합니다.</li>
+  <li>책 한 권의 가격은 <code>12000</code>원입니다.</li>
+  <li>책의 개수는 <code>2</code>권입니다.</li>
+  <li>고정 할인 금액은 <code>1000</code>원입니다.</li>
+  <li>최종 금액을 출력합니다.</li>
+</ul>
+<p>예상 실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-2_variables_constants-91898d5338f6.png" alt="text 코드 예제"></p>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li>책 가격과 책 개수는 변수로 작성합니다.</li>
+  <li>할인 금액은 <code>final</code>을 사용한 상수로 작성합니다.</li>
+  <li>계산 결과를 저장할 변수를 하나 더 만듭니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/3-2_variables_constants.md</span><small>최종 수정일: 2026-09-17 02:29</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

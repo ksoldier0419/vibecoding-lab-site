@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>4주차(1). 4-1. 자료형과 형 변환</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260917-current-week-links">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 4주차(1)</p>
+        <h1>4-1. 자료형과 형 변환</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-시작-예제-datatypeexample-java">1. 시작 예제: DataTypeExample.java</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-코드-살펴보기">2. 코드 살펴보기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-기본-자료형">3. 기본 자료형</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-printf-와-자료형">4. printf()와 자료형</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-자동-형-변환">5. 자동 형 변환</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-강제-형-변환">6. 강제 형 변환</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#7-다른-예제-1-평균-점수-계산">7. 다른 예제 1: 평균 점수 계산</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#8-다른-예제-2-할인-가격-계산">8. 다른 예제 2: 할인 가격 계산</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#9-연습">9. 연습</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>변수에는 값을 저장합니다. 그런데 모든 값이 같은 종류는 아닙니다. 정수, 실수, 문자, 참/거짓, 문자열처럼 값의 종류가 다릅니다.</p>
+<p>Java에서는 변수에 값을 저장할 때 <strong>자료형</strong>을 먼저 정합니다. 자료형은 변수에 어떤 종류의 값을 저장할 수 있는지 알려주는 표시입니다.</p>
+  </div>
+</section>
+<h2 id="1-시작-예제-datatypeexample-java">1. 시작 예제: DataTypeExample.java</h2>
+<p>파일 이름은 <code>DataTypeExample.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-8c45fa328a48.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-45c9b560d6ff.png" alt="text 코드 예제"></p>
+<h2 id="2-코드-살펴보기">2. 코드 살펴보기</h2>
+<table>
+  <thead><tr>
+<th>코드</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>int age = 20;</code></td>
+<td>정수 값을 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>double height = 175.5;</code></td>
+<td>소수점이 있는 실수 값을 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>char grade = &#x27;A&#x27;;</code></td>
+<td>문자 하나를 저장합니다. 작은따옴표를 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>boolean isStudent = true;</code></td>
+<td>참 또는 거짓 값을 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>String name = &quot;Kim&quot;;</code></td>
+<td>문자열을 저장합니다. 큰따옴표를 사용합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>💡 참고: <code>char</code>는 문자 하나, <code>String</code>은 여러 글자로 이루어진 문자열을 저장할 때 사용합니다.</p>
+<h2 id="3-기본-자료형">3. 기본 자료형</h2>
+<p>Java의 기본 자료형 중 처음에 자주 사용하는 것은 다음과 같습니다.</p>
+<table>
+  <thead><tr>
+<th>자료형</th>
+<th>저장하는 값</th>
+<th>예</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>int</code></td>
+<td>정수</td>
+<td><code>10</code>, <code>-3</code>, <code>0</code></td>
+</tr>
+    <tr>
+<td><code>double</code></td>
+<td>실수</td>
+<td><code>3.14</code>, <code>175.5</code></td>
+</tr>
+    <tr>
+<td><code>char</code></td>
+<td>문자 하나</td>
+<td><code>&#x27;A&#x27;</code>, <code>&#x27;가&#x27;</code></td>
+</tr>
+    <tr>
+<td><code>boolean</code></td>
+<td>참/거짓</td>
+<td><code>true</code>, <code>false</code></td>
+</tr>
+  </tbody>
+</table>
+<p>⚠️ 주의: <code>char</code>는 작은따옴표(<code>&#x27;</code>)를 사용하고, <code>String</code>은 큰따옴표(<code>&quot;</code>)를 사용합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-794c42e10ad5.png" alt="java 코드 예제"></p>
+<h2 id="4-printf-와-자료형">4. printf()와 자료형</h2>
+<p><code>printf()</code>에서는 출력할 값의 자료형에 맞는 자리표시자를 사용합니다.</p>
+<table>
+  <thead><tr>
+<th>자리표시자</th>
+<th>의미</th>
+<th>예</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>%d</code></td>
+<td>정수 출력</td>
+<td><code>System.out.printf(&quot;%d%n&quot;, age);</code></td>
+</tr>
+    <tr>
+<td><code>%f</code></td>
+<td>실수 출력</td>
+<td><code>System.out.printf(&quot;%f%n&quot;, height);</code></td>
+</tr>
+    <tr>
+<td><code>%.1f</code></td>
+<td>소수점 첫째 자리까지 실수 출력</td>
+<td><code>System.out.printf(&quot;%.1f%n&quot;, height);</code></td>
+</tr>
+    <tr>
+<td><code>%c</code></td>
+<td>문자 하나 출력</td>
+<td><code>System.out.printf(&quot;%c%n&quot;, grade);</code></td>
+</tr>
+    <tr>
+<td><code>%b</code></td>
+<td>참/거짓 출력</td>
+<td><code>System.out.printf(&quot;%b%n&quot;, isStudent);</code></td>
+</tr>
+    <tr>
+<td><code>%s</code></td>
+<td>문자열 출력</td>
+<td><code>System.out.printf(&quot;%s%n&quot;, name);</code></td>
+</tr>
+    <tr>
+<td><code>%n</code></td>
+<td>줄바꿈</td>
+<td><code>System.out.printf(&quot;Hello%n&quot;);</code></td>
+</tr>
+  </tbody>
+</table>
+<h2 id="5-자동-형-변환">5. 자동 형 변환</h2>
+<p>형 변환은 값의 자료형이 다른 자료형으로 바뀌는 것입니다. 작은 범위의 값을 더 큰 범위의 자료형에 넣을 때는 Java가 자동으로 바꾸어 주는 경우가 있습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-a91796f5c0a7.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-da2d241b5348.png" alt="text 코드 예제"></p>
+<p><code>int</code> 값 <code>90</code>이 <code>double</code> 변수에 저장되면서 <code>90.0</code>으로 바뀌었습니다.</p>
+<h2 id="6-강제-형-변환">6. 강제 형 변환</h2>
+<p>큰 범위의 값을 작은 범위의 자료형으로 바꿀 때는 직접 자료형을 적어야 합니다. 이때 일부 값이 사라질 수 있습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-5a9f1fe5d843.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-b73040cfaba4.png" alt="text 코드 예제"></p>
+<p><code>double</code> 값 <code>89.7</code>을 <code>int</code>로 바꾸면 소수점 아래가 사라집니다.</p>
+<p>⚠️ 주의: 강제 형 변환은 값이 달라질 수 있으므로 필요한 경우에만 사용합니다.</p>
+<h2 id="7-다른-예제-1-평균-점수-계산">7. 다른 예제 1: 평균 점수 계산</h2>
+<p>정수끼리 나누면 결과도 정수처럼 처리될 수 있습니다. 평균처럼 소수점 결과가 필요하면 <code>double</code>을 사용합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-2bf3cf9bf44f.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-271ae396469a.png" alt="text 코드 예제"></p>
+<h2 id="8-다른-예제-2-할인-가격-계산">8. 다른 예제 2: 할인 가격 계산</h2>
+<p>가격은 정수로 저장하고, 할인율은 실수로 저장할 수 있습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-422c08f194ba.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-7af2995e3128.png" alt="text 코드 예제"></p>
+<h2 id="9-연습">9. 연습</h2>
+<p>다음 조건에 맞는 프로그램을 작성해 봅니다.</p>
+<ul>
+  <li>파일 이름은 <code>ProfileExample.java</code>로 저장합니다.</li>
+  <li>이름은 <code>String</code> 변수에 저장합니다.</li>
+  <li>나이는 <code>int</code> 변수에 저장합니다.</li>
+  <li>키는 <code>double</code> 변수에 저장합니다.</li>
+  <li>학생 여부는 <code>boolean</code> 변수에 저장합니다.</li>
+  <li><code>printf()</code>를 사용해 각 값을 한 줄씩 출력합니다.</li>
+</ul>
+<p>예상 실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-1_data_types-e3b3ffa2e653.png" alt="text 코드 예제"></p>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li>문자열은 큰따옴표(<code>&quot;</code>)를 사용합니다.</li>
+  <li>실수 출력은 <code>%.1f</code>를 사용합니다.</li>
+  <li>줄바꿈은 <code>%n</code>을 사용합니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/4-1_data_types.md</span><small>최종 수정일: 2026-09-17 02:38</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

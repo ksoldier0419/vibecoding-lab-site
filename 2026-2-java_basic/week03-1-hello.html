@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>3주차(1). 3-1. Hello Java</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260917-current-week-links">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 3주차(1)</p>
+        <h1>3-1. Hello Java</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-시작-예제-hello-java">1. 시작 예제: Hello.java</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-코드-살펴보기">2. 코드 살펴보기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-출력문-바꾸기">3. 출력문 바꾸기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-여러-줄-출력하기">4. 여러 줄 출력하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-연습">5. 연습</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>Java 프로그램을 처음 실행할 때는 보통 화면에 문장을 출력하는 예제부터 시작합니다. 이 예제에서는 Java 파일의 기본 모양과 실행 흐름을 먼저 확인합니다.</p>
+  </div>
+</section>
+<h2 id="1-시작-예제-hello-java">1. 시작 예제: Hello.java</h2>
+<p>파일 이름은 <code>Hello.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-bfc869af1f0d.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-bde17c4882eb.png" alt="text 코드 예제"></p>
+<h2 id="2-코드-살펴보기">2. 코드 살펴보기</h2>
+<table>
+  <thead><tr>
+<th>코드</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>public class Hello</code></td>
+<td><code>Hello</code>라는 이름의 클래스를 만듭니다. Java 프로그램은 보통 클래스 안에 작성합니다.</td>
+</tr>
+    <tr>
+<td><code>public static void main(String[] args)</code></td>
+<td>프로그램이 시작되는 위치입니다. Java가 이 부분부터 실행합니다.</td>
+</tr>
+    <tr>
+<td><code>{ }</code></td>
+<td>코드의 범위를 나타냅니다. 클래스의 범위, 메소드의 범위를 구분할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>System.out.printf(&quot;Hello, Java%n&quot;);</code></td>
+<td>콘솔에 <code>&quot;Hello, Java&quot;</code>를 출력하고 줄을 바꿉니다.</td>
+</tr>
+    <tr>
+<td><code>;</code></td>
+<td>하나의 실행문이 끝났다는 표시입니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>💡 참고: Java에서는 <code>public class Hello</code>처럼 공개 클래스 이름을 <code>Hello</code>로 만들면 파일 이름도 <code>Hello.java</code>로 맞추는 것이 기본 규칙입니다.</p>
+<p>⚠️ 보안 참고: 이 교안에서는 출력할 때 <code>println()</code> 대신 <code>printf()</code>를 사용합니다. 값이 들어가는 출력문은 포맷 문자열을 고정하고, 변수 값은 <code>%s</code>, <code>%d</code> 같은 자리표시자에 넣는 습관을 들입니다.</p>
+<h2 id="3-출력문-바꾸기">3. 출력문 바꾸기</h2>
+<p>문장 안의 글자를 바꾸면 출력 결과도 바뀝니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-5a203311da40.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-3d90f69a22e8.png" alt="text 코드 예제"></p>
+<h2 id="4-여러-줄-출력하기">4. 여러 줄 출력하기</h2>
+<p><code>System.out.printf()</code>에서 <code>%n</code>을 사용하면 줄을 바꾸어 출력할 수 있습니다.</p>
+<p>💡 참고: <code>printf()</code>에서는 <code>\n</code> 대신 <code>%n</code>을 줄바꿈으로 사용할 수 있습니다.</p>
+<table>
+  <thead><tr>
+<th>표현</th>
+<th>의미</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>\n</code></td>
+<td>줄바꿈 문자 자체를 의미합니다.</td>
+</tr>
+    <tr>
+<td><code>%n</code></td>
+<td>현재 운영체제에 맞는 줄바꿈을 의미합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>Windows, macOS, Linux는 줄바꿈을 처리하는 방식이 조금 다를 수 있습니다. 그래서 <code>printf()</code>를 사용할 때는 <code>%n</code>을 쓰는 편이 Java 코드에 더 잘 맞습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-25a78b197cc7.png" alt="java 코드 예제"></p>
+<p>실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-ccf4815ee433.png" alt="text 코드 예제"></p>
+<h2 id="5-연습">5. 연습</h2>
+<p>다음 문장이 출력되도록 <code>Hello.java</code>를 수정해 봅니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-3-1_hello-135f5dcfe32b.png" alt="text 코드 예제"></p>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li>파일 이름이 <code>Hello.java</code>인지 확인합니다.</li>
+  <li>클래스 이름이 <code>Hello</code>인지 확인합니다.</li>
+  <li>출력문 끝에 세미콜론(<code>;</code>)이 있는지 확인합니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/3-1_hello.md</span><small>최종 수정일: 2026-09-17 02:29</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

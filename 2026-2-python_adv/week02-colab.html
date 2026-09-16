@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>2주차. Google Colab 시작하기</title>
-    <link rel="stylesheet" href="../assets/site.css?v=20260908-sidebar">
+    <title>2주차. Colab 실습 환경 준비(2)</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260910-course-overview">
   </head>
   <body>
     <header class="site-header">
       <div class="wrap">
         <p class="eyebrow"><a href="./">2026-2 파이썬고급프로그래밍</a> / 2주차</p>
-        <h1>Google Colab 시작하기</h1>
+        <h1>Colab 실습 환경 준비(2)</h1>
       </div>
     </header>
 
@@ -32,8 +32,8 @@
             <details class="toc-section" open>
               <summary><a href="#3-예전-colab과-지금-colab">3. 예전 Colab과 지금 Colab</a></summary>
               <ol class="toc-section-list">
-                <li><a href="#예전">예전</a></li>
-                <li><a href="#현재">현재</a></li>
+              <li><a href="#3-1-예전">3.1 예전</a></li>
+              <li><a href="#3-2-현재">3.2 현재</a></li>
               </ol>
             </details>
           </li>
@@ -46,9 +46,9 @@
             <details class="toc-section" open>
               <summary><a href="#5-방법-1-기본-코드-실행하기">5. 방법 1: 기본 코드 실행하기</a></summary>
               <ol class="toc-section-list">
-                <li><a href="#한-셀에서-실행하기">한 셀에서 실행하기</a></li>
-                <li><a href="#셀로-나누기">셀로 나누기</a></li>
-                <li><a href="#코드와-텍스트-분리하기">코드와 텍스트 분리하기</a></li>
+              <li><a href="#5-1-한-셀에서-실행하기">5.1 한 셀에서 실행하기</a></li>
+              <li><a href="#5-2-셀로-나누기">5.2 셀로 나누기</a></li>
+              <li><a href="#5-3-코드와-텍스트-분리하기">5.3 코드와 텍스트 분리하기</a></li>
               </ol>
             </details>
           </li>
@@ -56,10 +56,10 @@
             <details class="toc-section" open>
               <summary><a href="#6-방법-2-코드를-간결하게-쓰고-표로-보기">6. 방법 2: 코드를 간결하게 쓰고 표로 보기</a></summary>
               <ol class="toc-section-list">
-                <li><a href="#pythonic-기법-사용하기">Pythonic 기법 사용하기</a></li>
-                <li><a href="#내장-함수-결합">내장 함수 결합</a></li>
-                <li><a href="#list-comprehension">List Comprehension</a></li>
-                <li><a href="#데이터-분석-환경처럼-사용하기">데이터 분석 환경처럼 사용하기</a></li>
+              <li><a href="#6-1-pythonic-기법-사용하기">6.1 Pythonic 기법 사용하기</a></li>
+              <li><a href="#6-2-내장-함수-결합">6.2 내장 함수 결합</a></li>
+              <li><a href="#6-3-list-comprehension">6.3 List Comprehension</a></li>
+              <li><a href="#6-4-데이터-분석-환경처럼-사용하기">6.4 데이터 분석 환경처럼 사용하기</a></li>
               </ol>
             </details>
           </li>
@@ -67,8 +67,8 @@
             <details class="toc-section" open>
               <summary><a href="#7-방법-3-결과를-시각화하고-파일로-저장하기">7. 방법 3: 결과를 시각화하고 파일로 저장하기</a></summary>
               <ol class="toc-section-list">
-                <li><a href="#그래프-그려보기">그래프 그려보기</a></li>
-                <li><a href="#colab에서-파일-만들기">Colab에서 파일 만들기</a></li>
+              <li><a href="#7-1-그래프-그려보기">7.1 그래프 그려보기</a></li>
+              <li><a href="#7-2-colab에서-파일-만들기">7.2 Colab에서 파일 만들기</a></li>
               </ol>
             </details>
           </li>
@@ -76,26 +76,32 @@
             <details class="toc-section" open>
               <summary><a href="#8-방법-4-ai를-활용하고-gpu-확인하기">8. 방법 4: AI를 활용하고 GPU 확인하기</a></summary>
               <ol class="toc-section-list">
-                <li><a href="#ai-사용해보기">AI 사용해보기</a></li>
-                <li><a href="#gpu-세팅과-확인">GPU 세팅과 확인</a></li>
+              <li><a href="#8-1-ai-사용해보기">8.1 AI 사용해보기</a></li>
+              <li><a href="#8-2-gpu-세팅과-확인">8.2 GPU 세팅과 확인</a></li>
               </ol>
             </details>
           </li>
         </ol>
       </aside>
       <article class="lesson">
-        <p class="meta">원본: teaching/materials/tools/colab/colab_intro2.md</p>
-
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<p class="meta">원본: teaching/materials/tools/colab/colab_intro2.md</p>
+<p># Google Colab 시작하기</p>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-02-50.png" alt=""></td><td><a href="https://colab.research.google.com/">Colab 바로가기</a></td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-02-50.png" alt=""></td>
+<td><a href="https://colab.research.google.com/">Colab 바로가기</a></td>
+</tr>
   </tbody>
 </table>
-        <h2 id="1-colab이란">1. Colab이란?</h2>
-        <p>Colab은 웹 브라우저에서 Python 코드를 실행할 수 있는 실습 환경입니다.</p>
-        <p>별도의 Python 설치나 개발환경 설정 없이 사용할 수 있기 때문에, 이번 수업에서는 <strong>Python 문법 실습 환경</strong>으로 사용합니다.</p>
-        <pre><code>Python 설치 필요 없음
+<h2 id="1-colab이란">1. Colab이란?</h2>
+<p>Colab은 웹 브라우저에서 Python 코드를 실행할 수 있는 실습 환경입니다.</p>
+<p>별도의 Python 설치나 개발환경 설정 없이 사용할 수 있기 때문에, 이번 수업에서는 <strong>Python 문법 실습 환경</strong>으로 사용합니다.</p>
+<pre><code>Python 설치 필요 없음
 별도 개발환경 설정 필요 없음
 
 Google 계정 + 웹 브라우저
@@ -103,79 +109,115 @@ Google 계정 + 웹 브라우저
       Colab
         ↓
    Python 바로 실행</code></pre>
-        <h2 id="2-colab의-특징">2. Colab의 특징</h2>
-        <ul>
-          <li>브라우저에서 바로 Python 코드를 실행할 수 있습니다.</li>
-          <li>코드와 설명을 하나의 노트북 파일(<code>.ipynb</code>)에 함께 저장할 수 있습니다.</li>
-          <li>표, 그래프, 이미지 같은 실행 결과를 바로 확인할 수 있습니다.</li>
-          <li>GPU가 필요한 실험도 비교적 쉽게 시작할 수 있습니다.</li>
-          <li>최근에는 Gemini, Learn Mode, MCP, CLI 같은 AI 관련 기능도 함께 확장되고 있습니다.</li>
-        </ul>
-        <p>💡 참고: <strong>MCP(Model Context Protocol)</strong>는 AI가 외부 도구나 데이터를 연결해서 사용할 수 있도록 돕는 표준 방식입니다.</p>
-        <h2 id="3-예전-colab과-지금-colab">3. 예전 Colab과 지금 Colab</h2>
-        <h3 id="예전">예전</h3>
-        <ul>
-          <li>브라우저에서 Python 실행</li>
-          <li>GPU가 필요하면 Colab 사용</li>
-          <li><code>.ipynb</code> 파일로 저장</li>
-          <li>VS Code에서 만든 코드를 Colab에 복사해서 실행</li>
-        </ul>
-        <h3 id="현재">현재</h3>
-        <p>최근 Colab은 단순한 <strong>클라우드 Jupyter Notebook</strong>에서, AI가 코드 작성과 실행 과정을 더 많이 도와주는 환경으로 확장되고 있습니다.</p>
-        <p>예를 들어 Gemini에게 목표를 설명하면, 코드 작성, 실행, 오류 수정, 결과 분석까지 이어서 도와줄 수 있습니다.</p>
-        <pre><code>VS Code
+<h2 id="2-colab의-특징">2. Colab의 특징</h2>
+<ul>
+  <li>브라우저에서 바로 Python 코드를 실행할 수 있습니다.</li>
+  <li>코드와 설명을 하나의 노트북 파일(<code>.ipynb</code>)에 함께 저장할 수 있습니다.</li>
+  <li>표, 그래프, 이미지 같은 실행 결과를 바로 확인할 수 있습니다.</li>
+  <li>GPU가 필요한 실험도 비교적 쉽게 시작할 수 있습니다.</li>
+  <li>최근에는 Gemini, Learn Mode, MCP, CLI 같은 AI 관련 기능도 함께 확장되고 있습니다.</li>
+</ul>
+<p>💡 참고: <strong>MCP(Model Context Protocol)</strong>는 AI가 외부 도구나 데이터를 연결해서 사용할 수 있도록 돕는 표준 방식입니다.</p>
+<h2 id="3-예전-colab과-지금-colab">3. 예전 Colab과 지금 Colab</h2>
+<h3 id="3-1-예전">3.1 예전</h3>
+<ul>
+  <li>브라우저에서 Python 실행</li>
+  <li>GPU가 필요하면 Colab 사용</li>
+  <li><code>.ipynb</code> 파일로 저장</li>
+  <li>VS Code에서 만든 코드를 Colab에 복사해서 실행</li>
+</ul>
+<h3 id="3-2-현재">3.2 현재</h3>
+<p>최근 Colab은 단순한 <strong>클라우드 Jupyter Notebook</strong>에서, AI가 코드 작성과 실행 과정을 더 많이 도와주는 환경으로 확장되고 있습니다.</p>
+<p>예를 들어 Gemini에게 목표를 설명하면, 코드 작성, 실행, 오류 수정, 결과 분석까지 이어서 도와줄 수 있습니다.</p>
+<pre><code>VS Code
    ↓
 Claude Code / Codex
    ↓
 Colab CLI
    ↓
 Colab GPU</code></pre>
-        <table>
-  <thead><tr><th>기능</th><th>의미</th></tr></thead>
+<table>
+  <thead><tr>
+<th>기능</th>
+<th>의미</th>
+</tr></thead>
   <tbody>
-    <tr><td>Gemini Agent</td><td>노트북 안에서 AI와 대화하며 작업</td></tr>
-    <tr><td>Data Science Agent</td><td>데이터 분석을 계획하고 실행한 뒤 결과 정리</td></tr>
-    <tr><td>Custom Instructions</td><td>노트북별 AI 작업 규칙 저장</td></tr>
-    <tr><td>Learn Mode</td><td>답을 바로 생성하기보다 단계별 학습 지원</td></tr>
-    <tr><td>Colab MCP Server</td><td>Claude Code, Gemini CLI 같은 외부 Agent가 Colab을 조작할 수 있게 연결</td></tr>
-    <tr><td>Colab CLI</td><td>터미널에서 Colab GPU/TPU runtime 사용</td></tr>
-    <tr><td>VS Code 연계</td><td>로컬 개발 환경과 Colab runtime 연결</td></tr>
+    <tr>
+<td>Gemini Agent</td>
+<td>노트북 안에서 AI와 대화하며 작업</td>
+</tr>
+    <tr>
+<td>Data Science Agent</td>
+<td>데이터 분석을 계획하고 실행한 뒤 결과 정리</td>
+</tr>
+    <tr>
+<td>Custom Instructions</td>
+<td>노트북별 AI 작업 규칙 저장</td>
+</tr>
+    <tr>
+<td>Learn Mode</td>
+<td>답을 바로 생성하기보다 단계별 학습 지원</td>
+</tr>
+    <tr>
+<td>Colab MCP Server</td>
+<td>Claude Code, Gemini CLI 같은 외부 Agent가 Colab을 조작할 수 있게 연결</td>
+</tr>
+    <tr>
+<td>Colab CLI</td>
+<td>터미널에서 Colab GPU/TPU runtime 사용</td>
+</tr>
+    <tr>
+<td>VS Code 연계</td>
+<td>로컬 개발 환경과 Colab runtime 연결</td>
+</tr>
   </tbody>
 </table>
-        <p>💡 참고: Colab CLI는 2026년 6월 Google Developers Blog에서 소개된 기능입니다. <code>colab --gpu A100</code>처럼 GPU를 요청하고, 로컬 Python 파일을 Colab runtime에서 실행할 수 있습니다.</p>
-        <pre><code class="language-bash">colab --gpu A100
+<p>💡 참고: Colab CLI는 2026년 6월 Google Developers Blog에서 소개된 기능입니다. <code>colab --gpu A100</code>처럼 GPU를 요청하고, 로컬 Python 파일을 Colab runtime에서 실행할 수 있습니다.</p>
+<pre><code class="language-bash">colab --gpu A100
 colab exec -f train.py
 colab download result.txt</code></pre>
-        <h2 id="4-연습문제">4. 연습문제</h2>
-        <p>1부터 100까지 자연수 중 짝수의 합을 구하시오.</p>
-        <h2 id="5-방법-1-기본-코드-실행하기">5. 방법 1: 기본 코드 실행하기</h2>
-        <h3 id="한-셀에서-실행하기">한 셀에서 실행하기</h3>
-        <pre><code class="language-python">total = 0
+<h2 id="4-연습문제">4. 연습문제</h2>
+<p>1부터 100까지 자연수 중 짝수의 합을 구하시오.</p>
+<h2 id="5-방법-1-기본-코드-실행하기">5. 방법 1: 기본 코드 실행하기</h2>
+<h3 id="5-1-한-셀에서-실행하기">5.1 한 셀에서 실행하기</h3>
+<pre><code class="language-python">total = 0
 
 for i in range(1, 101):
     if i % 2 == 0:
         total += i
 
 print(total)</code></pre>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./image.png" alt=""></td><td>실행화면</td></tr>
+    <tr>
+<td><img src="image.png" alt=""></td>
+<td>실행화면</td>
+</tr>
   </tbody>
 </table>
-        <p><strong>실행 버튼</strong>: <code>Ctrl + Enter</code> 또는 <code>Shift + Enter</code></p>
-        <h3 id="셀로-나누기">셀로 나누기</h3>
-        <p>셀은 나뉘어 있지만 같은 Python 실행 환경을 공유합니다.</p>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<p><strong>실행 버튼</strong>: <code>Ctrl + Enter</code> 또는 <code>Shift + Enter</code></p>
+<h3 id="5-2-셀로-나누기">5.2 셀로 나누기</h3>
+<p>셀은 나뉘어 있지만 같은 Python 실행 환경을 공유합니다.</p>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-24-00.png" alt=""></td><td>실행화면</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-24-00.png" alt=""></td>
+<td>실행화면</td>
+</tr>
   </tbody>
 </table>
-        <h3 id="코드와-텍스트-분리하기">코드와 텍스트 분리하기</h3>
-        <p>Colab에서는 코드 셀과 텍스트 셀을 나누어 사용할 수 있습니다.</p>
-        <p>텍스트 셀에는 문제 설명, 조건, 풀이 과정을 적습니다.</p>
-        <pre><code class="language-md"># 실습 1. 짝수의 합
+<h3 id="5-3-코드와-텍스트-분리하기">5.3 코드와 텍스트 분리하기</h3>
+<p>Colab에서는 코드 셀과 텍스트 셀을 나누어 사용할 수 있습니다.</p>
+<p>텍스트 셀에는 문제 설명, 조건, 풀이 과정을 적습니다.</p>
+<pre><code class="language-md"># 실습 1. 짝수의 합
 
 1부터 100까지 자연수 중
 짝수의 합을 구하시오.
@@ -184,34 +226,40 @@ print(total)</code></pre>
 
 - 반복문을 사용한다.
 - if문을 사용한다.</code></pre>
-        <p>코드 셀에는 실행할 Python 코드를 적습니다.</p>
-        <pre><code class="language-py">total = 0
+<p>코드 셀에는 실행할 Python 코드를 적습니다.</p>
+<pre><code class="language-py">total = 0
 
 for n in range(1, 101):
     if n % 2 == 0:
         total += n
 
 print(&quot;짝수의 합:&quot;, total)</code></pre>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-28-15.png" alt=""></td><td>실행화면</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-28-15.png" alt=""></td>
+<td>실행화면</td>
+</tr>
   </tbody>
 </table>
-        <h2 id="6-방법-2-코드를-간결하게-쓰고-표로-보기">6. 방법 2: 코드를 간결하게 쓰고 표로 보기</h2>
-        <h3 id="pythonic-기법-사용하기">Pythonic 기법 사용하기</h3>
-        <p>Python에는 반복문을 더 짧게 표현하는 방법도 있습니다.</p>
-        <h3 id="내장-함수-결합">내장 함수 결합</h3>
-        <pre><code class="language-py">sum(range(2, 101, 2))</code></pre>
-        <h3 id="list-comprehension">List Comprehension</h3>
-        <pre><code class="language-py">evens = [n for n in range(1, 101) if n % 2 == 0]
+<h2 id="6-방법-2-코드를-간결하게-쓰고-표로-보기">6. 방법 2: 코드를 간결하게 쓰고 표로 보기</h2>
+<h3 id="6-1-pythonic-기법-사용하기">6.1 Pythonic 기법 사용하기</h3>
+<p>Python에는 반복문을 더 짧게 표현하는 방법도 있습니다.</p>
+<h3 id="6-2-내장-함수-결합">6.2 내장 함수 결합</h3>
+<pre><code class="language-py">sum(range(2, 101, 2))</code></pre>
+<h3 id="6-3-list-comprehension">6.3 List Comprehension</h3>
+<pre><code class="language-py">evens = [n for n in range(1, 101) if n % 2 == 0]
 
 print(evens)
 print(sum(evens))</code></pre>
-        <p>💡 참고: <strong>List Comprehension</strong>은 리스트를 만드는 짧은 문법입니다. 처음에는 어려울 수 있으므로, 기본 <code>for</code>문을 이해한 뒤 비교해보면 좋습니다.</p>
-        <h3 id="데이터-분석-환경처럼-사용하기">데이터 분석 환경처럼 사용하기</h3>
-        <p>1부터 20까지의 숫자가 짝수인지 홀수인지 표로 나타내시오.</p>
-        <pre><code class="language-py">import pandas as pd
+<p>💡 참고: <strong>List Comprehension</strong>은 리스트를 만드는 짧은 문법입니다. 처음에는 어려울 수 있으므로, 기본 <code>for</code>문을 이해한 뒤 비교해보면 좋습니다.</p>
+<h3 id="6-4-데이터-분석-환경처럼-사용하기">6.4 데이터 분석 환경처럼 사용하기</h3>
+<p>1부터 20까지의 숫자가 짝수인지 홀수인지 표로 나타내시오.</p>
+<pre><code class="language-py">import pandas as pd
 
 numbers = range(1, 21)
 
@@ -221,87 +269,141 @@ df = pd.DataFrame({
 })
 
 df</code></pre>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-42-13.png" alt=""></td><td>실행화면</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-42-13.png" alt=""></td>
+<td>실행화면</td>
+</tr>
   </tbody>
 </table>
-        <h2 id="7-방법-3-결과를-시각화하고-파일로-저장하기">7. 방법 3: 결과를 시각화하고 파일로 저장하기</h2>
-        <h3 id="그래프-그려보기">그래프 그려보기</h3>
-        <p>1부터 10까지 숫자의 제곱을 그래프로 나타내시오.</p>
-        <pre><code class="language-py">import matplotlib.pyplot as plt
+<h2 id="7-방법-3-결과를-시각화하고-파일로-저장하기">7. 방법 3: 결과를 시각화하고 파일로 저장하기</h2>
+<h3 id="7-1-그래프-그려보기">7.1 그래프 그려보기</h3>
+<p>1부터 10까지 숫자의 제곱을 그래프로 나타내시오.</p>
+<pre><code class="language-py">import matplotlib.pyplot as plt
 
 x = range(1, 11)
 y = [n ** 2 for n in x]
 
 plt.plot(x, y)
 plt.show()</code></pre>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-44-04.png" alt=""></td><td>실행화면</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-44-04.png" alt=""></td>
+<td>실행화면</td>
+</tr>
   </tbody>
 </table>
-        <h3 id="colab에서-파일-만들기">Colab에서 파일 만들기</h3>
-        <p>Colab에서 만든 파일은 왼쪽 파일 영역에서 확인하고 다운로드할 수 있습니다.</p>
-        <pre><code class="language-py">with open(&quot;result.txt&quot;, &quot;w&quot;) as f:
+<h3 id="7-2-colab에서-파일-만들기">7.2 Colab에서 파일 만들기</h3>
+<p>Colab에서 만든 파일은 왼쪽 파일 영역에서 확인하고 다운로드할 수 있습니다.</p>
+<pre><code class="language-py">with open(&quot;result.txt&quot;, &quot;w&quot;) as f:
     f.write(&quot;1부터 100까지 짝수의 합 = 2550&quot;)</code></pre>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-46-07.png" alt=""></td><td>실행화면</td></tr>
-    <tr><td><img src="./images/2026-09-01-03-47-17.png" alt=""></td><td><code>result.txt</code> 파일</td></tr>
-    <tr><td><img src="./images/2026-09-01-03-48-46.png" alt=""></td><td>파일 다운로드</td></tr>
-    <tr><td><img src="./images/2026-09-01-04-07-13.png" alt=""></td><td>Google Drive 마운트 실행</td></tr>
-    <tr><td><img src="./images/2026-09-01-03-56-20.png" alt=""></td><td>Google Drive 마운트 위치</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-46-07.png" alt=""></td>
+<td>실행화면</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-47-17.png" alt=""></td>
+<td><code>result.txt</code> 파일</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-48-46.png" alt=""></td>
+<td>파일 다운로드</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-04-07-13.png" alt=""></td>
+<td>Google Drive 마운트 실행</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-56-20.png" alt=""></td>
+<td>Google Drive 마운트 위치</td>
+</tr>
   </tbody>
 </table>
-        <p>💡 참고: Colab runtime은 작업이 끝나면 초기화될 수 있습니다. 오래 보관해야 하는 파일은 다운로드하거나 Google Drive에 저장합니다.</p>
-        <h2 id="8-방법-4-ai를-활용하고-gpu-확인하기">8. 방법 4: AI를 활용하고 GPU 확인하기</h2>
-        <h3 id="ai-사용해보기">AI 사용해보기</h3>
-        <p>Colab에서는 AI에게 코드 설명, 오류 수정, 추가 질문 생성을 요청할 수 있습니다.</p>
-        <p>💡 참고: <strong>Lyria</strong>는 Google DeepMind의 음악 생성 AI 모델 이름입니다. Colab에서는 Python 코드 실습뿐 아니라, 생성형 AI 모델을 실험하는 노트북도 다룰 수 있습니다.</p>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<p>💡 참고: Colab runtime은 작업이 끝나면 초기화될 수 있습니다. 오래 보관해야 하는 파일은 다운로드하거나 Google Drive에 저장합니다.</p>
+<h2 id="8-방법-4-ai를-활용하고-gpu-확인하기">8. 방법 4: AI를 활용하고 GPU 확인하기</h2>
+<h3 id="8-1-ai-사용해보기">8.1 AI 사용해보기</h3>
+<p>Colab에서는 AI에게 코드 설명, 오류 수정, 추가 질문 생성을 요청할 수 있습니다.</p>
+<p>💡 참고: <strong>Lyria</strong>는 Google DeepMind의 음악 생성 AI 모델 이름입니다. Colab에서는 Python 코드 실습뿐 아니라, 생성형 AI 모델을 실험하는 노트북도 다룰 수 있습니다.</p>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-03-58-34.png" alt=""></td><td>AI 질문하기</td></tr>
-    <tr><td><img src="./images/2026-09-01-04-09-00.png" alt=""></td><td>AI 답변 확인</td></tr>
-    <tr><td><img src="./images/2026-09-01-04-09-20.png" alt=""></td><td>추가 질문 생성</td></tr>
-    <tr><td><img src="./images/2026-09-01-04-10-08.png" alt=""></td><td>선택 질의</td></tr>
-    <tr><td><img src="./images/2026-09-01-04-10-22.png" alt=""></td><td>코드 수정</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-03-58-34.png" alt=""></td>
+<td>AI 질문하기</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-04-09-00.png" alt=""></td>
+<td>AI 답변 확인</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-04-09-20.png" alt=""></td>
+<td>추가 질문 생성</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-04-10-08.png" alt=""></td>
+<td>선택 질의</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-04-10-22.png" alt=""></td>
+<td>코드 수정</td>
+</tr>
   </tbody>
 </table>
-        <p>✅ AI를 사용할 때 확인할 점</p>
-        <ul>
-          <li>AI가 만든 코드가 문제 조건과 맞는지 확인합니다.</li>
-          <li>실행 결과가 예상과 같은지 확인합니다.</li>
-          <li>모르는 문법이 나오면 바로 복사하지 말고 의미를 먼저 물어봅니다.</li>
-        </ul>
-        <h3 id="gpu-세팅과-확인">GPU 세팅과 확인</h3>
-        <p>GPU가 필요한 실습을 할 때는 Colab 상단 메뉴에서 runtime 유형을 GPU로 바꿉니다.</p>
-        <p>일반적인 흐름은 다음과 같습니다.</p>
-        <ol>
-          <li>상단 메뉴에서 <code>런타임</code>을 선택합니다.</li>
-          <li><code>런타임 유형 변경</code>을 선택합니다.</li>
-          <li>하드웨어 가속기를 <code>GPU</code>로 선택합니다.</li>
-          <li>아래 코드를 실행해서 GPU가 연결되었는지 확인합니다.</li>
-        </ol>
-        <table>
-  <thead><tr><th>이미지</th><th>설명</th></tr></thead>
+<p>✅ AI를 사용할 때 확인할 점</p>
+<ul>
+  <li>AI가 만든 코드가 문제 조건과 맞는지 확인합니다.</li>
+  <li>실행 결과가 예상과 같은지 확인합니다.</li>
+  <li>모르는 문법이 나오면 바로 복사하지 말고 의미를 먼저 물어봅니다.</li>
+</ul>
+<h3 id="8-2-gpu-세팅과-확인">8.2 GPU 세팅과 확인</h3>
+<p>GPU가 필요한 실습을 할 때는 Colab 상단 메뉴에서 runtime 유형을 GPU로 바꿉니다.</p>
+<p>일반적인 흐름은 다음과 같습니다.</p>
+<ol>
+  <li>상단 메뉴에서 <code>런타임</code>을 선택합니다.</li>
+  <li><code>런타임 유형 변경</code>을 선택합니다.</li>
+  <li>하드웨어 가속기를 <code>GPU</code>로 선택합니다.</li>
+  <li>아래 코드를 실행해서 GPU가 연결되었는지 확인합니다.</li>
+</ol>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
   <tbody>
-    <tr><td><img src="./images/2026-09-01-05-38-33.png" alt=""></td><td>GPU runtime 설정 화면</td></tr>
+    <tr>
+<td><img src="./images/2026-09-01-05-38-33.png" alt=""></td>
+<td>GPU runtime 설정 화면</td>
+</tr>
   </tbody>
 </table>
-        <pre><code class="language-py">import torch
+<pre><code class="language-py">import torch
 
 if torch.cuda.is_available():
     print(&quot;GPU 사용 가능&quot;)
     print(torch.cuda.get_device_name(0))
 else:
     print(&quot;GPU를 사용할 수 없습니다.&quot;)</code></pre>
-        <p>실행 결과에 <code>GPU 사용 가능</code>과 GPU 이름이 나오면 GPU를 사용할 수 있는 상태입니다.</p>
-        <p>⚠️ 주의: GPU가 연결되지 않았다면 런타임 유형을 다시 확인합니다.</p>
+<p>실행 결과에 <code>GPU 사용 가능</code>과 GPU 이름이 나오면 GPU를 사용할 수 있는 상태입니다.</p>
+<p>⚠️ 주의: GPU가 연결되지 않았다면 런타임 유형을 다시 확인합니다.</p>
       </article>
     </main>
 

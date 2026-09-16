@@ -51,6 +51,10 @@ a:hover {
   width: min(100% - 32px, 1280px);
 }
 
+.course-index-layout.wrap {
+  width: min(100% - 32px, 1440px);
+}
+
 .eyebrow {
   margin: 0 0 4px;
   color: #b9c4d8;
@@ -126,8 +130,217 @@ main {
   color: var(--muted);
 }
 
+.course-board {
+  padding: 20px;
+}
+
+.course-board > h2 {
+  margin-top: 28px;
+}
+
+.course-overview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 56px;
+  margin: 20px 0 32px;
+}
+
+.overview-section h2 {
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  font-size: 1rem;
+}
+
+.overview-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.overview-list .overview-list {
+  gap: 6px;
+  margin-top: 6px;
+  padding-left: 22px;
+}
+
+.overview-section a {
+  color: #4b5563;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.overview-note {
+  margin: 12px 0;
+  border-radius: 8px;
+  background: #f4f5f7;
+  padding: 16px 18px;
+}
+
+.overview-note strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.overview-note p {
+  margin: 8px 0 0;
+}
+
+.course-table-scroll {
+  margin-top: 16px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.course-table {
+  min-width: 1080px;
+  margin: 0;
+  border: 0;
+  font-size: 0.84rem;
+}
+
+.course-table th,
+.course-table td {
+  min-width: 104px;
+  height: 60px;
+  padding: 8px 10px;
+  vertical-align: top;
+  border-top: 0;
+  border-left: 0;
+  border-color: #edf0f5;
+}
+
+.course-table th:last-child,
+.course-table td:last-child {
+  border-right: 0;
+}
+
+.course-table tbody tr:last-child th,
+.course-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.course-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.course-table tbody th {
+  width: 104px;
+  min-width: 104px;
+  background: #fbfcfe;
+  font-weight: 700;
+}
+
+.course-table small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.course-table .current-week th,
+.course-table .current-week td {
+  background: #f0f6ff;
+  color: var(--ink);
+  border-top-color: #c7d9f5;
+  border-bottom-color: #c7d9f5;
+}
+
+.course-table .current-week th:first-child {
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+
+.course-table .current-week a,
+.course-table .current-week small,
+.course-table .current-week .empty {
+  color: #315a96;
+}
+
+.course-table .current-week td a {
+  color: #b42318;
+}
+
+.course-table .current-week td a:hover {
+  color: #8f1d14;
+}
+
+.cell-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.status-badge.online {
+  background: #d9f3e6;
+  color: #116149;
+}
+
+.status-badge.offline {
+  background: #f7e7b4;
+  color: #74520c;
+}
+
+.status-badge.note {
+  background: #eef2f7;
+  color: var(--muted);
+}
+
 .meta {
   color: var(--muted);
+}
+
+.source-note {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.86rem;
+  padding-top: 14px;
+}
+
+.source-note strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.source-note ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.source-note li span,
+.source-note li small {
+  display: block;
+}
+
+.source-note li small {
+  color: #7b8494;
 }
 
 .toc {
@@ -230,11 +443,47 @@ main {
   scroll-margin-top: 16px;
 }
 
+.lesson-goals {
+  margin: 0 0 28px;
+  border: 1px solid #c7d9f5;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #f0f6ff;
+  padding: 16px 18px;
+}
+
+.lesson-goals > strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #1f4d8f;
+  font-size: 0.95rem;
+}
+
+.lesson-goals p,
+.lesson-goals ul,
+.lesson-goals ol {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
 img {
   max-width: 100%;
   height: auto;
   border: 1px solid var(--line);
   border-radius: 6px;
+}
+
+.code-image-wrap {
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.code-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  border-color: #263244;
+  background: var(--code-bg);
 }
 
 table {
@@ -293,6 +542,11 @@ pre code {
 }
 
 @media (max-width: 860px) {
+  .course-overview {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
   .lesson-layout.wrap {
     width: min(100% - 32px, 960px);
     margin: 0 auto;
