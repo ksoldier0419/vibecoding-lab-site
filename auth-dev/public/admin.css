@@ -23,3 +23,5 @@ button.danger{color:#b42318;border-color:#e6aaa5}
 @media(max-width:900px){.course-panels{grid-template-columns:1fr}.course-table{max-height:420px}}
 
 .sort-heading{display:inline-flex;align-items:center;gap:8px;padding:4px 0;border:0;border-radius:3px;background:transparent;color:inherit;font:inherit;font-weight:700;white-space:nowrap}.sort-heading:hover{color:#2454a6}.sort-heading span{color:#2454a6;font-size:.9em}
+
+.registered-at{white-space:nowrap;font-variant-numeric:tabular-nums;font-size:.85rem}

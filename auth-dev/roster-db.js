@@ -52,8 +52,9 @@ function createRosterRepository(sql) {
   async courses() { return sql.query('SELECT id,title FROM login_dev_courses ORDER BY title'); },
   async roster(course) {
    return sql.query(`SELECT r.id::text AS id, r.student_number AS "studentNumber",r.student_name AS name,
-    e.section,(r.google_id IS NOT NULL) AS registered
+    e.section,(r.google_id IS NOT NULL) AS registered,p.created_at AS "registeredAt"
     FROM login_dev_enrollments e JOIN login_dev_roster r ON r.id=e.roster_id
+    LEFT JOIN login_dev_student_profiles p ON p.google_id=r.google_id
     WHERE e.course_id=$1 ORDER BY r.student_number,e.section`,[course]);
   },
   previewRoster: summary,

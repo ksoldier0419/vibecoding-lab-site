@@ -13,6 +13,12 @@ function invalidatePreview() {previewToken=null;$('preview-area').hidden=true;}
 function selectedSection() {return $('section-filter').value === '' ? null : JSON.parse($('section-filter').value);}
 function resetEditor() {editing=null;$('editor').reset();$('section').value=selectedSection() || '';$('editor-title').textContent='학생 직접 등록';$('cancel').hidden=true;}
 function cells(row,values) {for(const value of values) {const td=document.createElement('td');td.textContent=value;row.append(td);}}
+function formatRegisteredAt(value) {
+ if(!value) return '—';
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime())) return '—';
+ return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(date);
+}
 function render() {
  const query=$('search').value.trim().toLowerCase(),target=$('rows');target.replaceChildren();
  const section=selectedSection();
@@ -32,7 +38,8 @@ function render() {
  $('count').textContent='('+(section===null?'전체':section ? section+'분반':'분반 미지정')+' '+new Set(sectionRows.map(r=>r.id)).size+'명 · '+sectionRows.length+'건'+(query?' · 검색 '+filtered.length+'명':'')+')';$('empty').hidden=filtered.length>0;
  $('empty').textContent=query?'검색 결과가 없습니다.':'등록된 수강생이 없습니다.';
  for(const value of filtered) {
-  const tr=document.createElement('tr');cells(tr,[value.studentNumber,value.name,value.section||'—',value.registered?'가입 완료':'미가입']);
+  const tr=document.createElement('tr');cells(tr,[value.studentNumber,value.name,value.section||'—',value.registered?'가입 완료':'미가입',value.registered?formatRegisteredAt(value.registeredAt):'—']);
+  tr.lastElementChild.className='registered-at';
   const td=document.createElement('td'),button=document.createElement('button');button.type='button';button.textContent='수정';
   button.addEventListener('click',()=>{
    editing={id:value.id,section:value.section};for(const key of ['studentNumber','name','section']) $('editor').elements.namedItem(key).value=value[key];
