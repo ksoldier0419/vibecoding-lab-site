@@ -42,7 +42,7 @@ async function login(result, nonce) {
   let authenticated=false;
   try {
     const data = await request('/api/auth/google', { credential: result.credential, nonce });
-    authenticated=true;showUser(data.user);await loadStudent();
+    authenticated=true;showUser(data.user);await loadStudent({afterLogin:true});
   } catch (error) {
     if(!authenticated) {
       try {
@@ -66,7 +66,7 @@ async function start() {
 }
 
 document.getElementById('logout').addEventListener('click', async () => {
-  try { await request('/api/auth/logout', {}); window.google?.accounts?.id.disableAutoSelect(); location.reload(); }
+  try { await request('/api/auth/logout', {}); window.google?.accounts?.id.disableAutoSelect(); location.replace('/login.html'); }
   catch (error) { failed(error); }
 });
 retry.addEventListener('click', () => location.reload());
@@ -106,16 +106,17 @@ function showRegistration(data) {
     document.getElementById('student-title').textContent='수강 명단 확인 후 가입';
   }
 }
-async function loadStudent() {
+async function loadStudent({afterLogin=false}={}) {
+  const viewProfile=!afterLogin && new URLSearchParams(location.search).has('profile');
   if(currentUser?.role==='professor') {
-    if(!new URLSearchParams(location.search).has('profile')) location.replace('/courses.html');
+    if(!viewProfile) location.replace('/courses.html');
     return;
   }
   studentForm.hidden = true;
   document.getElementById('student-summary').hidden = true;
   studentStatus.textContent = '학생 정보를 확인하고 있습니다.';
   const data = await request('/api/student/profile');
-  if(data.registered && data.profile?.phone?.trim() && !new URLSearchParams(location.search).has('profile')) {location.replace('/courses.html');return;}
+  if(data.registered && data.profile?.phone?.trim() && !viewProfile) {location.replace('/courses.html');return;}
   showStudent(data.profile); showRegistration(data); studentStatus.textContent = data.registered ? (data.profile?.phone?.trim() ? '가입 완료 · 아래 과목에 등록되어 있습니다.' : '전화번호가 필수 항목으로 변경되었습니다. 입력 후 저장해 주세요.') : '교수의 수강 명단에 있는 학번·이름으로 등록해 주세요.';
 }
 document.getElementById('edit-student').addEventListener('click', () => {
