@@ -185,3 +185,20 @@ routes는 공개 파일을 먼저 찾고 나머지 요청만 server.js로 전달
 명시적 builds 설정을 사용하므로 Vercel 대시보드의 빌드 설정 대신 저장소 설정을 따른다는 안내가 나올 수 있다.
 
 새 Google 로그인 성공 시 이전 URL의 profile 옵션과 관계없이 가입·전화번호 등록이 완료된 학생은 /courses.html로 이동한다. 이미 로그인한 상태에서 내 정보를 선택하면 정보 화면을 유지한다. 로그아웃은 /login.html로 이동하여 이전 옵션을 제거한다.
+
+
+### 별도 운영 DB 초기 명단 이전
+auth-dev/bootstrap-production.js는 빈 운영 DB에 테이블을 만들고 개발 DB의 과목·학번·이름·분반만 복사하는 일회성 로컬 도구다.
+.env.local의 DATABASE_URL은 원본, Git 제외 파일 .env.production.local의 PRODUCTION_DATABASE_URL은 대상이다.
+두 Neon 엔드포인트가 다르고 대상 public 스키마에 테이블이 없을 때만 실행한다. 계정·프로필·로그인 기록·세션·Google ID 연결은 복사하지 않는다. 기본 과목을 별도로 생성하지도 않는다.
+
+사전 확인:
+    node --env-file=.env.local --env-file=.env.production.local auth-dev/bootstrap-production.js
+
+검토 후 실제 이전:
+    node --env-file=.env.local --env-file=.env.production.local auth-dev/bootstrap-production.js --apply
+
+테스트 학생 제외는 --exclude-student 옵션을 추가한다. 복수 옵션을 사용할 수 있으며 사전 확인과 실제 이전에 같은 옵션을 지정한다.
+명단은 메모리에서 전달하고 터미널에는 건수만 출력한다. 대상 스키마 생성과 입력은 한 트랜잭션으로 처리한다.
+완료 후 테이블이 있는 대상에는 재실행하지 못하므로 기존 운영 데이터를 덮어쓰지 않는다.
+테이블 이름의 login_dev_ 접두사는 코드 호환을 위해 유지한다. 환경 분리는 실제 DB와 연결 주소로 수행한다.
