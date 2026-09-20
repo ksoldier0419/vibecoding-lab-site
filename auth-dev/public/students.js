@@ -3,11 +3,20 @@ async function api(url,body){const r=await fetch(url,body===undefined?{cache:'no
 function message(text){$('status').textContent=text;$('person-status').textContent=text;}
 function cells(row,values){for(const value of values){const td=document.createElement('td');td.textContent=value;row.append(td);}}
 async function action(button,fn){button.disabled=true;$('admin-content').inert=true;try{await fn();}catch(e){message(e.message);}finally{button.disabled=false;$('admin-content').inert=false;}}
-let people=[],personId=null;
+let people=[],personId=null,personSort='name',personDirection=1;
+const personCollator=new Intl.Collator('ko',{numeric:true});
+function courseKey(p){return p.courses.map(c=>c.title+' '+(c.section||'')).sort(personCollator.compare).join(' / ');}
+function comparePeople(a,b){
+ if(personSort==='courses' && !!a.courses.length!==!!b.courses.length)return a.courses.length?-1:1;
+ const x=personSort==='courses'?courseKey(a):a[personSort],y=personSort==='courses'?courseKey(b):b[personSort];
+ return personDirection*personCollator.compare(x,y)||personCollator.compare(a.studentNumber,b.studentNumber);
+}
 function resetPerson(){personId=null;$('person-editor').reset();$('person-title').textContent='학생 기본 정보 등록';$('person-cancel').hidden=true;}
 function renderPeople(){
  const q=$('person-search').value.trim().toLowerCase();
  const rows=people.filter(p=>(p.studentNumber+' '+p.name).toLowerCase().includes(q) && (!$('person-unenrolled').checked || !p.courses.length));
+ rows.sort(comparePeople);
+ for(const key of ['studentNumber','name','courses']){const active=key===personSort;$('person-sort-'+key+'-heading').setAttribute('aria-sort',active?(personDirection===1?'ascending':'descending'):'none');$('person-sort-'+key).querySelector('span').textContent=active?(personDirection===1?'↑':'↓'):'↕';}
  $('person-rows').replaceChildren();$('person-count').textContent=rows.length+'명';
  for(const p of rows){const tr=document.createElement('tr');cells(tr,[p.studentNumber,p.name,p.courses.map(c=>c.title+' · '+(c.section?c.section+'분반':'분반 미지정')).join(', ')||'수강 과목 없음',p.registered?'가입 완료':'미가입']);
  const td=document.createElement('td'),edit=document.createElement('button');edit.type='button';edit.textContent='수정';edit.addEventListener('click',()=>{personId=p.id;$('person-number').value=p.studentNumber;$('person-name').value=p.name;$('person-title').textContent='학생 기본 정보 수정';$('person-cancel').hidden=false;$('person-number').focus();});
@@ -15,6 +24,7 @@ function renderPeople(){
  const actions=document.createElement('div');actions.className='row-actions';actions.append(edit,enroll);td.append(actions);tr.append(td);$('person-rows').append(tr);}
 }
 async function loadPeople(){const data=await api('/api/admin/students');people=data.rows;renderPeople();}
+for(const key of ['studentNumber','name','courses']) $('person-sort-'+key).addEventListener('click',()=>{personDirection=personSort===key?-personDirection:1;personSort=key;renderPeople();});
 $('person-search').addEventListener('input',renderPeople);
 $('person-unenrolled').addEventListener('change',renderPeople);
 $('person-cancel').addEventListener('click',resetPerson);
