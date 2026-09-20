@@ -25,6 +25,7 @@ function adminRoutes(app, repository, {signedIn,localPost,isProfessor}) {
   }catch(e){return res.status(400).json({error:e.message});}
   try {res.json(await repository.saveStudent(id,value));}catch(e){fail(res,e);}
  });
+ app.get('/students.html',...guard,(req,res)=>res.sendFile(require('node:path').join(__dirname,'public/students.html')));
  app.get('/admin.html',...guard,(req,res)=>res.sendFile(require('node:path').join(__dirname,'public/admin.html')));
  app.get('/api/admin/courses',...guard,async(req,res)=>{
   try { res.json({courses:await repository.courses()}); } catch(e) { fail(res,e); }

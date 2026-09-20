@@ -8,7 +8,7 @@ async function api(url,body) {
  if(!response.ok) throw new Error(data.error||'요청을 처리하지 못했습니다.');
  return data;
 }
-function message(text) {$('status').textContent=text;if($('person-status')) $('person-status').textContent=text;if($('editor-status')) $('editor-status').textContent=text;}
+function message(text) {$('status').textContent=text;if($('editor-status')) $('editor-status').textContent=text;}
 function invalidatePreview() {previewToken=null;$('preview-area').hidden=true;}
 function selectedSection() {return $('section-filter').value === '' ? null : JSON.parse($('section-filter').value);}
 function resetEditor() {editing=null;$('editor').reset();$('section').value=selectedSection() || '';$('editor-title').textContent='학생 직접 등록';$('cancel').hidden=true;}
@@ -123,7 +123,6 @@ function updateSections(previous='') {
  select.disabled=!allRows.length;
 }
 async function loadRoster() {
- await loadPeople();
  const course=$('course').value,previous=loadedCourse===course?$('section-filter').value:'';
  if(!course){allRows=[];loadedCourse=null;updateSections();render();$('empty').textContent='과목을 먼저 등록해 주세요.';return;}
  const data=await api('/api/admin/roster?course='+encodeURIComponent(course));
@@ -180,27 +179,11 @@ $('confirm').addEventListener('click',()=>action($('confirm'),async()=>{
   if(user?.role!=='professor') {message('교수 계정으로 먼저 로그인해 주세요.');return;}
   await loadCourses();
   $('admin-content').hidden=false;await loadRoster();message('과목을 선택하여 명단을 등록하거나 수정하세요.');
+  const studentId=new URLSearchParams(location.search).get('student');
+  if(studentId){const data=await api('/api/admin/students');const person=data.rows.find(p=>p.id===studentId);
+   if(person){$('number').value=person.studentNumber;$('student-name').value=person.name;$('number').scrollIntoView({block:'center'});message('선택한 학생을 불러왔습니다. 과목·분반을 확인하고 저장해 주세요.');}
+   else message('학생 정보를 찾을 수 없습니다. 전체 학생 목록을 다시 확인해 주세요.');
+  }
  }catch(e){message(e.message);}
 })();
 
-let people=[],personId=null;
-function resetPerson(){personId=null;$('person-editor').reset();$('person-title').textContent='학생 기본 정보 등록';$('person-cancel').hidden=true;}
-function renderPeople(){
- const q=$('person-search').value.trim().toLowerCase();
- const rows=people.filter(p=>(p.studentNumber+' '+p.name).toLowerCase().includes(q) && (!$('person-unenrolled').checked || !p.courses.length));
- $('person-rows').replaceChildren();$('person-count').textContent=rows.length+'명';
- for(const p of rows){const tr=document.createElement('tr');cells(tr,[p.studentNumber,p.name,p.courses.map(c=>c.title+' · '+(c.section?c.section+'분반':'분반 미지정')).join(', ')||'수강 과목 없음',p.registered?'가입 완료':'미가입']);
- const td=document.createElement('td'),edit=document.createElement('button');edit.type='button';edit.textContent='수정';edit.addEventListener('click',()=>{personId=p.id;$('person-number').value=p.studentNumber;$('person-name').value=p.name;$('person-title').textContent='학생 기본 정보 수정';$('person-cancel').hidden=false;$('person-number').focus();});
- const enroll=document.createElement('button');enroll.type='button';enroll.textContent='수강 등록';enroll.addEventListener('click',()=>{resetEditor();$('number').value=p.studentNumber;$('student-name').value=p.name;$('number').scrollIntoView({block:'center'});message('아래 과목별 등록 폼에 학생 정보를 채웠습니다. 과목·분반을 확인하고 저장해 주세요.');});
- const actions=document.createElement('div');actions.className='row-actions';actions.append(edit,enroll);td.append(actions);tr.append(td);$('person-rows').append(tr);}
-}
-async function loadPeople(){const data=await api('/api/admin/students');people=data.rows;renderPeople();}
-$('person-search').addEventListener('input',renderPeople);
-$('person-unenrolled').addEventListener('change',renderPeople);
-$('person-cancel').addEventListener('click',resetPerson);
-$('person-refresh').addEventListener('click',()=>action($('person-refresh'),loadPeople));
-$('person-editor').addEventListener('invalid',e=>message(e.target.validationMessage),true);
-$('person-editor').addEventListener('submit',e=>{e.preventDefault();action($('person-editor').querySelector('button[type=submit]'),async()=>{
- const body={...Object.fromEntries(new FormData($('person-editor')))};if(personId)body.id=personId;
- await api('/api/admin/students/save',body);resetPerson();invalidatePreview();await loadRoster();message('학생 기본 정보를 저장했습니다.');
-});});
