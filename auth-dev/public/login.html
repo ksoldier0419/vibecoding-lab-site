@@ -1,28 +1,28 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Google 로그인 테스트 | Vibe Coding Lab</title>
+<title>Google 로그인 | Vibe Coding Lab</title>
 <link rel="stylesheet" href="/auth-assets/login.css">
 <script src="https://accounts.google.com/gsi/client" defer></script>
 <script src="/auth-assets/login.js" defer></script></head>
-<body><main><span class="tag">개발용 로그인 테스트</span><h1>Vibe Coding Lab</h1>
+<body><main><span class="tag">수강생 로그인</span><h1>Vibe Coding Lab</h1>
 <section id="supported-courses" aria-labelledby="supported-courses-title">
 <div class="supported-heading"><h2 id="supported-courses-title">서비스 지원 과목</h2><span class="semester">2026-2</span></div>
 <p id="supported-courses-status" class="muted" role="status">과목 목록을 불러오고 있습니다.</p>
 <ul id="supported-courses-list"></ul>
 </section>
-<p>등록한 Google 테스트 계정으로 로그인해 주세요.</p>
-<p class="muted">로그인하면 이름·이메일과 로그인 시각·횟수가 테스트 DB에 저장됩니다. 학생 정보 등록을 테스트할 수 있습니다. 교수가 등록한 수강 명단과 학번·이름이 일치하면 학생 가입이 완료됩니다.</p>
+<p>본인의 Google 계정으로 로그인해 주세요.</p>
+<p class="muted">로그인하면 이름·이메일과 로그인 시각·횟수가 저장됩니다. 처음 이용하는 학생은 학생 정보를 입력해 주세요. 교수가 등록한 수강 명단과 학번·이름이 일치하면 가입이 완료됩니다.</p>
 <div id="google-button"></div><p id="status" role="status" aria-live="polite">로그인을 준비하고 있습니다.</p>
 <section id="profile" hidden><h2>로그인 확인 완료</h2><p id="name"></p><p id="email"></p><p id="database" class="muted"></p><button id="logout" type="button">로그아웃</button></section>
 <p id="admin-link" hidden><a href="/admin.html">교수 관리자 페이지 · 수강 명단 관리</a></p>
 <section id="student" hidden>
 <h2 id="student-title">학생 정보 등록</h2><p><a href="/courses.html">내 강의자료로 이동</a></p>
-<p class="muted">교수가 등록한 수강 명단과 대조할 항목입니다. 지금은 개발 테스트 단계이므로 실제 개인정보 대신 테스트 정보를 입력해 주세요. 운영 보관 기간은 학생 대상 공개 전에 안내할 예정입니다.</p>
+<p class="muted">수강 확인과 수업 운영을 위해 학번·이름·전공·전화번호를 입력해 주세요. 학번과 이름은 수강 명단에 등록된 정보와 정확히 일치해야 합니다. 가입이 되지 않으면 담당 교수에게 문의해 주세요.</p>
 <p id="student-status" role="status" aria-live="polite"></p>
 <div id="student-summary" hidden><dl id="student-details"></dl><button type="button" id="edit-student">내 정보 수정</button><p class="muted">학번·이름 정정이 필요하면 교수에게 문의해 주세요.</p></div>
 <div id="enrollment" hidden><h3>등록된 수강 과목</h3><ul id="enrollment-list"></ul></div>
 <form id="student-form" hidden>
-<label for="studentNumber">학번 <span>(필수)</span></label><input id="studentNumber" name="studentNumber" required minlength="4" maxlength="20" pattern="[A-Za-z0-9\-]{4,20}" placeholder="예: TEST0001" autocomplete="off">
+<label for="studentNumber">학번 <span>(필수)</span></label><input id="studentNumber" name="studentNumber" required minlength="4" maxlength="20" pattern="[A-Za-z0-9\-]{4,20}" placeholder="본인의 학번" autocomplete="off">
 <label for="studentName">이름 <span>(필수)</span></label><input id="studentName" name="name" required maxlength="100" autocomplete="name">
 <label for="major1">전공1 · 주전공 <span>(필수)</span></label><input id="major1" name="major1" required maxlength="100">
 <label for="major2">전공2 · 복수/부전공 <span>(선택)</span></label><input id="major2" name="major2" maxlength="100">

@@ -204,3 +204,7 @@ auth-dev/bootstrap-production.js는 빈 운영 DB에 테이블을 만들고 개�
 테이블 이름의 login_dev_ 접두사는 코드 호환을 위해 유지한다. 환경 분리는 실제 DB와 연결 주소로 수행한다.
 
 교수 관리자 수강 명단의 가입 완료 일시는 학생 프로필을 처음 저장한 시각이며 한국 시간(Asia/Seoul)으로 표시한다. 이후 프로필 수정이나 재로그인으로 변경되지 않는다. 미가입 학생은 —로 표시한다.
+
+### 운영 학생 가입
+
+Vercel Production(VERCEL_ENV=production)은 검증된 Google 계정의 로그인을 허용하며 LOGIN_ALLOWED_EMAILS 제한을 적용하지 않는다. Preview와 로컬은 기존 허용 계정 제한을 유지한다. 일반 Google 계정 로그인만으로 학생 가입이나 교수 권한을 부여하지 않는다. 학번·이름 수강 명단 대조 및 필수 프로필 입력 후 개인 수강 과목을 조회할 수 있다. 교수 권한은 PROFESSOR_EMAIL과 일치하는 계정에만 부여한다. Google 인증 플랫폼의 게시 상태는 별도로 확인한다.

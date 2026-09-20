@@ -12,7 +12,7 @@ function same(a, b) {
   return x.length === y.length && timingSafeEqual(x, y);
 }
 function createApp(config, verifier = new OAuth2Client(), repository = null) {
-  if (!config.clientId || !config.secret || config.secret.length < 32 || !config.allowedEmails?.length) {
+  if (!config.clientId || !config.secret || config.secret.length < 32 || (!config.openRegistration && !config.allowedEmails?.length)) {
     throw new Error('Google client ID, session secret and test account configuration are required.');
   }
   const origin = config.origin || ORIGIN;
@@ -21,7 +21,7 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
   if(parsedOrigin.origin !== origin || (!secure && origin !== ORIGIN)) throw new Error('Invalid application origin.');
   if(secure && !config.sessionStore) throw new Error('HTTPS deployment requires persistent sessions.');
   const hosts = secure ? [parsedOrigin.host] : ['localhost:3000','127.0.0.1:3000'];
-  const allowed = new Set(config.allowedEmails.map(x => x.trim().toLowerCase()));
+  const allowed = new Set((config.allowedEmails || []).map(x => x.trim().toLowerCase()));
   const professorEmail = (config.professorEmail || '').trim().toLowerCase();
   if(professorEmail) allowed.add(professorEmail);
   const isProfessor = user => !!professorEmail && user?.email?.toLowerCase() === professorEmail;
@@ -76,8 +76,8 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
       const ticket = await verifier.verifyIdToken({ idToken: req.body.credential, audience: config.clientId });
       const p = ticket.getPayload();
       if (!p?.sub || !p.email_verified || !same(p.nonce, nonce) || !Number.isFinite(p.exp) || p.exp * 1000 <= Date.now()) throw new Error('Invalid claims');
-      // Test access is limited to Google-hosted accounts with verified ownership.
-      if (!p.email || !(p.email.endsWith('@gmail.com') || p.hd) || !allowed.has(p.email.toLowerCase())) {
+      // Production admits verified Google identities; roster matching remains required for registration.
+      if (typeof p.email !== 'string' || !p.email || (!config.openRegistration && (!(p.email.endsWith('@gmail.com') || p.hd) || !allowed.has(p.email.toLowerCase())))) {
         return res.status(403).json({ error: '등록된 테스트 계정으로 로그인해 주세요.' });
       }
       const user = { id: p.sub, name: p.name || '', email: p.email };

@@ -376,3 +376,36 @@ test('public course directory links redirect to real static index files without 
  }
  assert.equal((await request(server,'/unknown-course/')).status,404);
 });
+
+
+test('open registration accepts an unlisted Google identity but gates enrollment and professor APIs', async t => {
+ let nonce,profile=null;
+ const repository={recordLogin:async()=>({loginCount:1}),getProfile:async()=>profile,
+  registration:async()=>({registered:!!profile,courses:profile?[{id:'603108',title:'Python',section:'1'}]:[]}),
+  registerProfile:async(id,value)=>{
+   assert.equal(id,'google-user-1');
+   if(value.studentNumber!==student.studentNumber || value.name!==student.name) throw Object.assign(new Error('명단 불일치'),{code:'ROSTER_MISMATCH'});
+   profile=value;return value;
+  }};
+ const server=createApp({...config,openRegistration:true,allowedEmails:[]},{verifyIdToken:async()=>({getPayload:()=>({...payload(nonce),email:'new-student@example.org'})})},repository).listen(0,'127.0.0.1');
+ await new Promise(resolve=>server.once('listening',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));
+ const initial=await request(server,'/api/auth/config');nonce=initial.data.nonce;
+ const login=await request(server,'/api/auth/google',{method:'POST',cookie:initial.cookie,body:{credential:'token',nonce}});
+ assert.equal(login.status,200);assert.equal(login.data.user.role,'student');
+ const cookie=login.cookie;
+ assert.equal((await request(server,'/api/my/courses',{cookie})).status,403);
+ assert.equal((await request(server,'/api/admin/courses',{cookie})).status,403);
+ assert.equal((await request(server,'/api/student/profile',{method:'POST',cookie,body:{...student,name:'불일치'}})).status,403);
+ assert.equal(profile,null);
+ assert.equal((await request(server,'/api/student/profile',{method:'POST',cookie,body:student})).status,200);
+ assert.equal((await request(server,'/api/my/courses',{cookie})).status,200);
+ assert.equal((await request(server,'/api/admin/courses',{cookie})).status,403);
+});
+
+test('open registration still rejects unverified Google email',async t=>{
+ let nonce;
+ const server=createApp({...config,openRegistration:true},{verifyIdToken:async()=>({getPayload:()=>({...payload(nonce),email_verified:false})})}).listen(0,'127.0.0.1');
+ await new Promise(resolve=>server.once('listening',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));
+ const initial=await request(server,'/api/auth/config');nonce=initial.data.nonce;
+ assert.equal((await request(server,'/api/auth/google',{method:'POST',cookie:initial.cookie,body:{credential:'token',nonce}})).status,401);
+});
