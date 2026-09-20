@@ -23,7 +23,7 @@ function coursePages(app,repository,{isProfessor}) {
    for(const c of result.courses) {
     if(!grouped.has(c.id)) {
      const folder=pages[c.id],available=!!folder;
-     grouped.set(c.id,{id:c.id,title:c.title,sections:[],url:available?'/'+folder+'/':null});
+     grouped.set(c.id,{id:c.id,title:c.title,sections:[],url:available?'/'+folder+'/index.html':null});
     }
     if(c.section && !grouped.get(c.id).sections.includes(c.section)) grouped.get(c.id).sections.push(c.section);
    }
@@ -32,6 +32,9 @@ function coursePages(app,repository,{isProfessor}) {
  });
  // Lecture materials remain public; personal lists and admin data use authenticated APIs.
  for(const folder of Object.values(pages)) {
+  // Vercel serves files from public/, but does not use express.static's directory index.
+  // Keep existing folder links working and preserve relative URLs on the index page.
+  app.get(['/'+folder,'/'+folder+'/'],(req,res)=>res.redirect(307,'/'+folder+'/index.html'));
   app.use('/'+folder,express.static(path.join(root,folder),{dotfiles:'deny',index:'index.html'}));
  }
  app.use('/materials',express.static(path.join(root,'materials'),{dotfiles:'deny',index:false}));

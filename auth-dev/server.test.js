@@ -333,7 +333,7 @@ test('student catalog stays private while lecture documents remain public',async
  const catalog=await request(server,'/api/my/courses',{cookie});
  assert.equal(catalog.status,200);assert.equal(catalog.data.courses.length,2);
  assert.deepEqual(catalog.data.courses[0].sections,['1','2']);
- assert.equal(catalog.data.courses[0].url,'/2026-2-python_adv/');
+ assert.equal(catalog.data.courses[0].url,'/2026-2-python_adv/index.html');
  assert.equal(catalog.data.courses[1].url,null);
  assert.equal((await request(server,'/2026-2-python_adv/index.html',{cookie})).status,200);
  assert.equal((await request(server,'/2026-2-java_basic/index.html',{cookie})).status,200);
@@ -358,4 +358,21 @@ test('professor can view supported courses and material without student profile'
  assert.equal((await request(server,'/api/my/courses',{cookie})).data.courses.length,2);
  assert.equal((await request(server,'/2026-2-java_basic/index.html',{cookie})).status,200);
  assert.equal((await request(server,'/',{cookie})).status,200);
+});
+
+
+test('public course directory links redirect to real static index files without login',async t=>{
+ const server=await setup(t,{});
+ for(const folder of ['2026-2-java_basic','2026-2-python_adv']) {
+  for(const suffix of ['', '/']) {
+   const response=await request(server,'/'+folder+suffix);
+   assert.equal(response.status,307);
+   assert.equal(response.headers.location,'/'+folder+'/index.html');
+   const page=await request(server,response.headers.location);
+   assert.equal(page.status,200);
+   assert.match(page.headers['content-type'],/text\/html/);
+   assert.match(page.data,/<h1>/);
+  }
+ }
+ assert.equal((await request(server,'/unknown-course/')).status,404);
 });

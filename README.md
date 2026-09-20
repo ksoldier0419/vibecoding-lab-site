@@ -174,3 +174,5 @@ vercel.json에서 Express 프레임워크와 npm run build를 지정한다. 기�
 다음 단계: Vercel Preview 환경설정 확인 → 브랜치 push와 Preview 배포 → Google 로그인/학생·교수 권한/기존 강의자료 링크 확인 → 운영 적용 판단.
 
 Preview 주소 자동 인식 참고: https://vercel.com/docs/environment-variables/system-environment-variables
+
+과목 카드는 /과목폴더/index.html로 연결한다. 기존 /과목폴더/ 주소는 같은 index.html로 307 이동한다. Vercel에서 express.static의 폴더 기본 문서 처리에 의존하지 않는다.
