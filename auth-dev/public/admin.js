@@ -8,7 +8,7 @@ async function api(url,body) {
  if(!response.ok) throw new Error(data.error||'요청을 처리하지 못했습니다.');
  return data;
 }
-function message(text) {$('status').textContent=text;}
+function message(text) {$('status').textContent=text;if($('editor-status')) $('editor-status').textContent=text;}
 function invalidatePreview() {previewToken=null;$('preview-area').hidden=true;}
 function selectedSection() {return $('section-filter').value === '' ? null : JSON.parse($('section-filter').value);}
 function resetEditor() {editing=null;$('editor').reset();$('section').value=selectedSection() || '';$('editor-title').textContent='학생 직접 등록';$('cancel').hidden=true;}
@@ -43,8 +43,9 @@ function render() {
  const order=rosterSort;
  for(const field of ['name','number','registered']) {
   const active=order.startsWith(field),descending=order.endsWith('desc');
-  $('sort-'+field+'-heading').setAttribute('aria-sort',active?(descending?'descending':'ascending'):'none');
-  $('sort-'+field).querySelector('span').textContent=active?(descending?'↓':'↑'):'↕';
+  $('sort-'+field+'-heading')?.setAttribute('aria-sort',active?(descending?'descending':'ascending'):'none');
+  const indicator=$('sort-'+field)?.querySelector('span');
+  if(indicator) indicator.textContent=active?(descending?'↓':'↑'):'↕';
  }
  filtered.sort((a,b)=>compareRosterRows(a,b,order));
  $('count').textContent='('+(section===null?'전체':section ? section+'분반':'분반 미지정')+' '+new Set(sectionRows.map(r=>r.id)).size+'명 · '+sectionRows.length+'건'+(query?' · 검색 '+filtered.length+'명':'')+')';$('empty').hidden=filtered.length>0;
@@ -133,7 +134,7 @@ async function action(button,fn) {
  try {await fn();} catch(error){message(error.message);} finally {button.disabled=false;$('admin-content').inert=false;}
 }
 $('search').addEventListener('input',render);
-for(const field of ['name','number','registered']) $('sort-'+field).addEventListener('click',()=>{
+for(const field of ['name','number','registered']) $('sort-'+field)?.addEventListener('click',()=>{
  rosterSort=rosterSort===field+'-asc'?field+'-desc':field+'-asc';render();
 });
 $('section-filter').addEventListener('change',()=>{
@@ -145,8 +146,12 @@ $('course').addEventListener('change',async()=>{
  invalidatePreview();allRows=[];updateSections();resetEditor();render();$('admin-content').inert=true;
  try {await loadRoster();message('선택한 과목의 명단입니다.');} catch(e){message(e.message);} finally {$('admin-content').inert=false;}
 });
+$('editor').addEventListener('invalid',event=>{
+ const labels={studentNumber:'학번',name:'이름',section:'분반'};
+ message((labels[event.target.name] || '입력값')+': '+event.target.validationMessage);
+},true);
 $('editor').addEventListener('submit',event=>{
- event.preventDefault();action($('editor').querySelector('button[type=submit]'),async()=>{
+ event.preventDefault();message('수강 명단을 저장하고 있습니다…');action($('editor').querySelector('button[type=submit]'),async()=>{
   const body={course:$('course').value,...Object.fromEntries(new FormData($('editor')))};
   if(editing) {body.id=editing.id;body.originalSection=editing.section;}
   await api('/api/admin/roster/save',body);resetEditor();invalidatePreview();await loadRoster();message('수강 명단을 저장했습니다.');
