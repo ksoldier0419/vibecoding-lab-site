@@ -163,7 +163,7 @@ Vercel 프로젝트 환경변수의 Preview 범위에 아래 값을 등록한다
 
 첫 Preview는 위의 환경변수 다섯 개만 등록하고 배포한다. 자동 생성된 고정 브랜치 주소를 확인한 뒤 Google Cloud의 승인된 JavaScript 원본에 추가한다. APP_ORIGIN을 따로 등록했다면 그 주소를 사용한다. 로그인 테스트는 이 주소로 접속한다. 다른 배포별 주소는 Host 검사 때문에 로그인 API가 거절한다. 로컬 .env.local의 APP_ORIGIN은 http://localhost:3000으로 유지한다.
 
-vercel.json에서 Express 프레임워크와 npm run build를 지정한다. 기존 프로젝트에 수동 Build/Output Directory 설정이 있다면 Preview 배포 설정과 충돌 여부를 먼저 확인한다. 프로젝트 전체 설정을 바꾸어 운영 배포에 영향을 주지 않도록 한다.
+vercel.json에서 @vercel/static-build가 npm run build 실행 후 public/을 정적 배포 결과로 수집하도록 지정한다. @vercel/node는 server.js를 로그인 서버 함수로 배포한다. 기존 프로젝트에 수동 Build/Output Directory 설정이 있다면 Preview 배포 설정과 충돌 여부를 먼저 확인한다. 프로젝트 전체 설정을 바꾸어 운영 배포에 영향을 주지 않도록 한다.
 
 세션은 login_dev_sessions에 저장한다. 세션 ID는 주소별 네임스페이스를 포함해 해시한 값으로 저장하며 로그인 시 ID를 재발급한다. 로그아웃은 DB 행을 삭제한다. 읽기로 유효기간을 연장하지 않으며 만료 행은 이후 세션 저장 때 최대 100개씩 정리한다. 만료 데이터가 남아 있어도 인증에는 사용하지 않는다.
 
@@ -176,3 +176,10 @@ vercel.json에서 Express 프레임워크와 npm run build를 지정한다. 기�
 Preview 주소 자동 인식 참고: https://vercel.com/docs/environment-variables/system-environment-variables
 
 과목 카드는 /과목폴더/index.html로 연결한다. 기존 /과목폴더/ 주소는 같은 index.html로 307 이동한다. Vercel에서 express.static의 폴더 기본 문서 처리에 의존하지 않는다.
+
+
+### 정적 자료와 로그인 함수 배포
+Express 자동 프리셋 대신 두 빌더를 명시한다. 빌드 단계에서 생성하는 public/이 정적 배포 결과로 수집되도록 @vercel/static-build의 distDir을 public으로 지정한다.
+routes는 공개 파일을 먼저 찾고 나머지 요청만 server.js로 전달한다. /courses.html, /admin.html은 정적 최상위 파일로 생성하지 않으므로 서버의 세션·권한 검사를 유지한다.
+서버 함수에는 sendFile에 필요한 auth-dev/public/ 화면을 명시적으로 포함한다. 환경파일과 학생 DB 자료는 정적 출력에 포함하지 않는다.
+명시적 builds 설정을 사용하므로 Vercel 대시보드의 빌드 설정 대신 저장소 설정을 따른다는 안내가 나올 수 있다.

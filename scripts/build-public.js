@@ -24,3 +24,9 @@ copy(path.join(root,'auth-dev/public/login.html'),path.join(out,'login.html'));
 const index=path.join(out,'index.html');
 fs.writeFileSync(index,fs.readFileSync(index,'utf8').replace('</header>','<div class="wrap"><p><a style="color:inherit" href="/login.html">로그인 · 내 강의자료</a></p></div></header>'));
 console.log('Public lecture materials and login assets built. Server code and environment files excluded.');
+
+for(const folder of ['2026-2-java_basic','2026-2-python_adv']) {
+ const file=path.join(out,folder,'index.html');
+ if(!fs.readFileSync(file,'utf8').includes('<h1>')) throw new Error('Missing course index: '+folder);
+ console.log('Verified static output: '+folder+'/index.html');
+}
