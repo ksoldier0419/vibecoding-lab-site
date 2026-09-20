@@ -12,6 +12,19 @@ function adminRoutes(app, repository, {signedIn,localPost,isProfessor}) {
   return res.status(503).json({error:'명단을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.'});
  }
  const guard=[signedIn,professor];
+ app.get('/api/admin/students',...guard,async(req,res)=>{
+  try {res.json({rows:await repository.students()});}catch(e){fail(res,e);}
+ });
+ app.post('/api/admin/students/save',localPost,...guard,async(req,res)=>{
+  let value,id;
+  try {
+   if(!req.body || Object.keys(req.body).some(k=>!['id','studentNumber','name'].includes(k))) throw new Error('학번과 이름을 확인해 주세요.');
+   id=req.body.id;
+   if(id!==undefined && (typeof id!=='string'||!/^[1-9][0-9]{0,18}$/.test(id))) throw new Error('수정할 학생을 선택해 주세요.');
+   value=v.identity(req.body);
+  }catch(e){return res.status(400).json({error:e.message});}
+  try {res.json(await repository.saveStudent(id,value));}catch(e){fail(res,e);}
+ });
  app.get('/admin.html',...guard,(req,res)=>res.sendFile(require('node:path').join(__dirname,'public/admin.html')));
  app.get('/api/admin/courses',...guard,async(req,res)=>{
   try { res.json({courses:await repository.courses()}); } catch(e) { fail(res,e); }

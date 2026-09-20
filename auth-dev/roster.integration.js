@@ -12,6 +12,12 @@ async function main() {
  const row={studentNumber:num1,name:'Synthetic student',section:'01'};
  const value={studentNumber:num1,name:row.name,major1:'Test',major2:'',phone:'010-0000-0000'};
  try {
+  const basic=await repo.saveStudent(undefined,row);
+  assert.equal((await repo.students()).find(p=>p.id===basic.id).courses.length,0);
+  await repo.saveStudent(basic.id,{...row,name:'Renamed synthetic'});
+  assert.equal((await repo.students()).find(p=>p.id===basic.id).name,'Renamed synthetic');
+  await repo.saveStudent(basic.id,row);
+  await assert.rejects(repo.saveStudent(undefined,row),e=>e.code==='23505');
   await repo.createCourse(course1,course1);
   await repo.createCourse(course2,course2);
   await repo.deleteCourse(course2);

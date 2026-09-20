@@ -409,3 +409,18 @@ test('open registration still rejects unverified Google email',async t=>{
  const initial=await request(server,'/api/auth/config');nonce=initial.data.nonce;
  assert.equal((await request(server,'/api/auth/google',{method:'POST',cookie:initial.cookie,body:{credential:'token',nonce}})).status,401);
 });
+
+
+test('global student management is professor-only and validates identity',async t=>{
+ let saved=0;
+ const repo={students:async()=>[{id:'1',studentNumber:'TEST0001',name:'Test',courses:[]}],saveStudent:async()=>{saved++;return {id:'1'};}};
+ const studentSession=await profileSession(t,repo);
+ assert.equal((await request(studentSession.server,'/api/admin/students',{cookie:studentSession.cookie})).status,403);
+ const professor=await profileSession(t,repo,'professor@gmail.com');
+ assert.equal((await request(professor.server,'/api/admin/students',{cookie:professor.cookie})).data.rows[0].courses.length,0);
+ assert.equal((await request(professor.server,'/api/admin/students/save',{cookie:professor.cookie,method:'POST',body:{studentNumber:'TEST0001',name:'Test'}})).status,200);
+ assert.equal(saved,1);
+ assert.equal((await request(professor.server,'/api/admin/students/save',{cookie:professor.cookie,method:'POST',body:{studentNumber:'!',name:'Test'}})).status,400);
+ assert.equal((await request(professor.server,'/api/admin/students/save',{cookie:professor.cookie,method:'POST',origin:'https://other.example',body:{studentNumber:'TEST0001',name:'Test'}})).status,403);
+ assert.equal(saved,1);
+});

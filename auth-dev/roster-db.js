@@ -19,6 +19,26 @@ function createRosterRepository(sql) {
   return result[0];
  }
  return {
+  async students() {
+   return sql.query(`SELECT r.id::text AS id,r.student_number AS "studentNumber",r.student_name AS name,
+    (r.google_id IS NOT NULL) AS registered,p.created_at AS "registeredAt",
+    COALESCE((SELECT jsonb_agg(jsonb_build_object('title',c.title,'section',e.section) ORDER BY c.title,e.section)
+     FROM login_dev_enrollments e JOIN login_dev_courses c ON c.id=e.course_id WHERE e.roster_id=r.id),'[]'::jsonb) AS courses
+    FROM login_dev_roster r LEFT JOIN login_dev_student_profiles p ON p.google_id=r.google_id ORDER BY r.student_name,r.student_number`);
+  },
+  async saveStudent(id,value) {
+   if(!id) {
+    const rows=await locked('INSERT INTO login_dev_roster(student_number,student_name) VALUES ($1,$2) RETURNING id::text',[value.studentNumber,value.name]);
+    return rows[0];
+   }
+   const rows=await locked(`WITH changed AS (
+    UPDATE login_dev_roster SET student_number=$2,student_name=$3,updated_at=clock_timestamp() WHERE id=$1::bigint RETURNING id,google_id,student_number,student_name),
+    profile AS (UPDATE login_dev_student_profiles p SET student_number=c.student_number,student_name=c.student_name,updated_at=clock_timestamp()
+     FROM changed c WHERE p.google_id=c.google_id RETURNING p.google_id)
+    SELECT id::text FROM changed`,[id,value.studentNumber,value.name]);
+   if(!rows.length) throw Object.assign(new Error('학생 정보를 찾을 수 없습니다.'),{code:'NOT_FOUND'});
+   return rows[0];
+  },
   async migrateEnrollmentSections() {
    await sql.query("DO $$ BEGIN IF (SELECT array_length(conkey,1) FROM pg_constraint WHERE conrelid='login_dev_enrollments'::regclass AND contype='p')=2 THEN ALTER TABLE login_dev_enrollments DROP CONSTRAINT login_dev_enrollments_pkey; ALTER TABLE login_dev_enrollments ADD PRIMARY KEY (roster_id,course_id,section); END IF; END $$");
   },
