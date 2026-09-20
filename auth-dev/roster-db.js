@@ -151,7 +151,18 @@ function createRosterRepository(sql) {
      RETURNING google_id)
     SELECT google_id FROM saved
    `,[id,value.studentNumber,value.name,value.major1,value.major2,value.phone]);
-   if (!result.length) throw Object.assign(new Error('수강 명단과 학번·이름을 확인할 수 없습니다. 담당 교수에게 문의해 주세요.'),{code:'ROSTER_MISMATCH'});
+   if (!result.length) {
+    const reasons=await sql.query(`SELECT
+     EXISTS(SELECT 1 FROM login_dev_roster WHERE student_number=$2 AND student_name=$3 AND google_id IS NOT NULL AND google_id<>$1) AS claimed,
+     EXISTS(SELECT 1 FROM login_dev_roster WHERE google_id=$1 AND student_number<>$2) AS other_student,
+     EXISTS(SELECT 1 FROM login_dev_roster r WHERE student_number=$2 AND student_name=$3 AND NOT EXISTS(SELECT 1 FROM login_dev_enrollments WHERE roster_id=r.id)) AS no_courses`,[id,value.studentNumber,value.name]);
+    const reason=reasons[0];
+    const message=reason.claimed?'이 학번은 이미 다른 Google 계정으로 가입되어 있습니다. 기존 계정으로 로그인해 주세요. 계정을 변경하려면 담당 교수에게 문의해 주세요.':
+     reason.other_student?'현재 Google 계정은 이미 다른 학번으로 가입되어 있습니다. 기존 학생 정보를 확인하거나 담당 교수에게 문의해 주세요.':
+     reason.no_courses?'학생 명단에 등록되어 있지만 수강 과목이 없습니다. 담당 교수에게 과목·분반 등록을 요청해 주세요.':
+     '수강 명단과 학번·이름을 확인할 수 없습니다. 담당 교수에게 문의해 주세요.';
+    throw Object.assign(new Error(message),{code:'ROSTER_MISMATCH'});
+   }
    return value;
   }
  };

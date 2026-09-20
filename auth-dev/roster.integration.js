@@ -17,6 +17,7 @@ async function main() {
   await repo.saveStudent(basic.id,{...row,name:'Renamed synthetic'});
   assert.equal((await repo.students()).find(p=>p.id===basic.id).name,'Renamed synthetic');
   await repo.saveStudent(basic.id,row);
+  await assert.rejects(repo.registerProfile(id1,value),e=>e.code==='ROSTER_MISMATCH' && e.message.includes('수강 과목이 없습니다'));
   await assert.rejects(repo.saveStudent(undefined,row),e=>e.code==='23505');
   await repo.createCourse(course1,course1);
   await repo.createCourse(course2,course2);
@@ -56,6 +57,7 @@ async function main() {
   assert.equal(renamed.title,'Changed course name');
   assert.equal((await repo.previewRoster(course1,[row])).existing,1);
   assert.equal((await repo.registration(loser)).registered,false);
+  await assert.rejects(repo.registerProfile(loser,value),e=>e.code==='ROSTER_MISMATCH' && e.message.includes('다른 Google 계정'));
   await assert.rejects(repo.registerProfile(winner,{...value,studentNumber:num2,name:'Other student'}),e=>e.code==='ROSTER_MISMATCH');
   const roster=(await repo.roster(course1)).find(r=>r.studentNumber===num1);
   await repo.editRoster(roster.id,course1,{...row,studentNumber:num3,name:'Corrected name',section:'03'},'01');
