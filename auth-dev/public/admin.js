@@ -19,22 +19,34 @@ function formatRegisteredAt(value) {
  if(Number.isNaN(date.getTime())) return '—';
  return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(date);
 }
+function compareRosterRows(a,b,order) {
+ const direction=order.endsWith('desc')?-1:1;
+ let result=0;
+ if(order.startsWith('registered')) {
+  const x=a.registered && a.registeredAt?Date.parse(a.registeredAt):NaN;
+  const y=b.registered && b.registeredAt?Date.parse(b.registeredAt):NaN;
+  const missingX=!Number.isFinite(x),missingY=!Number.isFinite(y);
+  result=missingX!==missingY?(missingX?1:-1):missingX?0:direction*(x-y);
+ } else {
+  const key=order.startsWith('name')?'name':'studentNumber';
+  result=direction*rosterCollator.compare(a[key],b[key]);
+ }
+ return result || rosterCollator.compare(a.studentNumber,b.studentNumber)
+  || rosterCollator.compare(a.section||'',b.section||'')
+  || rosterCollator.compare(a.id,b.id);
+}
 function render() {
  const query=$('search').value.trim().toLowerCase(),target=$('rows');target.replaceChildren();
  const section=selectedSection();
  const sectionRows=allRows.filter(r=>section===null || (r.section || '')===section);
  const filtered=sectionRows.filter(r=>(r.studentNumber+' '+r.name).toLowerCase().includes(query));
  const order=rosterSort;
- for(const field of ['name','number']) {
+ for(const field of ['name','number','registered']) {
   const active=order.startsWith(field),descending=order.endsWith('desc');
   $('sort-'+field+'-heading').setAttribute('aria-sort',active?(descending?'descending':'ascending'):'none');
   $('sort-'+field).querySelector('span').textContent=active?(descending?'↓':'↑'):'↕';
  }
- const key=order.startsWith('name')?'name':'studentNumber',direction=order.endsWith('desc')?-1:1;
- filtered.sort((a,b)=>direction*rosterCollator.compare(a[key],b[key])
-  || rosterCollator.compare(a.studentNumber,b.studentNumber)
-  || rosterCollator.compare(a.section||'',b.section||'')
-  || rosterCollator.compare(a.id,b.id));
+ filtered.sort((a,b)=>compareRosterRows(a,b,order));
  $('count').textContent='('+(section===null?'전체':section ? section+'분반':'분반 미지정')+' '+new Set(sectionRows.map(r=>r.id)).size+'명 · '+sectionRows.length+'건'+(query?' · 검색 '+filtered.length+'명':'')+')';$('empty').hidden=filtered.length>0;
  $('empty').textContent=query?'검색 결과가 없습니다.':'등록된 수강생이 없습니다.';
  for(const value of filtered) {
@@ -121,7 +133,7 @@ async function action(button,fn) {
  try {await fn();} catch(error){message(error.message);} finally {button.disabled=false;$('admin-content').inert=false;}
 }
 $('search').addEventListener('input',render);
-for(const field of ['name','number']) $('sort-'+field).addEventListener('click',()=>{
+for(const field of ['name','number','registered']) $('sort-'+field).addEventListener('click',()=>{
  rosterSort=rosterSort===field+'-asc'?field+'-desc':field+'-asc';render();
 });
 $('section-filter').addEventListener('change',()=>{
