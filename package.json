@@ -1,0 +1,22 @@
+{
+  "name": "vibecoding-lab-site-login",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node --env-file=.env.local auth-dev/server.js",
+    "test": "node --test auth-dev/*.test.js",
+    "db:setup": "node --env-file=.env.local auth-dev/db-setup.js",
+    "build": "node scripts/build-public.js",
+    "db:sessions": "node --env-file=.env.local auth-dev/session-setup.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
+    "express": "5.2.1",
+    "express-session": "1.19.0",
+    "google-auth-library": "11.1.0"
+  },
+  "type": "commonjs"
+}

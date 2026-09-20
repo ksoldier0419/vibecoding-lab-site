@@ -1,0 +1,25 @@
+main{width:min(1120px,calc(100% - 32px));margin:32px auto}header{display:flex;align-items:center;justify-content:space-between;gap:16px}a{color:#2454a6}select{width:100%;font:inherit;padding:12px;border:1px solid #b7c4d6;border-radius:8px;margin:8px 0 20px}.panels{display:grid;grid-template-columns:1fr 1fr;gap:20px}section{border:1px solid #dce3ef;border-radius:12px;padding:20px;margin-bottom:20px}form{display:grid;gap:6px}label{display:block}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:12px;border-bottom:1px solid #e6ebf2;overflow-wrap:anywhere}th{background:#f2f5fa;white-space:nowrap}.table-scroll{overflow:auto;max-height:420px;margin:16px 0}#preview-area{margin-top:20px}#preview-count{font-weight:600}#status{padding:10px;background:#f2f5fa;border-radius:8px}button[type=submit],#confirm{background:#2454a6;color:white}@media(max-width:760px){.panels{grid-template-columns:1fr}main{padding:18px}header{align-items:flex-start}}
+
+button.danger{color:#b42318;border-color:#e6aaa5}
+
+.roster-filters{display:grid;grid-template-columns:minmax(0,3fr) minmax(160px,1fr);gap:16px}@media(max-width:760px){.roster-filters{grid-template-columns:1fr;gap:0}}
+
+
+/* Keep the course list wide and row controls aligned. */
+.course-panels{grid-template-columns:minmax(250px,0.6fr) minmax(0,1.4fr);align-items:start;gap:24px}
+.course-panels>*{min-width:0}
+#course-editor{padding:16px;background:#f8fafc;border:1px solid #e6ebf2;border-radius:10px}
+#course-editor h3{margin:0 0 8px;font-size:1rem}
+#course-editor .muted{margin:4px 0;font-size:.8rem}
+#course-editor .form-actions{flex-wrap:wrap}
+.course-table{margin:0;max-height:520px}
+.course-table td{vertical-align:middle}
+.course-table th:first-child,.course-table td:first-child{width:100px}
+.course-table th:last-child,.course-table td:last-child{width:144px;white-space:nowrap}
+.row-actions{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.row-actions button{display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:34px;padding:0 12px;font:inherit;font-size:.82rem;line-height:1;white-space:nowrap;border-radius:7px;background:#fff}
+.row-actions button:hover{background:#f0f5ff;border-color:#809bc3}
+.row-actions button.danger:hover{background:#fff1f0;border-color:#ce827c}
+@media(max-width:900px){.course-panels{grid-template-columns:1fr}.course-table{max-height:420px}}
+
+.sort-heading{display:inline-flex;align-items:center;gap:8px;padding:4px 0;border:0;border-radius:3px;background:transparent;color:inherit;font:inherit;font-weight:700;white-space:nowrap}.sort-heading:hover{color:#2454a6}.sort-heading span{color:#2454a6;font-size:.9em}

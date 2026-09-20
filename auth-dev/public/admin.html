@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수강 명단 관리 | Vibe Coding Lab</title><link rel="stylesheet" href="/auth-assets/login.css">
+<link rel="stylesheet" href="/auth-assets/admin.css"><script src="/auth-assets/admin.js" defer></script></head>
+<body><main><header><div><span class="tag">교수 · 개발용</span><h1>수강 명단 관리</h1></div><a href="/login.html">내 계정</a></header>
+<p>과목별 명단을 먼저 등록하면 학생의 학번·이름을 대조하여 가입을 승인합니다.</p>
+<p id="status" role="status" aria-live="polite">교수 권한을 확인하고 있습니다.</p>
+<div id="admin-content" hidden>
+<section><h2>과목 관리</h2>
+<p class="muted">과목코드는 등록 후 유지하고 과목명만 수정합니다. 이름을 변경해도 기존 수강 명단과 CSV의 과목코드는 그대로 사용할 수 있습니다. 수강생이 없는 과목만 삭제할 수 있습니다.</p>
+<div class="panels course-panels"><form id="course-editor">
+<h3 id="course-editor-title">새 과목 등록</h3>
+<label for="course-code">과목코드</label><input id="course-code" name="id" required maxlength="80" pattern="[a-z0-9_\-]{1,80}" placeholder="예: 2026-2-python_adv">
+<p class="muted">영문 소문자·숫자·밑줄·하이픈, 최대 80자</p>
+<label for="course-title">과목명</label><input id="course-title" name="title" required maxlength="150">
+<div class="form-actions"><button type="submit">과목 저장</button><button id="course-cancel" type="button" hidden>수정 취소</button></div>
+</form><div class="table-scroll course-table"><table><thead><tr><th>과목코드</th><th>과목명</th><th>관리</th></tr></thead><tbody id="course-list"></tbody></table></div></div>
+</section>
+<div class="roster-filters"><div><label for="course">명단을 관리할 과목</label><select id="course"></select></div>
+<div><label for="section-filter">관리할 분반</label><select id="section-filter"><option value="">전체 분반</option></select></div></div>
+<p class="muted">분반 목록은 등록된 수강 명단을 기준으로 표시합니다. CSV는 화면의 분반 선택과 관계없이 파일에 적힌 분반으로 등록합니다.</p>
+<div class="panels">
+<section><h2 id="editor-title">학생 직접 등록</h2>
+<form id="editor"><label for="number">학번</label><input id="number" name="studentNumber" required minlength="4" maxlength="20" pattern="[A-Za-z0-9\-]{4,20}" autocomplete="off">
+<label for="student-name">이름</label><input id="student-name" name="name" required maxlength="100" autocomplete="off">
+<label for="section">분반 (선택)</label><input id="section" name="section" maxlength="30" placeholder="예: 1, 2, 3">
+<p class="muted">학번·이름을 수정하면 이 학생의 다른 과목 명단과 가입 정보에도 반영됩니다. 분반은 선택한 수강 행에만 반영됩니다.</p>
+<div class="form-actions"><button type="submit">저장</button><button id="cancel" type="button" hidden>수정 취소</button></div></form></section>
+<section><h2>CSV 일괄 등록</h2>
+<p>첫 행: <strong>과목코드,학번,이름,분반</strong><br>한 파일에 여러 과목을 작성할 수 있습니다. 분반은 1, 2, 3처럼 입력하며 생략할 수 있습니다. 양식의 학생 정보와 분반은 예시이므로 실제 명단으로 바꿔 주세요. Excel에서 <strong>CSV UTF-8</strong>로 저장해 주세요. 학번과 분반은 앞자리 0이 사라지지 않도록 텍스트로 입력합니다.</p>
+<a href="/auth-assets/roster-template.csv" download>CSV 양식 다운로드 (과목코드 포함)</a><ul id="course-codes" class="muted"></ul>
+<label for="csv">CSV 파일 (150KB 이하, 최대 1,000명)</label><input id="csv" type="file" accept=".csv,text/csv">
+<p class="muted">과목코드 열에 적힌 과목에 등록합니다. 과목코드가 없는 기존 양식만 위에서 선택한 과목에 등록합니다. 같은 과목·분반·학번은 중복 등록하지 않고 건너뜁니다. 분반 변경은 명단의 수정 버튼을 사용해 주세요. CSV에 없는 기존 학생은 유지합니다.</p>
+<button id="preview" type="button">미리보기</button>
+<div id="preview-area" hidden><h3>등록 전 확인</h3><p id="preview-count"></p><div class="table-scroll"><table><thead><tr><th>과목코드</th><th>학번</th><th>이름</th><th>분반</th></tr></thead><tbody id="preview-rows"></tbody></table></div>
+<button id="confirm" type="button">확인한 명단 등록</button></div></section></div>
+<section><h2>수강 학생 <span id="count"></span></h2>
+<label for="search">학번·이름 검색</label><input id="search" type="search" placeholder="학번 또는 이름">
+<div class="table-scroll"><table><thead><tr><th id="sort-number-heading" aria-sort="none"><button id="sort-number" class="sort-heading" type="button">학번 <span aria-hidden="true">↕</span></button></th><th id="sort-name-heading" aria-sort="ascending"><button id="sort-name" class="sort-heading" type="button">이름 <span aria-hidden="true">↑</span></button></th><th>분반</th><th>가입 상태</th><th>관리</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p id="empty" hidden>등록된 수강생이 없습니다.</p></section>
+</div></main></body></html>

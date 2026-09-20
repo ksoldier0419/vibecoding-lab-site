@@ -1,0 +1,12 @@
+*{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:#172033;font-family:system-ui,sans-serif;line-height:1.7}main{width:min(520px,calc(100% - 32px));margin:10vh auto;padding:32px;background:white;border:1px solid #dce3ef;border-radius:16px;box-shadow:0 12px 36px #1720330b}h1{font-size:1.8rem;margin:14px 0}h2{font-size:1.1rem}.tag{color:#2454a6;background:#eaf1ff;padding:5px 10px;border-radius:6px;font-size:.85rem}.muted{color:#667085;font-size:.9rem}#status{font-size:.9rem}#profile{padding:16px;border-radius:10px;background:#f1faf5;overflow-wrap:anywhere}button{padding:10px 16px;border:1px solid #bac8dc;border-radius:8px;background:white;color:#203451;cursor:pointer}button:focus-visible{outline:3px solid #2563eb;outline-offset:3px}[hidden]{display:none!important}
+
+#student{margin-top:24px;border-top:1px solid #dce3ef;padding-top:20px}#student-form{display:grid;gap:8px}label{margin-top:10px;font-weight:600}label span{font-weight:400;color:#667085;font-size:.85rem}input{width:100%;padding:11px 12px;border:1px solid #b7c4d6;border-radius:8px;font:inherit}input:focus-visible{outline:2px solid #2563eb;outline-offset:2px}.form-actions{display:flex;gap:10px;margin-top:12px}#save-student{background:#2454a6;color:white;border-color:#2454a6}button:disabled{opacity:.6;cursor:wait}dl{display:grid;grid-template-columns:80px minmax(0,1fr);gap:10px}dt{color:#667085}dd{margin:0;overflow-wrap:anywhere}
+
+#supported-courses{margin:20px 0 24px;padding:18px;background:#f7f9fd;border:1px solid #e1e8f3;border-radius:12px}
+.supported-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.supported-heading h2{margin:0;font-size:1rem}
+.semester{font-size:.8rem;font-weight:600;color:#2454a6;background:#e8effc;border-radius:6px;padding:2px 8px}
+#supported-courses-list{list-style:none;padding:0;margin:10px 0 0}
+#supported-courses-list li{display:flex;flex-direction:column;gap:2px;padding:10px 0;border-top:1px solid #e1e8f3}
+#supported-courses-list li:first-child{border-top:0}
+#supported-courses-list small{font-size:.78rem;color:#667085}
