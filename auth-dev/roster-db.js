@@ -81,7 +81,11 @@ function createRosterRepository(sql) {
    if (!result[0].ok) throw Object.assign(new Error('명단이 변경되었거나 이름이 충돌합니다. 미리보기를 다시 확인해 주세요.'),{code:'ROSTER_CONFLICT'});
    return result[0];
   },
-  async addRoster(course,value) {return this.importRoster(course,[value],true);},
+  async addRoster(course,value) {
+   const report=await summary(course,[value]);
+   if(report.conflicts.length) throw Object.assign(new Error('이 학번은 기존 명단에 다른 이름으로 등록되어 있습니다. 기존 학생의 이름을 확인해 주세요. 이름 정정은 기존 명단의 수정 버튼을 사용해 주세요.'),{code:'ROSTER_CONFLICT'});
+   return this.importRoster(course,[value],true);
+  },
   async deleteEnrollment(id,course,section) {
    const rows=await locked('DELETE FROM login_dev_enrollments WHERE roster_id=$1::bigint AND course_id=$2 AND section=$3 RETURNING roster_id',[id,course,section]);
    if(!rows.length) throw Object.assign(new Error('이미 삭제되었거나 변경된 수강 정보입니다. 새로고침해 주세요.'),{code:'NOT_FOUND'});

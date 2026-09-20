@@ -31,6 +31,7 @@ async function main() {
   assert.equal((await repo.importRoster(null,multi)).count,3);
   await assert.rejects(repo.deleteCourse(course1),e=>e.code==='COURSE_IN_USE');
   assert.equal((await repo.roster(course1)).length,2);
+  await assert.rejects(repo.addRoster(course1,{...row,name:'Wrong name'}),e=>e.code==='ROSTER_CONFLICT' && e.message.includes('다른 이름'));
   assert.equal((await repo.previewRoster(null,multi)).existing,3);
   assert.equal((await repo.previewRoster(course1,[row])).existing,1);
   await repo.importRoster(course1,[row]);
