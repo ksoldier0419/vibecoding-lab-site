@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id);
 const rosterCollator=new Intl.Collator('ko',{numeric:true});
 let rosterSort='name-asc';
-let allRows=[],editing=null,previewToken=null,editingCourse=null,loadedCourse=null;
+let allRows=[],editing=null,previewToken=null,loadedCourse=null;
 async function api(url,body) {
  const response=await fetch(url,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
  const data=await response.json();
@@ -70,46 +70,10 @@ function render() {
   const actions=document.createElement('div');actions.className='row-actions';actions.append(button,remove);td.append(actions);tr.append(td);target.append(tr);
  }
 }
-function resetCourseEditor() {
- editingCourse=null;$('course-editor').reset();$('course-code').readOnly=false;
- $('course-editor-title').textContent='새 과목 등록';$('course-cancel').hidden=true;
+async function loadCourses() {
+ const {courses}=await api('/api/admin/courses');$('course').replaceChildren();$('course-codes').replaceChildren();
+ for(const c of courses){const option=document.createElement('option');option.value=c.id;option.textContent=c.title+' ('+c.id+')';$('course').append(option);const item=document.createElement('li');item.textContent=c.id+' : '+c.title;$('course-codes').append(item);}
 }
-async function loadCourses(selected=$('course').value) {
- const {courses}=await api('/api/admin/courses');
- $('course').replaceChildren();$('course-codes').replaceChildren();$('course-list').replaceChildren();
- for(const c of courses) {
-  const item=document.createElement('li');item.textContent=c.id+' : '+c.title;$('course-codes').append(item);
-  const option=document.createElement('option');option.value=c.id;option.textContent=c.title+' ('+c.id+')';$('course').append(option);
-  const tr=document.createElement('tr');cells(tr,[c.id,c.title]);
-  const td=document.createElement('td'),button=document.createElement('button');button.type='button';button.textContent='수정';button.setAttribute('aria-label',c.title+' 과목명 수정');
-  button.addEventListener('click',()=>{
-   editingCourse=c.id;$('course-code').value=c.id;$('course-code').readOnly=true;$('course-title').value=c.title;
-   $('course-editor-title').textContent='과목명 수정';$('course-cancel').hidden=false;$('course-title').focus();
-  });
-  const remove=document.createElement('button');remove.type='button';remove.textContent='삭제';remove.className='danger';
-  remove.addEventListener('click',()=>{
-   if(!window.confirm(c.title+' ('+c.id+') 과목을 삭제하시겠습니까?\n수강생이 등록된 과목은 삭제할 수 없습니다.')) return;
-   action(remove,async()=>{
-    await api('/api/admin/courses/delete',{id:c.id});
-    resetCourseEditor();resetEditor();invalidatePreview();await loadCourses();await loadRoster();
-    message('과목을 삭제했습니다.');
-   });
-  });
-  const actions=document.createElement('div');actions.className='row-actions';actions.append(button,remove);td.append(actions);tr.append(td);$('course-list').append(tr);
- }
- if(courses.some(c=>c.id===selected)) $('course').value=selected;
-}
-$('course-cancel').addEventListener('click',resetCourseEditor);
-$('course-editor').addEventListener('submit',event=>{
- event.preventDefault();
- action($('course-editor').querySelector('button[type=submit]'),async()=>{
-  const id=editingCourse || $('course-code').value;
-  const renaming=!!editingCourse;
-  await api('/api/admin/courses/'+(renaming?'rename':'create'),{id,title:$('course-title').value});
-  resetCourseEditor();resetEditor();invalidatePreview();await loadCourses(id);await loadRoster();
-  message(renaming?'과목명을 변경했습니다. 기존 수강 명단은 유지됩니다.':'새 과목을 등록했습니다. CSV에서 이 과목코드를 사용할 수 있습니다.');
- });
-});
 function updateSections(previous='') {
  const select=$('section-filter');select.replaceChildren();
  const total=document.createElement('option');total.value='';total.textContent='전체 분반 ('+new Set(allRows.map(r=>r.id)).size+'명 · '+allRows.length+'건)';select.append(total);

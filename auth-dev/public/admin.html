@@ -1,21 +1,11 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>수강 명단 관리 | Vibe Coding Lab</title><link rel="stylesheet" href="/auth-assets/login.css">
-<link rel="stylesheet" href="/auth-assets/admin.css"><script src="/auth-assets/admin.js?v=separate-students-1" defer></script></head>
-<body><main><header><div><span class="tag">교수 · 개발용</span><h1>수강 명단 관리</h1></div><nav><a href="/students.html">전체 학생 관리</a> · <a href="/login.html">내 계정</a></nav></header>
+<link rel="stylesheet" href="/auth-assets/admin.css"><script src="/auth-assets/admin.js?v=separate-courses-1" defer></script></head>
+<body><main><header><div><span class="tag">교수 · 개발용</span><h1>수강 명단 관리</h1></div><nav><a href="/course-management.html">과목 관리</a> · <a href="/students.html">전체 학생 관리</a> · <a href="/login.html">내 계정</a></nav></header>
 <p>과목별 명단을 먼저 등록하면 학생의 학번·이름을 대조하여 가입을 승인합니다.</p>
 <p id="status" role="status" aria-live="polite">교수 권한을 확인하고 있습니다.</p>
 <div id="admin-content" hidden>
-<section><h2>과목 관리</h2>
-<p class="muted">과목코드는 등록 후 유지하고 과목명만 수정합니다. 이름을 변경해도 기존 수강 명단과 CSV의 과목코드는 그대로 사용할 수 있습니다. 수강생이 없는 과목만 삭제할 수 있습니다.</p>
-<div class="panels course-panels"><form id="course-editor">
-<h3 id="course-editor-title">새 과목 등록</h3>
-<label for="course-code">과목코드</label><input id="course-code" name="id" required maxlength="80" pattern="[a-z0-9_\-]{1,80}" placeholder="예: 2026-2-python_adv">
-<p class="muted">영문 소문자·숫자·밑줄·하이픈, 최대 80자</p>
-<label for="course-title">과목명</label><input id="course-title" name="title" required maxlength="150">
-<div class="form-actions"><button type="submit">과목 저장</button><button id="course-cancel" type="button" hidden>수정 취소</button></div>
-</form><div class="table-scroll course-table"><table><thead><tr><th>과목코드</th><th>과목명</th><th>관리</th></tr></thead><tbody id="course-list"></tbody></table></div></div>
-</section>
 <div class="roster-filters"><div><label for="course">명단을 관리할 과목</label><select id="course"></select></div>
 <div><label for="section-filter">관리할 분반</label><select id="section-filter"><option value="">전체 분반</option></select></div></div>
 <p class="muted">분반 목록은 등록된 수강 명단을 기준으로 표시합니다. CSV는 화면의 분반 선택과 관계없이 파일에 적힌 분반으로 등록합니다.</p>
