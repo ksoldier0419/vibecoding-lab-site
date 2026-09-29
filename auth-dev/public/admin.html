@@ -9,6 +9,10 @@
 <div class="roster-filters"><div><label for="course">명단을 관리할 과목</label><select id="course"></select></div>
 <div><label for="section-filter">관리할 분반</label><select id="section-filter"><option value="">전체 분반</option></select></div></div>
 <p class="muted">분반 목록은 등록된 수강 명단을 기준으로 표시합니다. CSV는 화면의 분반 선택과 관계없이 파일에 적힌 분반으로 등록합니다.</p>
+<section><h2>수강 학생 <span id="count"></span></h2>
+<label for="search">학번·이름 검색</label><input id="search" type="search" placeholder="학번 또는 이름">
+<div class="table-scroll"><table><thead><tr><th id="sort-number-heading" aria-sort="none"><button id="sort-number" class="sort-heading" type="button">학번 <span aria-hidden="true">↕</span></button></th><th id="sort-name-heading" aria-sort="ascending"><button id="sort-name" class="sort-heading" type="button">이름 <span aria-hidden="true">↑</span></button></th><th>분반</th><th>가입 상태</th><th id="sort-registered-heading" aria-sort="none"><button id="sort-registered" class="sort-heading" type="button">가입 완료 일시 (한국 시간) <span aria-hidden="true">↕</span></button></th><th>관리</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p id="empty" hidden>등록된 수강생이 없습니다.</p></section>
 <div class="panels">
 <section><h2 id="editor-title">학생 직접 등록</h2>
 <p id="editor-status" role="status" aria-live="polite"></p>
@@ -25,8 +29,5 @@
 <button id="preview" type="button">미리보기</button>
 <div id="preview-area" hidden><h3>등록 전 확인</h3><p id="preview-count"></p><div class="table-scroll"><table><thead><tr><th>과목코드</th><th>학번</th><th>이름</th><th>분반</th></tr></thead><tbody id="preview-rows"></tbody></table></div>
 <button id="confirm" type="button">확인한 명단 등록</button></div></section></div>
-<section><h2>수강 학생 <span id="count"></span></h2>
-<label for="search">학번·이름 검색</label><input id="search" type="search" placeholder="학번 또는 이름">
-<div class="table-scroll"><table><thead><tr><th id="sort-number-heading" aria-sort="none"><button id="sort-number" class="sort-heading" type="button">학번 <span aria-hidden="true">↕</span></button></th><th id="sort-name-heading" aria-sort="ascending"><button id="sort-name" class="sort-heading" type="button">이름 <span aria-hidden="true">↑</span></button></th><th>분반</th><th>가입 상태</th><th id="sort-registered-heading" aria-sort="none"><button id="sort-registered" class="sort-heading" type="button">가입 완료 일시 (한국 시간) <span aria-hidden="true">↕</span></button></th><th>관리</th></tr></thead><tbody id="rows"></tbody></table></div>
-<p id="empty" hidden>등록된 수강생이 없습니다.</p></section>
+
 </div></main></body></html>
