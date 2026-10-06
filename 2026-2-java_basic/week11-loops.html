@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>11주차. 6-2. 반복문</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 11주차</p>
+        <h1>6-2. 반복문</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-for-정해진-횟수만큼-반복하기">1. for: 정해진 횟수만큼 반복하기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#1-1-코드-살펴보기">1.1 코드 살펴보기</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-반복하면서-합계-구하기">2. 반복하면서 합계 구하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-while-조건이-참인-동안-반복하기">3. while: 조건이 참인 동안 반복하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-do-while-한-번-실행한-뒤-검사하기">4. do ~ while: 한 번 실행한 뒤 검사하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-break-반복-끝내기">5. break: 반복 끝내기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-continue-이번-반복의-나머지-건너뛰기">6. continue: 이번 반복의 나머지 건너뛰기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#7-반복문-비교">7. 반복문 비교</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#8-연습-입력한-단의-구구단-출력">8. 연습: 입력한 단의 구구단 출력</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>앞에서는 조건에 따라 실행할 코드를 선택했습니다. 이번에는 같은 작업을 여러 번 실행하는 <strong>반복문</strong>을 배웁니다.</p>
+<ul>
+  <li><code>for</code>로 정해진 횟수만큼 반복합니다.</li>
+  <li><code>while</code>과 <code>do ~ while</code>로 조건에 따라 반복합니다.</li>
+  <li>반복하면서 합계를 구하고, <code>break</code>와 <code>continue</code>로 흐름을 조절합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-for-정해진-횟수만큼-반복하기">1. for: 정해진 횟수만큼 반복하기</h2>
+<p><code>for</code>는 시작값, 반복 조건, 값의 변화를 한곳에 작성합니다. 먼저 1부터 5까지 출력해 봅니다.</p>
+<p>파일 이름은 <code>CountFor.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-e24cf4251e7e.png" alt="java 코드 예제"></p>
+<p>예상 실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-d82064914ab7.png" alt="text 코드 예제"></p>
+<h3 id="1-1-코드-살펴보기">1.1 코드 살펴보기</h3>
+<table>
+  <thead><tr>
+<th>부분</th>
+<th>역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>int i = 1</code></td>
+<td>반복 시작 전에 한 번 실행합니다.</td>
+</tr>
+    <tr>
+<td><code>i &lt;= 5</code></td>
+<td>매번 반복하기 전에 검사합니다. 참이면 반복합니다.</td>
+</tr>
+    <tr>
+<td><code>i++</code></td>
+<td>중괄호 안의 코드 실행 후 <code>i</code>를 1 증가시킵니다.</td>
+</tr>
+    <tr>
+<td><code>{ ... }</code></td>
+<td>반복해서 실행할 코드입니다.</td>
+</tr>
+  </tbody>
+</table>
+<p><code>i++</code>는 이 예제에서 <code>i = i + 1</code>과 같은 역할을 합니다. <code>i--</code>는 값을 1 줄입니다.</p>
+<p>실행 순서는 다음과 같습니다.</p>
+<ol>
+  <li><code>i</code>를 <code>1</code>로 초기화합니다.</li>
+  <li><code>i &lt;= 5</code>를 검사합니다.</li>
+  <li>참이면 <code>i</code>를 출력합니다.</li>
+  <li><code>i++</code>로 값을 늘리고 2번으로 돌아갑니다.</li>
+  <li>조건이 거짓이면 반복을 끝냅니다.</li>
+</ol>
+<p>📌 <code>i &lt; 5</code>로 바꾸면 1~4까지만 출력합니다. 시작값과 조건에 따라 반복 횟수가 달라집니다.</p>
+<p>💡 참고: <code>for</code> 안에서 선언한 <code>i</code>는 해당 반복문 안에서만 사용할 수 있습니다. 이렇게 변수를 사용할 수 있는 범위를 <strong>변수의 유효 범위</strong>라고 합니다.</p>
+<h2 id="2-반복하면서-합계-구하기">2. 반복하면서 합계 구하기</h2>
+<p><strong>누적</strong>은 기존 값에 새로운 값을 계속 더하는 것입니다. 합계를 저장할 변수는 반복문 밖에서 <code>0</code>으로 시작합니다.</p>
+<p>파일 이름은 <code>SumFor.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-d30c93e4ad38.png" alt="java 코드 예제"></p>
+<p><code>total += i</code>는 여기서 <code>total = total + i</code>를 짧게 쓴 것입니다.</p>
+<table>
+  <thead><tr>
+<th>현재 <code>i</code></th>
+<th>계산</th>
+<th>계산 후 <code>total</code></th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>1</td>
+<td><code>0 + 1</code></td>
+<td>1</td>
+</tr>
+    <tr>
+<td>2</td>
+<td><code>1 + 2</code></td>
+<td>3</td>
+</tr>
+    <tr>
+<td>3</td>
+<td><code>3 + 3</code></td>
+<td>6</td>
+</tr>
+    <tr>
+<td>4</td>
+<td><code>6 + 4</code></td>
+<td>10</td>
+</tr>
+    <tr>
+<td>5</td>
+<td><code>10 + 5</code></td>
+<td>15</td>
+</tr>
+  </tbody>
+</table>
+<p>예상 실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-91285e6307a7.png" alt="text 코드 예제"></p>
+<p>⚠️ 주의: <code>total</code>을 반복문 안에서 매번 <code>0</code>으로 초기화하면 이전 합계를 이어 갈 수 없습니다. 최종 결과를 한 번만 출력하려면 출력문도 반복문 밖에 둡니다.</p>
+<h2 id="3-while-조건이-참인-동안-반복하기">3. while: 조건이 참인 동안 반복하기</h2>
+<p><code>while</code>은 반복을 시작하기 전에 조건을 검사합니다. 반복할 횟수보다 종료 조건이 중요한 경우에 사용할 수 있습니다.</p>
+<p>파일 이름은 <code>CountWhile.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-004820b60822.png" alt="java 코드 예제"></p>
+<p>예상 실행 결과는 앞의 <code>CountFor</code>와 같이 1부터 5까지 한 줄씩 출력됩니다.</p>
+<p>⚠️ 주의: 이 예제에서 <code>i++</code>를 빼면 <code>i</code>가 계속 <code>1</code>이므로 반복이 끝나지 않습니다. 종료되지 않고 계속 실행되는 반복을 <strong>무한 반복</strong>이라고 합니다.</p>
+<h2 id="4-do-while-한-번-실행한-뒤-검사하기">4. do ~ while: 한 번 실행한 뒤 검사하기</h2>
+<p><code>do ~ while</code>은 중괄호 안의 코드를 먼저 실행하고 조건을 검사합니다. 따라서 최소 한 번은 실행합니다.</p>
+<p>다음 예제는 올바른 메뉴 번호를 입력할 때까지 다시 입력받습니다. 파일 이름은 <code>MenuRetry.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-e6df5f03ccf8.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-d38d4c88924a.png" alt="text 코드 예제"></p>
+<p><code>int menu;</code>는 변수를 만들고 값은 나중에 저장하는 선언입니다. <code>do</code> 안에서 먼저 입력받기 때문에 조건을 검사할 때는 값이 저장되어 있습니다.</p>
+<p>📌 <code>do ~ while</code>의 마지막 <code>while (조건);</code> 뒤에는 세미콜론이 필요합니다. 일반 <code>while (조건) { ... }</code>과 구분합니다.</p>
+<h2 id="5-break-반복-끝내기">5. break: 반복 끝내기</h2>
+<p>앞 장에서는 <code>break</code>로 <code>switch</code>를 끝냈습니다. 반복문 안에서는 가장 가까운 반복문을 끝냅니다.</p>
+<p>다음 예제는 정수를 계속 입력받아 더하고, <code>0</code>이 입력되면 끝냅니다. 파일 이름은 <code>SumUntilZero.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-b4e7ec607a05.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-37647fb365ad.png" alt="text 코드 예제"></p>
+<p><code>while (true)</code>의 조건은 항상 참입니다. 이 예제에서는 <code>break</code>가 종료 역할을 하므로 <code>0</code>을 입력해야 정상적으로 반복을 마칩니다. 입력값과 합계는 <code>int</code> 범위라고 가정합니다.</p>
+<h2 id="6-continue-이번-반복의-나머지-건너뛰기">6. continue: 이번 반복의 나머지 건너뛰기</h2>
+<p><code>continue</code>는 반복 전체를 끝내지 않습니다. 이번 반복에서 남은 코드를 건너뛰고 다음 반복으로 진행합니다.</p>
+<p>파일 이름은 <code>EvenNumbers.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-1b0b077f6456.png" alt="java 코드 예제"></p>
+<p>예상 실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-2ccfa1693dc5.png" alt="text 코드 예제"></p>
+<p>2로 나눈 나머지가 0이 아니면 홀수입니다. 홀수일 때는 출력문을 건너뛰므로 짝수만 출력됩니다. <code>for</code>에서 <code>continue</code>를 만나도 <code>i++</code>를 실행한 뒤 조건을 다시 검사합니다.</p>
+<p>⚠️ 주의: <code>while</code>에서 값 증가 코드를 <code>continue</code> 뒤에 두면 그 코드가 건너뛰어져 무한 반복이 생길 수 있습니다.</p>
+<h2 id="7-반복문-비교">7. 반복문 비교</h2>
+<table>
+  <thead><tr>
+<th>구분</th>
+<th>조건 검사 시점</th>
+<th>사용 예</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>for</code></td>
+<td>실행 전</td>
+<td>1부터 10까지 출력</td>
+</tr>
+    <tr>
+<td><code>while</code></td>
+<td>실행 전</td>
+<td>종료값이 입력될 때까지 처리</td>
+</tr>
+    <tr>
+<td><code>do ~ while</code></td>
+<td>실행 후</td>
+<td>메뉴를 최소 한 번 입력받고 재입력</td>
+</tr>
+  </tbody>
+</table>
+<p><code>for</code>와 <code>while</code>은 처음부터 조건이 거짓이면 한 번도 실행하지 않습니다. <code>do ~ while</code>은 처음 한 번 실행한 뒤 계속할지 결정합니다.</p>
+<h2 id="8-연습-입력한-단의-구구단-출력">8. 연습: 입력한 단의 구구단 출력</h2>
+<ul>
+  <li>파일 이름은 <code>MultiplicationTable.java</code>로 저장합니다.</li>
+  <li><code>Scanner</code>로 2~9 사이의 정수 하나를 입력받습니다.</li>
+  <li>범위를 벗어나면 <code>2~9 사이의 정수를 입력하세요.</code>를 출력하고 프로그램을 마칩니다.</li>
+  <li>정상 범위라면 <code>for</code>로 1부터 9까지 곱한 결과를 출력합니다.</li>
+  <li>결과 형식은 <code>System.out.printf(&quot;%d x %d = %d%n&quot;, dan, i, dan * i);</code>를 사용합니다.</li>
+</ul>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-f0835cd49cd4.png" alt="text 코드 예제"></p>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li><code>2</code>, <code>9</code>를 입력하면 각각 계산 결과가 9줄 출력됩니다.</li>
+  <li><code>1</code>, <code>10</code>을 입력하면 범위 안내만 출력됩니다.</li>
+  <li>반복 변수는 1에서 시작해 9까지 변합니다.</li>
+  <li><code>scanner.close()</code>는 입력 처리를 마친 뒤 호출합니다.</li>
+</ul>
+<p>💡 참고: 이 장의 입력 예제는 정수가 입력된다고 가정합니다. 문자 입력이나 입력 종료에 대한 예외 처리는 이후에 다룹니다.</p>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/6-2_loops.md</span><small>최종 수정일: 2026-10-06 18:15</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

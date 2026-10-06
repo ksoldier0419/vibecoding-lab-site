@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>10주차. 6-1. 조건문 활용</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 10주차</p>
+        <h1>6-1. 조건문 활용</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-독립된-if와-연결된-조건문">1. 독립된 if와 연결된 조건문</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-입력-범위를-먼저-확인하기">2. 입력 범위를 먼저 확인하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-중첩-조건문과-문자열-비교">3. 중첩 조건문과 문자열 비교</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-switch-메뉴-번호로-선택하기">4. switch: 메뉴 번호로 선택하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-연습-입장료-계산">5. 연습: 입장료 계산</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>앞에서는 비교식과 <code>if</code>로 실행할 코드를 선택했습니다. 이번에는 입력 범위를 확인하고, 여러 조건을 조합해 프로그램을 만듭니다.</p>
+<ul>
+  <li>독립된 <code>if</code>와 <code>else if</code>의 차이를 구분합니다.</li>
+  <li>중첩 조건문과 문자열 비교를 사용합니다.</li>
+  <li><code>switch</code>로 메뉴 번호에 맞는 동작을 선택합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-독립된-if와-연결된-조건문">1. 독립된 if와 연결된 조건문</h2>
+<p>독립된 <code>if</code>는 조건을 각각 검사합니다. <code>if ~ else if</code>는 위에서부터 검사하고 처음 참인 경우 하나만 실행합니다.</p>
+<p>파일 이름은 <code>ConditionFlow.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-539cf0d57b0f.png" alt="java 코드 예제"></p>
+<p>예상 실행 결과:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-3aad060daee5.png" alt="text 코드 예제"></p>
+<p>📌 여러 안내를 각각 출력하려면 독립된 <code>if</code>를 사용합니다. 등급처럼 하나만 선택하려면 연결된 조건문을 사용합니다.</p>
+<h2 id="2-입력-범위를-먼저-확인하기">2. 입력 범위를 먼저 확인하기</h2>
+<p>점수가 0~100 범위를 벗어나면 등급을 매기지 않아야 합니다. 잘못된 범위를 먼저 검사하면 뒤의 조건을 이해하기 쉽습니다.</p>
+<p>파일 이름은 <code>GradeCheck.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-8a19097b269e.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-6be8450c9c4b.png" alt="text 코드 예제"></p>
+<table>
+  <thead><tr>
+<th>입력</th>
+<th>예상 판정</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>-1</code>, <code>101</code></td>
+<td>범위 안내</td>
+</tr>
+    <tr>
+<td><code>0</code>, <code>69</code></td>
+<td>재학습 필요</td>
+</tr>
+    <tr>
+<td><code>70</code>, <code>79</code></td>
+<td>C등급</td>
+</tr>
+    <tr>
+<td><code>80</code>, <code>89</code></td>
+<td>B등급</td>
+</tr>
+    <tr>
+<td><code>90</code>, <code>100</code></td>
+<td>A등급</td>
+</tr>
+  </tbody>
+</table>
+<p>💡 참고: 조건이 달라지는 지점의 값을 <strong>경계값</strong>이라고 합니다. <code>89</code>와 <code>90</code>처럼 경계 바로 앞뒤의 값을 넣어 보면 조건 오류를 찾기 쉽습니다.</p>
+<h2 id="3-중첩-조건문과-문자열-비교">3. 중첩 조건문과 문자열 비교</h2>
+<p><strong>중첩 조건문</strong>은 조건문 안에 다른 조건문을 넣는 것입니다. 먼저 한 조건을 확인하고, 그 경우에만 추가로 판단할 때 사용합니다.</p>
+<p>다음 예제는 구매 금액이 10,000원 이상인 경우에 회원 여부를 확인합니다. 회원은 1,000원을 할인받습니다.</p>
+<table>
+  <thead><tr>
+<th>새 표현</th>
+<th>의미</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>scanner.next()</code></td>
+<td>공백으로 구분된 문자열 하나를 읽습니다.</td>
+</tr>
+    <tr>
+<td><code>member.equals(&quot;Y&quot;)</code></td>
+<td>입력한 문자열의 내용이 <code>&quot;Y&quot;</code>와 같은지 비교합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>⚠️ 주의: 문자열의 내용을 비교할 때는 <code>==</code> 대신 <code>equals()</code>를 사용합니다. 여기서는 대문자 <code>Y</code> 또는 <code>N</code>을 입력한다고 가정합니다.</p>
+<p>파일 이름은 <code>MemberDiscount.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-25250a94eaac.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-feceb9d50b4a.png" alt="text 코드 예제"></p>
+<p>구매 금액은 0 이상의 정수라고 가정합니다. 두 조건 중 하나라도 만족하지 않으면 <code>discount</code>는 처음 값인 <code>0</code>을 유지합니다.</p>
+<p>이 예제의 중첩 조건문은 다음처럼 한 조건문으로 표현할 수도 있습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-181c04f6ce7c.png" alt="java 코드 예제"></p>
+<p>📌 두 조건을 모두 만족할 때 같은 작업 하나를 한다면 <code>&amp;&amp;</code>로 연결할 수 있습니다. 조건별로 다른 안내나 동작이 필요하면 중첩 조건문을 사용할 수 있습니다.</p>
+<h2 id="4-switch-메뉴-번호로-선택하기">4. switch: 메뉴 번호로 선택하기</h2>
+<p><code>switch</code>는 하나의 값을 정해진 여러 값과 비교할 때 사용합니다. 여기서는 정수 메뉴 번호를 비교합니다.</p>
+<table>
+  <thead><tr>
+<th>표현</th>
+<th>역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>switch (menu)</code></td>
+<td>비교할 값을 지정합니다.</td>
+</tr>
+    <tr>
+<td><code>case 1:</code></td>
+<td>값이 <code>1</code>일 때 실행을 시작합니다.</td>
+</tr>
+    <tr>
+<td><code>break;</code></td>
+<td>현재 <code>switch</code>를 빠져나갑니다.</td>
+</tr>
+    <tr>
+<td><code>default:</code></td>
+<td>일치하는 <code>case</code>가 없을 때 실행합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>파일 이름은 <code>DrinkMenu.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-bd07d636cc09.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-a5dbd0c921e6.png" alt="text 코드 예제"></p>
+<p>⚠️ 주의: 위처럼 콜론(<code>:</code>)을 쓰는 <code>switch</code>에서 <code>break</code>를 빠뜨리면 뒤쪽 <code>case</code>의 코드까지 이어서 실행할 수 있습니다.</p>
+<table>
+  <thead><tr>
+<th>판단할 내용</th>
+<th>사용할 문법</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>점수 범위나 여러 조건의 조합</td>
+<td><code>if ~ else if</code></td>
+</tr>
+    <tr>
+<td>정해진 메뉴 번호와 일치하는지 확인</td>
+<td><code>switch</code></td>
+</tr>
+  </tbody>
+</table>
+<h2 id="5-연습-입장료-계산">5. 연습: 입장료 계산</h2>
+<ul>
+  <li>파일 이름은 <code>AdmissionFee.java</code>로 저장합니다.</li>
+  <li><code>Scanner</code>로 나이 하나를 정수로 입력받습니다.</li>
+  <li>나이가 0~120 범위를 벗어나면 <code>나이를 확인하세요.</code>만 출력합니다.</li>
+  <li>정상 범위에서는 아래 기준으로 입장료를 출력합니다.</li>
+</ul>
+<table>
+  <thead><tr>
+<th>나이</th>
+<th>입장료</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>0~7세</td>
+<td>무료</td>
+</tr>
+    <tr>
+<td>8~18세</td>
+<td>5,000원</td>
+</tr>
+    <tr>
+<td>19~64세</td>
+<td>10,000원</td>
+</tr>
+    <tr>
+<td>65~120세</td>
+<td>무료</td>
+</tr>
+  </tbody>
+</table>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-f6d9f74d4948.png" alt="text 코드 예제"></p>
+<p>무료인 경우에도 <code>입장료: 0원</code>으로 출력합니다. 잘못된 범위를 먼저 검사하고, 이후 나이가 작은 구간부터 판단해 봅니다.</p>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li><code>-1</code>, <code>121</code>에서는 입장료를 출력하지 않습니다.</li>
+  <li><code>7</code>, <code>8</code>, <code>18</code>, <code>19</code>, <code>64</code>, <code>65</code>를 넣어 구간이 정확히 나뉘는지 확인합니다.</li>
+  <li>하나의 입력에 결과가 중복 출력되지 않습니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-10-06 18:15</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>
