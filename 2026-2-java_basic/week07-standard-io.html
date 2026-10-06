@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>7주차. 4-2. 표준 입출력</title>
+    <link rel="stylesheet" href="../assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 7주차</p>
+        <h1>4-2. 표준 입출력</h1>
+      </div>
+    </header>
+
+    <main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-표준-입력과-표준-출력">1. 표준 입력과 표준 출력</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-출력-방법-비교">2. 출력 방법 비교</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-입력-방법-1-scanner">3. 입력 방법 1: Scanner</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#3-1-코드-살펴보기">3.1 코드 살펴보기</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-입력-방법-2-bufferedreader">4. 입력 방법 2: BufferedReader</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#4-1-코드-살펴보기">4.1 코드 살펴보기</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-공백으로-구분된-두-정수-입력받기">5. 공백으로 구분된 두 정수 입력받기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#5-1-scanner로-입력받기">5.1 Scanner로 입력받기</a></li>
+              <li><a href="#5-2-bufferedreader로-입력받기">5.2 BufferedReader로 입력받기</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-두-입력-방법-비교">6. 두 입력 방법 비교</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#7-연습-물건-구매-금액-계산">7. 연습: 물건 구매 금액 계산</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>앞에서는 변수에 값을 직접 저장했습니다. 이번에는 프로그램 실행 중 키보드로 값을 입력하고, 계산 결과를 화면에 출력합니다.</p>
+<ul>
+  <li><code>print()</code>, <code>println()</code>, <code>printf()</code>의 차이를 알아봅니다.</li>
+  <li><code>Scanner</code>와 <code>BufferedReader</code>로 정수를 입력받습니다.</li>
+  <li><code>3 4</code>처럼 공백으로 구분된 두 정수를 입력받아 계산합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-표준-입력과-표준-출력">1. 표준 입력과 표준 출력</h2>
+<p><strong>표준 입력</strong>은 프로그램이 값을 읽는 기본 통로입니다. <strong>표준 출력</strong>은 프로그램이 결과를 내보내는 기본 통로입니다. 이번 실습에서는 키보드로 입력하고 콘솔 화면으로 출력합니다. 콘솔은 프로그램의 문자 입력과 출력을 확인하는 창입니다.</p>
+<table>
+  <thead><tr>
+<th>구분</th>
+<th>Java 표현</th>
+<th>이번 실습에서의 역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>표준 입력</td>
+<td><code>System.in</code></td>
+<td>키보드로 입력한 값을 읽습니다.</td>
+</tr>
+    <tr>
+<td>표준 출력</td>
+<td><code>System.out</code></td>
+<td>안내 문구와 계산 결과를 출력합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>입력값은 <strong>입력 → 계산 → 출력</strong> 순서로 처리합니다.</p>
+<h2 id="2-출력-방법-비교">2. 출력 방법 비교</h2>
+<table>
+  <thead><tr>
+<th>방법</th>
+<th>특징</th>
+<th>사용 예</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>print()</code></td>
+<td>출력 후 줄을 바꾸지 않습니다.</td>
+<td><code>System.out.print(&quot;정수 입력: &quot;);</code></td>
+</tr>
+    <tr>
+<td><code>println()</code></td>
+<td>출력 후 줄을 바꿉니다.</td>
+<td><code>System.out.println(&quot;입력 완료&quot;);</code></td>
+</tr>
+    <tr>
+<td><code>printf()</code></td>
+<td>지정한 형식에 맞춰 출력합니다. 줄바꿈은 <code>%n</code>으로 지정합니다.</td>
+<td><code>System.out.printf(&quot;결과: %d%n&quot;, result);</code></td>
+</tr>
+  </tbody>
+</table>
+<p><code>print()</code>는 안내 문구 옆에 값을 입력받을 때 사용합니다. <code>println()</code>은 계산 결과를 한 줄로 출력할 때 사용합니다. <code>printf()</code>는 정수나 실수의 출력 형식을 지정할 때 사용합니다.</p>
+<p>💡 참고: 앞 교안에서는 <code>printf()</code>를 사용했습니다. 이번에는 제시된 예제를 따라 <code>print()</code>와 <code>println()</code>도 함께 연습합니다. <code>printf()</code>를 사용할 때는 <code>&quot;결과: %d%n&quot;</code>처럼 출력 형식을 코드에 정해 두고, 값은 뒤쪽 인자로 전달합니다.</p>
+<h2 id="3-입력-방법-1-scanner">3. 입력 방법 1: Scanner</h2>
+<p><code>Scanner</code>는 입력한 내용을 정수, 실수, 문자열 등으로 읽을 수 있는 도구입니다. <code>nextInt()</code>를 호출하면 다음 정수 하나를 읽습니다.</p>
+<p>파일 이름은 <code>CalculatorScannerIO.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-ffd2e4689993.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-caa8ffc291c3.png" alt="text 코드 예제"></p>
+<p><code>3</code>을 입력하고 Enter를 누릅니다. 두 번째 안내가 나오면 <code>4</code>를 입력하고 Enter를 누릅니다. 실행 화면의 <code>3</code>과 <code>4</code>는 사용자가 입력한 값입니다.</p>
+<h3 id="3-1-코드-살펴보기">3.1 코드 살펴보기</h3>
+<table>
+  <thead><tr>
+<th>코드</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>import java.util.Scanner;</code></td>
+<td>Java에서 제공하는 <code>Scanner</code>를 사용하도록 준비합니다.</td>
+</tr>
+    <tr>
+<td><code>new Scanner(System.in)</code></td>
+<td>표준 입력을 읽는 <code>Scanner</code> 객체를 만듭니다. 객체는 여기서 실제로 사용할 입력 도구라고 생각하면 됩니다.</td>
+</tr>
+    <tr>
+<td><code>scanner.nextInt()</code></td>
+<td>다음 정수 하나를 읽어 <code>int</code> 값으로 반환합니다.</td>
+</tr>
+    <tr>
+<td><code>int result = x + y;</code></td>
+<td>입력한 두 정수를 더해 저장합니다.</td>
+</tr>
+    <tr>
+<td><code>&quot;덧셈 결과: &quot; + result</code></td>
+<td>안내 문자열 뒤에 계산 결과를 이어 붙입니다.</td>
+</tr>
+    <tr>
+<td><code>scanner.close();</code></td>
+<td>입력 도구를 닫습니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>⚠️ 주의: 이 예제에서는 모든 입력이 끝난 뒤 <code>close()</code>를 호출합니다. 연결된 <code>System.in</code>도 닫히므로 같은 프로그램에서 이후에 키보드 입력을 다시 받으면 안 됩니다.</p>
+<h2 id="4-입력-방법-2-bufferedreader">4. 입력 방법 2: BufferedReader</h2>
+<p><code>BufferedReader</code>는 입력 내용을 임시 공간인 <strong>버퍼</strong>에 모아 읽는 도구입니다. <code>readLine()</code>은 한 줄을 <strong>문자열</strong>로 읽습니다. 계산에 사용할 정수로 바꾸려면 <code>Integer.parseInt()</code>가 필요합니다.</p>
+<p>파일 이름은 <code>CalculatorBufferedReaderIO.java</code>로 저장합니다. 각 예제는 클래스 이름과 같은 이름의 파일에 저장하고 독립적으로 실행합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-ab76727683cd.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-caa8ffc291c3.png" alt="text 코드 예제"></p>
+<p>이번에도 정수를 한 줄에 하나씩 입력합니다.</p>
+<h3 id="4-1-코드-살펴보기">4.1 코드 살펴보기</h3>
+<table>
+  <thead><tr>
+<th>코드</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>InputStreamReader(System.in)</code></td>
+<td>표준 입력의 바이트 데이터를 문자로 읽도록 바꿉니다. 바이트는 데이터를 표현하는 단위입니다.</td>
+</tr>
+    <tr>
+<td><code>new BufferedReader(...)</code></td>
+<td>문자 입력에 버퍼를 덧붙여 한 줄씩 읽을 수 있게 합니다.</td>
+</tr>
+    <tr>
+<td><code>reader.readLine()</code></td>
+<td>Enter 전까지 입력한 한 줄을 문자열로 읽습니다. 줄바꿈 문자는 결과에 포함하지 않습니다.</td>
+</tr>
+    <tr>
+<td><code>Integer.parseInt(...)</code></td>
+<td><code>&quot;3&quot;</code> 같은 정수 모양의 문자열을 <code>int</code> 값 <code>3</code>으로 바꿉니다.</td>
+</tr>
+    <tr>
+<td><code>throws IOException</code></td>
+<td>입력·출력 중 발생할 수 있는 오류를 이 메소드 안에서 처리하지 않고 호출한 쪽으로 전달한다고 선언합니다.</td>
+</tr>
+    <tr>
+<td><code>reader.close();</code></td>
+<td>입력 도구와 연결된 표준 입력을 닫습니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>💡 참고: 프로그램 실행 중 발생하는 오류 상황을 <strong>예외</strong>라고 합니다. <code>IOException</code>은 입력·출력 관련 예외입니다. 지금은 위 코드의 선언을 사용하고, 예외를 직접 처리하는 방법은 이후에 배웁니다. <code>throws IOException</code>이 오류를 자동으로 해결해 주는 것은 아닙니다.</p>
+<p>📌 <code>readLine()</code>의 결과는 문자열입니다. 숫자 모양이어도 계산하려면 정수로 변환해야 합니다. 이는 앞에서 배운 <code>(int)</code> 형 변환과 구분합니다.</p>
+<h2 id="5-공백으로-구분된-두-정수-입력받기">5. 공백으로 구분된 두 정수 입력받기</h2>
+<p>이번에는 <code>3</code>과 <code>4</code>를 한 줄에 입력합니다. 두 수 사이에 공백을 넣어 <code>3 4</code>를 입력한 뒤 Enter를 누릅니다.</p>
+<h3 id="5-1-scanner로-입력받기">5.1 Scanner로 입력받기</h3>
+<p><code>Scanner</code>는 기본적으로 공백, 탭, 줄바꿈을 값 사이의 구분자로 사용합니다. <strong>구분자</strong>는 입력값을 나누는 기준입니다. <code>nextInt()</code>를 두 번 호출하면 한 줄에 입력한 두 정수를 차례로 읽습니다.</p>
+<p>파일 이름은 <code>CalculatorScannerIO2.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-6a1efa2d1fb2.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-f807d0f636b8.png" alt="text 코드 예제"></p>
+<p><code>3   4</code>처럼 공백을 여러 개 넣어도 됩니다. <code>3</code>과 <code>4</code>를 서로 다른 줄에 입력해도 두 번의 <code>nextInt()</code>가 차례로 읽습니다. 정수 하나만 입력하면 두 번째 정수를 입력할 때까지 기다립니다.</p>
+<h3 id="5-2-bufferedreader로-입력받기">5.2 BufferedReader로 입력받기</h3>
+<p><code>readLine()</code>은 <code>3 4</code> 전체를 문자열 하나로 읽습니다. <code>Integer.parseInt(&quot;3 4&quot;)</code>로는 정수 하나를 만들 수 없습니다. 먼저 문자열을 두 부분으로 나누고, 각각 정수로 바꿉니다.</p>
+<p>아래 예제에서는 다음 표현을 사용합니다.</p>
+<table>
+  <thead><tr>
+<th>표현</th>
+<th>의미</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>trim()</code></td>
+<td>문자열 앞뒤의 공백을 제거합니다.</td>
+</tr>
+    <tr>
+<td><code>split(&quot;\\s+&quot;)</code></td>
+<td>하나 이상의 공백이나 탭을 기준으로 문자열을 나눕니다.</td>
+</tr>
+    <tr>
+<td><code>String[] values</code></td>
+<td>나눈 문자열 여러 개를 순서대로 담는 배열입니다. 배열은 여러 값을 묶어 저장하는 방법입니다.</td>
+</tr>
+    <tr>
+<td><code>values[0]</code>, <code>values[1]</code></td>
+<td>배열의 첫 번째 값과 두 번째 값입니다. 배열의 위치 번호는 <code>0</code>부터 시작합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>💡 참고: <code>&quot;\\s+&quot;</code>는 문자를 찾는 규칙인 <strong>정규 표현식</strong>을 Java 문자열로 적은 것입니다. 여기서는 공백이 여러 개여도 나눌 수 있는 표현으로 사용합니다. 배열과 정규 표현식의 자세한 사용법은 이후에 배웁니다.</p>
+<p>파일 이름은 <code>CalculatorBufferedReaderIO2.java</code>로 저장합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-8ca839dcc1bd.png" alt="java 코드 예제"></p>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-f807d0f636b8.png" alt="text 코드 예제"></p>
+<p>입력한 <code>&quot;3 4&quot;</code>는 <code>&quot;3&quot;</code>과 <code>&quot;4&quot;</code>로 나뉩니다. 이를 정수 <code>3</code>과 <code>4</code>로 변환해 더합니다. 이 예제는 <code>readLine()</code>을 한 번만 호출하므로 <strong>두 정수를 같은 줄에 입력</strong>해야 합니다.</p>
+<p>⚠️ 주의: 이번 예제는 안내한 개수의 올바른 정수가 입력된다고 가정합니다. 문자나 소수, <code>int</code> 범위를 벗어난 값을 입력하면 정수로 읽거나 변환할 수 없습니다. 마지막 예제에서 한 줄에 정수를 하나만 입력하면 두 번째 값이 없어 오류가 발생합니다.</p>
+<h2 id="6-두-입력-방법-비교">6. 두 입력 방법 비교</h2>
+<table>
+  <thead><tr>
+<th>구분</th>
+<th>Scanner</th>
+<th>BufferedReader</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>이번 예제의 읽기 단위</td>
+<td><code>nextInt()</code>로 정수 하나씩</td>
+<td><code>readLine()</code>으로 한 줄씩</td>
+</tr>
+    <tr>
+<td>정수 변환</td>
+<td><code>nextInt()</code>가 처리</td>
+<td><code>Integer.parseInt()</code>를 직접 사용</td>
+</tr>
+    <tr>
+<td>한 줄의 <code>3 4</code> 입력</td>
+<td><code>nextInt()</code>를 두 번 호출</td>
+<td>한 줄을 읽고 나눈 뒤 각각 변환</td>
+</tr>
+    <tr>
+<td>코드 작성</td>
+<td>정수를 간단하게 읽을 수 있음</td>
+<td>문자열 분리와 변환 과정이 필요함</td>
+</tr>
+  </tbody>
+</table>
+<p>📌 두 방법 모두 입력 도구입니다. 계산과 출력 부분은 같고, 값을 읽어 정수로 만드는 과정이 다릅니다.</p>
+<h2 id="7-연습-물건-구매-금액-계산">7. 연습: 물건 구매 금액 계산</h2>
+<p>물건 한 개의 가격과 구매 개수를 <strong>한 줄에 공백으로 구분하여 입력</strong>받고, 총금액을 출력합니다.</p>
+<ul>
+  <li>파일 이름은 <code>PurchaseCalculator.java</code>로 저장합니다.</li>
+  <li>가격과 개수는 양의 정수이며, 계산 결과는 <code>int</code> 범위 안이라고 가정합니다.</li>
+  <li>총금액은 <code>가격 * 개수</code>로 계산합니다. <code>*</code>는 곱셈 연산자입니다.</li>
+  <li>먼저 <code>Scanner</code>로 작성합니다.</li>
+  <li>같은 파일의 입력 부분을 <code>BufferedReader</code> 방식으로 바꾸어 다시 실행합니다.</li>
+  <li>결과는 <code>System.out.printf(&quot;총금액: %d원%n&quot;, total);</code>로 출력합니다.</li>
+</ul>
+<p>예상 실행 화면:</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-4-2_standard_io-e4c57531be54.png" alt="text 코드 예제"></p>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li>두 입력 방법 모두 <code>1500 3</code>을 입력하면 <code>4500원</code>이 출력됩니다.</li>
+  <li><code>2000 4</code>를 입력하면 <code>8000원</code>이 출력됩니다.</li>
+  <li>두 값 사이에 공백을 여러 개 넣어도 같은 결과가 나옵니다.</li>
+  <li><code>BufferedReader</code>에서는 문자열을 나눈 뒤 각각 정수로 변환합니다.</li>
+  <li>입력을 모두 마친 뒤 입력 도구를 닫습니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/4-2_standard_io.md</span><small>최종 수정일: 2026-10-06 18:02</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>
