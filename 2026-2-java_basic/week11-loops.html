@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>11주차. 6-2. 반복문</title>
+    <title>11주차. 7-1. 반복문</title>
     <link rel="stylesheet" href="../assets/site.css?v=20260920-overview-cards">
   </head>
   <body>
     <header class="site-header">
       <div class="wrap">
         <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 11주차</p>
-        <h1>6-2. 반복문</h1>
+        <h1>7-1. 반복문</h1>
       </div>
     </header>
 
@@ -78,9 +78,9 @@
 <h2 id="1-for-정해진-횟수만큼-반복하기">1. for: 정해진 횟수만큼 반복하기</h2>
 <p><code>for</code>는 시작값, 반복 조건, 값의 변화를 한곳에 작성합니다. 먼저 1부터 5까지 출력해 봅니다.</p>
 <p>파일 이름은 <code>CountFor.java</code>로 저장합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-e24cf4251e7e.png" alt="java 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-e24cf4251e7e.png" alt="java 코드 예제"></p>
 <p>예상 실행 결과:</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-d82064914ab7.png" alt="text 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-d82064914ab7.png" alt="text 코드 예제"></p>
 <h3 id="1-1-코드-살펴보기">1.1 코드 살펴보기</h3>
 <table>
   <thead><tr>
@@ -120,7 +120,7 @@
 <h2 id="2-반복하면서-합계-구하기">2. 반복하면서 합계 구하기</h2>
 <p><strong>누적</strong>은 기존 값에 새로운 값을 계속 더하는 것입니다. 합계를 저장할 변수는 반복문 밖에서 <code>0</code>으로 시작합니다.</p>
 <p>파일 이름은 <code>SumFor.java</code>로 저장합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-d30c93e4ad38.png" alt="java 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-d30c93e4ad38.png" alt="java 코드 예제"></p>
 <p><code>total += i</code>는 여기서 <code>total = total + i</code>를 짧게 쓴 것입니다.</p>
 <table>
   <thead><tr>
@@ -157,35 +157,35 @@
   </tbody>
 </table>
 <p>예상 실행 결과:</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-91285e6307a7.png" alt="text 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-91285e6307a7.png" alt="text 코드 예제"></p>
 <p>⚠️ 주의: <code>total</code>을 반복문 안에서 매번 <code>0</code>으로 초기화하면 이전 합계를 이어 갈 수 없습니다. 최종 결과를 한 번만 출력하려면 출력문도 반복문 밖에 둡니다.</p>
 <h2 id="3-while-조건이-참인-동안-반복하기">3. while: 조건이 참인 동안 반복하기</h2>
 <p><code>while</code>은 반복을 시작하기 전에 조건을 검사합니다. 반복할 횟수보다 종료 조건이 중요한 경우에 사용할 수 있습니다.</p>
 <p>파일 이름은 <code>CountWhile.java</code>로 저장합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-004820b60822.png" alt="java 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-004820b60822.png" alt="java 코드 예제"></p>
 <p>예상 실행 결과는 앞의 <code>CountFor</code>와 같이 1부터 5까지 한 줄씩 출력됩니다.</p>
 <p>⚠️ 주의: 이 예제에서 <code>i++</code>를 빼면 <code>i</code>가 계속 <code>1</code>이므로 반복이 끝나지 않습니다. 종료되지 않고 계속 실행되는 반복을 <strong>무한 반복</strong>이라고 합니다.</p>
 <h2 id="4-do-while-한-번-실행한-뒤-검사하기">4. do ~ while: 한 번 실행한 뒤 검사하기</h2>
 <p><code>do ~ while</code>은 중괄호 안의 코드를 먼저 실행하고 조건을 검사합니다. 따라서 최소 한 번은 실행합니다.</p>
 <p>다음 예제는 올바른 메뉴 번호를 입력할 때까지 다시 입력받습니다. 파일 이름은 <code>MenuRetry.java</code>로 저장합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-e6df5f03ccf8.png" alt="java 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-e6df5f03ccf8.png" alt="java 코드 예제"></p>
 <p>예상 실행 화면:</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-d38d4c88924a.png" alt="text 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-d38d4c88924a.png" alt="text 코드 예제"></p>
 <p><code>int menu;</code>는 변수를 만들고 값은 나중에 저장하는 선언입니다. <code>do</code> 안에서 먼저 입력받기 때문에 조건을 검사할 때는 값이 저장되어 있습니다.</p>
 <p>📌 <code>do ~ while</code>의 마지막 <code>while (조건);</code> 뒤에는 세미콜론이 필요합니다. 일반 <code>while (조건) { ... }</code>과 구분합니다.</p>
 <h2 id="5-break-반복-끝내기">5. break: 반복 끝내기</h2>
 <p>앞 장에서는 <code>break</code>로 <code>switch</code>를 끝냈습니다. 반복문 안에서는 가장 가까운 반복문을 끝냅니다.</p>
 <p>다음 예제는 정수를 계속 입력받아 더하고, <code>0</code>이 입력되면 끝냅니다. 파일 이름은 <code>SumUntilZero.java</code>로 저장합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-b4e7ec607a05.png" alt="java 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-b4e7ec607a05.png" alt="java 코드 예제"></p>
 <p>예상 실행 화면:</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-37647fb365ad.png" alt="text 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-37647fb365ad.png" alt="text 코드 예제"></p>
 <p><code>while (true)</code>의 조건은 항상 참입니다. 이 예제에서는 <code>break</code>가 종료 역할을 하므로 <code>0</code>을 입력해야 정상적으로 반복을 마칩니다. 입력값과 합계는 <code>int</code> 범위라고 가정합니다.</p>
 <h2 id="6-continue-이번-반복의-나머지-건너뛰기">6. continue: 이번 반복의 나머지 건너뛰기</h2>
 <p><code>continue</code>는 반복 전체를 끝내지 않습니다. 이번 반복에서 남은 코드를 건너뛰고 다음 반복으로 진행합니다.</p>
 <p>파일 이름은 <code>EvenNumbers.java</code>로 저장합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-1b0b077f6456.png" alt="java 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-1b0b077f6456.png" alt="java 코드 예제"></p>
 <p>예상 실행 결과:</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-2ccfa1693dc5.png" alt="text 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-2ccfa1693dc5.png" alt="text 코드 예제"></p>
 <p>2로 나눈 나머지가 0이 아니면 홀수입니다. 홀수일 때는 출력문을 건너뛰므로 짝수만 출력됩니다. <code>for</code>에서 <code>continue</code>를 만나도 <code>i++</code>를 실행한 뒤 조건을 다시 검사합니다.</p>
 <p>⚠️ 주의: <code>while</code>에서 값 증가 코드를 <code>continue</code> 뒤에 두면 그 코드가 건너뛰어져 무한 반복이 생길 수 있습니다.</p>
 <h2 id="7-반복문-비교">7. 반복문 비교</h2>
@@ -223,7 +223,7 @@
   <li>결과 형식은 <code>System.out.printf(&quot;%d x %d = %d%n&quot;, dan, i, dan * i);</code>를 사용합니다.</li>
 </ul>
 <p>예상 실행 화면:</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-6-2_loops-f0835cd49cd4.png" alt="text 코드 예제"></p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-7-1_loops-f0835cd49cd4.png" alt="text 코드 예제"></p>
 <p>✅ 확인할 것:</p>
 <ul>
   <li><code>2</code>, <code>9</code>를 입력하면 각각 계산 결과가 9줄 출력됩니다.</li>
@@ -236,7 +236,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-2_loops.md</span><small>최종 수정일: 2026-10-06 18:15</small></li>
+    <li><span>teaching/materials/java/7-1_loops.md</span><small>최종 수정일: 2026-10-06 18:23</small></li>
   </ul>
 </section>
       </article>
