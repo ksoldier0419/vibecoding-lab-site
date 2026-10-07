@@ -82,7 +82,7 @@ function showPanel(question){
 }
 $('noti-launcher').addEventListener('click',event=>{if(event.detail && performance.now()<notiSuppressClickUntil)return;const opening=$('questions-panel').hidden;showPanel(opening);if(opening)$('noti-close').focus();});
 $('noti-close').addEventListener('click',()=>{showPanel(false);$('noti-launcher').focus();});
-document.addEventListener('keydown',event=>{if(event.key==='Escape' && !$('questions-panel').hidden){showPanel(false);$('noti-launcher').focus();}});
+document.addEventListener('keydown',event=>{if(event.key==='Escape' && !$('questions-panel').hidden){event.preventDefault();$('noti-small').click();$('noti-small').focus();}});
 // Keep the window and mascot together, including after viewport changes.
 const notiHeader=$('questions-panel').querySelector('.noti-chat-header'),notiImage=$('noti-launcher').querySelector('img');
 let notiPosition=null,notiDrag=null,dizzyTimer,lastNotiShake=-Infinity,notiSuppressClickUntil=0;
