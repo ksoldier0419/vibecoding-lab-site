@@ -2,6 +2,7 @@ const path=require('node:path');
 const {randomUUID}=require('node:crypto');
 const {lessonContext}=require('./lesson-ai');
 const model=require('./quiz-model');
+const {compareCandidates,statsRange}=require('./quiz-quality');
 const {createQuizResponder}=require('./quiz-ai');
 function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfessor,config}){
  const respond=config.quizReply || createQuizResponder({apiKey:config.openAIKey,model:config.openAIModel});
@@ -27,22 +28,27 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
   if(!await repository.quizGrant(b.studentId,req.course.id,b.enabled))return res.status(404).json({error:'현재 조교만 출제 권한을 받을 수 있습니다.'});res.json({ok:true});
  }));
  app.post(studio+'/sets',localPost,...review,edit,wrap(async(req,res)=>{
-  const b=body(req,['target','title']);if(b.title!==undefined && (typeof b.title!=='string' || !b.title.trim() || b.title.length>120))model.invalid('묶음 이름은 1~120자로 작성해 주세요.');if(!Number.isInteger(b.target) || b.target<1 || b.target>50)model.invalid('목표 문제 수는 1~50개입니다.');
-  res.status(201).json({set:clean(await repository.quizCreate(randomUUID(),req.session.user.id,req.course.id,req.params.lesson,req.sections,b.target,b.title?.trim()||''))});
+  const b=body(req,['target','title']);if(b.title!==undefined && (typeof b.title!=='string' || !b.title.trim() || b.title.length>120))model.invalid('묶음 이름은 1~120자로 작성해 주세요.');if(b.target!==undefined && (!Number.isInteger(b.target) || b.target<1 || b.target>50))model.invalid('목표 문제 수는 1~50개입니다.');
+  res.status(201).json({set:clean(await repository.quizCreate(randomUUID(),req.session.user.id,req.course.id,req.params.lesson,req.sections,b.target||5,b.title?.trim()||''))});
  }));
  app.post(studio+'/sets/:set/manage',localPost,...review,edit,wrap(async(req,res)=>{
   const b=body(req,['action','title','version']);version(b.version);if(!['rename','delete','restore'].includes(b.action) || (b.title!==undefined && typeof b.title!=='string') || (b.action==='rename' && (typeof b.title!=='string' || !b.title.trim() || b.title.length>120)))model.invalid('묶음 이름 또는 작업을 확인해 주세요.');
   const set=await getSet(req,true);const saved=await repository.quizManage(set.id,req.course.id,req.params.lesson,b.version,b.action,b.title?.trim());if(!saved)conflict();res.json({set:clean(saved)});
  }));
  app.post(studio+'/sets/:set/chat',localPost,...review,edit,wrap(async(req,res)=>{
-  const b=body(req,['text','version','requestId']);version(b.version);if(typeof b.text!=='string' || !b.text.trim() || b.text.length>4000 || !model.uuid(b.requestId))model.invalid('출제 요청은 1~4,000자로 작성해 주세요.');
+  const b=body(req,['text','version','requestId']);version(b.version);if(typeof b.text!=='string' || b.text.length>4000 || !model.uuid(b.requestId))model.invalid('출제 요청은 1~4,000자로 작성해 주세요.');
   if(!available)return res.status(503).json({error:'AI 출제가 아직 설정되지 않았습니다.'});
   const old=await getSet(req);if(old.requestId===b.requestId && !old.busyUntil)return res.json({set:clean(old)});
   if(old.state.messages.length>=100)model.invalid('출제 대화 한도에 도달했습니다. 새 묶음을 만들어 주세요.');
   const context=lessonContext(req.course,req.params.lesson),set=await repository.quizBegin(old.id,req.session.user.id,b.version,b.requestId);if(!set)conflict();
   try{
-   const value=model.reply(await respond({context,state:set.state,target:set.target,text:b.text.trim()}),set.state,context);
-   const state={...set.state,questions:value.questions,proposals:value.proposals,messages:[...set.state.messages,{role:'user',content:b.text.trim()},{role:'assistant',content:value.message}]};
+   const existing=(await repository.quizSets(req.course.id,req.params.lesson)).filter(s=>sectionAllowed(s,req.sections) && s.id!==set.id).flatMap(s=>s.state.items.filter(q=>['accepted','published'].includes(q.status)));
+   const text=b.text.trim() || (set.state.messages.length?'앞서 정한 출제 방향을 유지하고 기존 문제와 겹치지 않는 새로운 후보를 두 개 추천해줘.':'교안을 바탕으로 출제 방향 선택 질문을 제시해줘.');
+   const value=model.reply(await respond({context,state:set.state,existing,text}),set.state,context);
+   const proposed=value.proposals.length;
+   value.proposals=compareCandidates(value.proposals,[...existing,...set.state.items.filter(q=>['accepted','published'].includes(q.status))]);
+   if(value.proposals.length<proposed)value.message+='\n기존 문제와 문구가 매우 유사한 후보 '+(proposed-value.proposals.length)+'개는 제외했습니다. 입력 없이 확인을 눌러 다른 후보를 요청할 수 있습니다.';
+   const state={...set.state,questions:value.questions,proposals:value.proposals,messages:[...set.state.messages,{role:'user',content:text},{role:'assistant',content:value.message}]};
    const saved=await repository.quizFinish(set.id,set.version,b.requestId,state);if(!saved)conflict();res.json({set:clean(saved)});
   }catch(e){await repository.quizCancel(set.id,b.requestId).catch(()=>{});throw e;}
  }));
@@ -51,8 +57,9 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
   const change=model.apply(set,b.action,b.itemId,lessonContext(req.course,req.params.lesson),b.target);const saved=await repository.quizApply(set.id,b.version,change);if(!saved)conflict();res.json({set:clean(saved)});
  }));
  app.get(studio+'/stats',...review,wrap(async(req,res)=>{
-  const result=await repository.quizStats(req.course.id,req.params.lesson,req.course.courseId,req.sections),contextHash=model.hash(lessonContext(req.course,req.params.lesson));
-  result.questions=result.questions.map(q=>({...q,needsSourceReview:q.contextHash!==contextHash}));res.json(result);
+  const range=statsRange(req.query);
+  const result=await repository.quizStats(req.course.id,req.params.lesson,req.course.courseId,req.sections,range),contextHash=model.hash(lessonContext(req.course,req.params.lesson));
+  result.questions=result.questions.map(q=>({...q,needsSourceReview:q.contextHash!==contextHash}));res.json({...result,range});
  }));
  app.post(studio+'/reviews/:answer',localPost,...review,wrap(async(req,res)=>{
   const b=body(req,['status','note','version']);version(b.version);if(!model.uuid(req.params.answer) || !['unreviewed','planned','resolved','keep'].includes(b.status) || typeof b.note!=='string' || b.note.length>2000)model.invalid('검토 상태와 메모를 확인해 주세요.');

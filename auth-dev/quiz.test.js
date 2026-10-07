@@ -26,7 +26,7 @@ test('clarification questions are bounded, use unique choices, and cannot accomp
  assert.throws(()=>model.reply({...value,proposals:[{operation:'add',questionId:null,question:sample()}]},{items:[]},context),/나누어/);
  assert.deepEqual(model.reply({message:'기존 응답',proposals:[]},{items:[]},context).questions,[]);
 });
-test('publishing requires target count; replacing creates a new ID and preserves old content',()=>{
+test('publishing ignores legacy target count; replacing creates a new ID and preserves old content',()=>{
  const state={items:[],messages:[],proposals:model.reply({message:'추천',proposals:[{operation:'add',questionId:null,question:sample()}]},{items:[]},context).proposals};
  let set={target:1,published:false,state};
  set.state=model.apply(set,'accept',state.proposals[0].id,context).state;
@@ -36,7 +36,7 @@ test('publishing requires target count; replacing creates a new ID and preserves
  set.state.proposals=model.reply({message:'수정',proposals:[{operation:'replace',questionId:original.id,question:{...sample(),prompt:'수정한 문제'}}]},set.state,context).proposals;
  set.state=model.apply(set,'accept',set.state.proposals[0].id,context).state;
  const next=model.apply(set,'publish',null,context);assert.notEqual(next.publications[0].id,original.id);assert.equal(next.publications[0].replaces,original.id);assert.deepEqual(next.retired,[original.id]);assert.equal(next.state.items[0].prompt,original.prompt);assert.equal(model.apply(set,'target',null,context,2).target,2);
- assert.throws(()=>model.apply({...set,target:2,published:false,state:{...state,items:[original]}},'publish',null,context),/목표/);
+ assert.equal(model.apply({...set,target:2,published:false,state:{...state,items:[original]}},'publish',null,context).publications.length,1);
  assert.throws(()=>model.apply({...set,state:{...set.state,items:[{...original,contextHash:'stale'}]}},'publish',null,context),/교안이 변경/);
 });
 test('structured output request never stores responses and rejects incomplete or refused responses',async()=>{
@@ -87,5 +87,19 @@ test('routes enforce enrollment, explicit assistant grants, section ownership, n
  assert.equal((await request(server,base,{cookie:professor})).data.sets.length,0);assert.equal((await request(server,base+'?deleted=1',{cookie:professor})).data.sets.length,1);
  assert.equal((await request(server,chatUrl,{cookie:professor,body:{text:'출제',version:result.data.set.version,requestId:randomUUID()}})).status,404);
  assert.equal(responses.size,1);result=await request(server,manage,{cookie:professor,body:{action:'restore',version:result.data.set.version}});assert.equal(result.data.set.deletedAt,null);assert.equal(result.data.set.state.items.length,1);
+ const untargeted=(await request(server,base+'/sets',{cookie:professor,body:{}})).data.set;assert.ok(untargeted.id);
+ assert.equal((await request(server,base+'/sets/'+untargeted.id+'/chat',{cookie:professor,body:{text:'',version:0,requestId:randomUUID()}})).status,200);
+ assert.equal((await request(server,base+'/stats?period=invalid',{cookie:professor})).status,400);
  const owned=(await request(server,base+'/sets',{cookie:assistant,body:{target:1}})).data.set;assert.deepEqual(owned.sections,['01']);grant=false;assert.equal((await request(server,base+'/sets/'+owned.id+'/chat',{cookie:assistant,body:{text:'출제',version:0,requestId:randomUUID()}})).status,403);
+});
+
+test('similar candidates are excluded and semester boundaries use Korea time',()=>{
+ const {compareCandidates,statsRange}=require('./quiz-quality');
+ const q={...sample(),id:randomUUID()},p={id:randomUUID(),operation:'add',question:q};
+ assert.deepEqual(compareCandidates([p],[q]),[]);
+ assert.equal(compareCandidates([{...p,operation:'replace',questionId:q.id}],[q]).length,1);
+ assert.deepEqual(statsRange({period:'semester',year:'2026',semester:'2'}),{period:'semester',from:'2026-08-31T15:00:00.000Z',to:'2027-02-28T15:00:00.000Z'});
+ assert.throws(()=>statsRange({period:'invalid'}),/기간/);
+ const set={target:1,state:{items:[{...q,status:'published'}],proposals:[]}};
+ const retired=model.apply(set,'retire',q.id,context);assert.deepEqual(retired.retired,[q.id]);assert.equal(retired.state.items[0].status,'retired');assert.equal(set.state.items[0].status,'published');
 });

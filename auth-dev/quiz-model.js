@@ -40,7 +40,6 @@ function apply(set,action,itemId,context,targetCount){
    if(candidate.contextHash!==hash(context))invalid('교안이 변경되었습니다. 문제를 다시 생성해 주세요.');
    const pending=state.items.filter(q=>q.status==='accepted');
    if(target && pending.some(q=>q.replaces===target.id))invalid('이미 수정 후보를 채택한 문제입니다. 기존 채택을 취소한 뒤 다시 선택해 주세요.');
-   if(candidate.operation==='add' && state.items.filter(q=>['accepted','published'].includes(q.status) && !pending.some(p=>p.replaces===q.id)).length>=set.target)invalid('목표 문제 수에 도달했습니다. 기존 문제를 수정하거나 새 묶음을 만들어 주세요.');
    if(target?.status==='accepted')target.status='retired';
    state.items.push({id:randomUUID(),...candidate.question,status:'accepted',replaces:target?.status==='published'?target.id:null,contextHash:candidate.contextHash});
   }
@@ -48,8 +47,11 @@ function apply(set,action,itemId,context,targetCount){
  }else if(action==='publish'){
   const pending=state.items.filter(q=>q.status==='accepted');if(!pending.length)invalid('공개할 채택 문제가 없습니다.');
   const active=state.items.filter(q=>['accepted','published'].includes(q.status) && !pending.some(p=>p.replaces===q.id));
-  if(!set.published && active.length!==set.target)invalid('목표 문제 수까지 채택한 뒤 공개해 주세요.');
   for(const q of pending){question(q,context);if(q.contextHash!==hash(context))invalid('교안이 변경되었습니다. 채택 문제를 다시 검토해 주세요.');q.status='published';publications.push(q);if(q.replaces){const old=state.items.find(p=>p.id===q.replaces);if(!old || old.status!=='published')invalid('이전 문제 상태가 변경되었습니다.');old.status='retired';retired.push(old.id);}}
+ }else if(action==='retire'){
+  const q=state.items.find(q=>q.id===itemId && ['accepted','published'].includes(q.status));if(!q)invalid('삭제할 문제를 찾을 수 없습니다.');
+  if(state.items.some(p=>p.status==='accepted' && p.replaces===q.id))invalid('변형 후보의 채택을 취소한 뒤 삭제해 주세요.');
+  if(q.status==='published')retired.push(q.id);q.status='retired';
  }else if(action==='target'){
   const pending=state.items.filter(q=>q.status==='accepted'),active=state.items.filter(q=>['accepted','published'].includes(q.status) && !pending.some(p=>p.replaces===q.id));
   if(!Number.isInteger(targetCount) || targetCount<1 || targetCount>50 || targetCount<active.length)invalid('목표 수는 현재 문제 수 이상이며 1~50개여야 합니다.');
