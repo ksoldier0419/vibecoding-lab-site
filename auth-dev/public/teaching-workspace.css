@@ -40,3 +40,5 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 .workspace-toc .toc-section summary:hover,.workspace-toc a:hover{background:#f0f5fc}
 
 .noti-chat-header{background:var(--noti-title-color,#1d2433);color:#fff}
+
+.workspace-title-actions{display:flex;justify-content:flex-end;margin-top:18px}.workspace-title-actions #tools-toggle{margin:0;padding:9px 16px;border:1px solid #ffffff55;border-radius:10px;background:#ffffff12;color:#fff;font:600 .85rem/1.5 system-ui,-apple-system,"Malgun Gothic",sans-serif;cursor:pointer;transition:background .15s}.workspace-title-actions #tools-toggle:hover{background:#ffffff25}.workspace-title-actions #tools-toggle:focus-visible{outline:3px solid #fff;outline-offset:3px}.workspace-title-actions #tools-toggle[aria-expanded=true]{background:#fff;color:#1d2433}
