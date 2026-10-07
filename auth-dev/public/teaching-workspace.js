@@ -166,12 +166,20 @@ let normalNoti=null;
 function exitNotiFull(){const panel=$('questions-panel');if(!panel.classList.contains('noti-full'))return;panel.classList.remove('noti-full');$('noti-full').textContent='전체보기';$('noti-full').setAttribute('aria-pressed','false');if(normalNoti){panel.style.width=normalNoti.width+'px';panel.style.height=normalNoti.height+'px';placeNoti(normalNoti.x,normalNoti.y);}}
 $('noti-full').addEventListener('click',()=>{const panel=$('questions-panel');if(panel.classList.contains('noti-full')){exitNotiFull();return;}const rect=panel.getBoundingClientRect();normalNoti={x:rect.x,y:rect.y,width:rect.width,height:rect.height};panel.classList.add('noti-full');$('noti-full').textContent='이전 크기';$('noti-full').setAttribute('aria-pressed','true');});
 $('noti-small').addEventListener('click',()=>{exitNotiFull();showPanel(false);$('noti-launcher').focus();});
-let sizeStart=null;const sizeHandle=$('noti-size');
+let sizeStart=null;
 function sizeNoti(width,height){exitNotiFull();const panel=$('questions-panel'),rect=panel.getBoundingClientRect();panel.style.width=Math.max(Math.min(320,innerWidth-28),Math.min(width,innerWidth-28))+'px';panel.style.height=Math.max(Math.min(300,innerHeight-145),Math.min(height,innerHeight-145))+'px';placeNoti(rect.x,rect.y);}
-sizeHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;const rect=$('questions-panel').getBoundingClientRect();sizeStart={id:event.pointerId,x:event.clientX,y:event.clientY,width:rect.width,height:rect.height};sizeHandle.setPointerCapture(event.pointerId);event.preventDefault();});
-sizeHandle.addEventListener('pointermove',event=>{if(sizeStart?.id===event.pointerId)sizeNoti(sizeStart.width+event.clientX-sizeStart.x,sizeStart.height+event.clientY-sizeStart.y);});
-for(const name of ['pointerup','pointercancel','lostpointercapture'])sizeHandle.addEventListener(name,()=>{sizeStart=null;});
-sizeHandle.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();const rect=$('questions-panel').getBoundingClientRect();sizeNoti(rect.width+(event.key==='ArrowRight'?40:event.key==='ArrowLeft'?-40:0),rect.height+(event.key==='ArrowDown'?40:event.key==='ArrowUp'?-40:0));}});
+for(const [handleId,left,top] of [['noti-size',false,false],['noti-size-bl',true,false],['noti-size-tr',false,true]]){
+ const cornerHandle=$(handleId);
+ function resizeCorner(rect,dx,dy){
+  sizeNoti(rect.width+(left?-dx:dx),rect.height+(top?-dy:dy));
+  const resized=$('questions-panel').getBoundingClientRect();
+  placeNoti(left?rect.x+rect.width-resized.width:rect.x,top?rect.y+rect.height-resized.height:rect.y);
+ }
+ cornerHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;sizeStart={id:event.pointerId,handle:cornerHandle,x:event.clientX,y:event.clientY,rect:$('questions-panel').getBoundingClientRect()};cornerHandle.setPointerCapture(event.pointerId);event.preventDefault();});
+ cornerHandle.addEventListener('pointermove',event=>{if(sizeStart?.handle===cornerHandle && sizeStart.id===event.pointerId)resizeCorner(sizeStart.rect,event.clientX-sizeStart.x,event.clientY-sizeStart.y);});
+ for(const name of ['pointerup','pointercancel','lostpointercapture'])cornerHandle.addEventListener(name,()=>{if(sizeStart?.handle===cornerHandle)sizeStart=null;});
+ cornerHandle.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();resizeCorner($('questions-panel').getBoundingClientRect(),event.key==='ArrowRight'?40:event.key==='ArrowLeft'?-40:0,event.key==='ArrowDown'?40:event.key==='ArrowUp'?-40:0);}});
+}
 let resizeStart=null;
 const resizeHandle=$('noti-resize');
 function resizeNoti(width){exitNotiFull();const panel=$('questions-panel'),rect=panel.getBoundingClientRect();panel.style.width=Math.max(Math.min(320,innerWidth-28),Math.min(width,innerWidth-28))+'px';placeNoti(rect.right-panel.getBoundingClientRect().width,rect.top);}
