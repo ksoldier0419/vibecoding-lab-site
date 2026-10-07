@@ -27,6 +27,8 @@ function copy(source,destination) {
 }
 for(const name of ['index.html','assets','materials',...courseCatalog.map(c=>c.id)]) copy(path.join(root,name),path.join(out,name));
 copy(path.join(root,'auth-dev/public'),path.join(out,'auth-assets'));
+for(const course of courseCatalog){const index=path.join(out,course.id,'index.html');const html=fs.readFileSync(index,'utf8');if(!html.includes('course-study-links.js'))fs.writeFileSync(index,html.replace('</head>','<script src="/auth-assets/course-study-links.js?v=20261008" defer></script></head>'));}
+
 // Only login shell is public at its top-level URL. courses/admin URLs retain server guards.
 copy(path.join(root,'auth-dev/public/login.html'),path.join(out,'login.html'));
 const index=path.join(out,'index.html');
