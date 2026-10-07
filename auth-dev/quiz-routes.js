@@ -9,17 +9,17 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
  const available=!!(config.quizReply || config.openAIKey);
  const wrap=fn=>async(req,res)=>{try{await fn(req,res);}catch(e){res.status(e.status||503).json({error:e.public?e.message:'개념 확인 문제를 처리하지 못했습니다. 입력을 유지하고 다시 시도해 주세요.'});}};
  const conflict=()=>{throw Object.assign(Error('다른 창에서 변경되었거나 처리 중입니다. 다시 불러와 주세요.'),{status:409,public:true});};
- const clean=set=>({id:set.id,sections:set.sections,target:set.target,state:set.state,version:set.version,published:set.published});
+ const clean=set=>({id:set.id,sections:set.sections,target:set.target,state:set.state,version:set.version,published:set.published,title:set.title,createdAt:set.createdAt,deletedAt:set.deletedAt});
  const sectionAllowed=(set,sections)=>sections===null || (Array.isArray(set.sections) && set.sections.every(s=>sections.includes(s)));
  const body=(req,keys)=>{if(!req.body || Array.isArray(req.body) || Object.keys(req.body).some(k=>!keys.includes(k)))model.invalid('입력 형식을 확인해 주세요.');return req.body;};
  const version=value=>{if(!Number.isSafeInteger(value) || value<0)model.invalid('다시 불러와 주세요.');};
  async function edit(req,res,next){try{if(!isProfessor(req.session.user) && !await repository.quizCanEdit(req.session.user.id,req.course.id))return res.status(403).json({error:'교수자가 이 과목의 출제 권한을 부여해야 합니다.'});next();}catch{res.status(503).json({error:'출제 권한을 확인하지 못했습니다.'});}}
- async function getSet(req){if(!model.uuid(req.params.set))model.invalid('문제 묶음 번호를 확인해 주세요.');const set=await repository.quizSet(req.params.set,req.course.id,req.params.lesson);if(!set || !sectionAllowed(set,req.sections))throw Object.assign(Error('담당 범위의 문제 묶음을 찾을 수 없습니다.'),{status:404,public:true});return set;}
+ async function getSet(req,includeDeleted=false){if(!model.uuid(req.params.set))model.invalid('문제 묶음 번호를 확인해 주세요.');const set=await repository.quizSet(req.params.set,req.course.id,req.params.lesson);if(!set || (!includeDeleted && set.deletedAt) || !sectionAllowed(set,req.sections))throw Object.assign(Error('담당 범위의 문제 묶음을 찾을 수 없습니다.'),{status:404,public:true});return set;}
  function page(req,res,next){if(!req.session.user)return res.redirect('/login.html');signedIn(req,res,next);}
  app.get('/concept-quiz.html',page,(req,res)=>res.sendFile(path.join(__dirname,'public/concept-quiz.html')));
  app.get('/quiz-studio.html',page,staff,(req,res)=>res.sendFile(path.join(__dirname,'public/concept-quiz.html')));
  app.get(studio,...review,wrap(async(req,res)=>{
-  const sets=(await repository.quizSets(req.course.id,req.params.lesson)).filter(s=>sectionAllowed(s,req.sections));
+  const sets=(await repository.quizSets(req.course.id,req.params.lesson,req.query.deleted==='1')).filter(s=>sectionAllowed(s,req.sections));
   res.json({sets:sets.map(clean),available,professor:isProfessor(req.session.user),canEdit:isProfessor(req.session.user)||await repository.quizCanEdit(req.session.user.id,req.course.id),editors:isProfessor(req.session.user)?await repository.quizEditors(req.course.id):[]});
  }));
  app.post(studio+'/permissions',localPost,...review,wrap(async(req,res)=>{
@@ -27,8 +27,12 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
   if(!await repository.quizGrant(b.studentId,req.course.id,b.enabled))return res.status(404).json({error:'현재 조교만 출제 권한을 받을 수 있습니다.'});res.json({ok:true});
  }));
  app.post(studio+'/sets',localPost,...review,edit,wrap(async(req,res)=>{
-  const b=body(req,['target']);if(!Number.isInteger(b.target) || b.target<1 || b.target>50)model.invalid('목표 문제 수는 1~50개입니다.');
-  res.status(201).json({set:clean(await repository.quizCreate(randomUUID(),req.session.user.id,req.course.id,req.params.lesson,req.sections,b.target))});
+  const b=body(req,['target','title']);if(b.title!==undefined && (typeof b.title!=='string' || !b.title.trim() || b.title.length>120))model.invalid('묶음 이름은 1~120자로 작성해 주세요.');if(!Number.isInteger(b.target) || b.target<1 || b.target>50)model.invalid('목표 문제 수는 1~50개입니다.');
+  res.status(201).json({set:clean(await repository.quizCreate(randomUUID(),req.session.user.id,req.course.id,req.params.lesson,req.sections,b.target,b.title?.trim()||''))});
+ }));
+ app.post(studio+'/sets/:set/manage',localPost,...review,edit,wrap(async(req,res)=>{
+  const b=body(req,['action','title','version']);version(b.version);if(!['rename','delete','restore'].includes(b.action) || (b.title!==undefined && typeof b.title!=='string') || (b.action==='rename' && (typeof b.title!=='string' || !b.title.trim() || b.title.length>120)))model.invalid('묶음 이름 또는 작업을 확인해 주세요.');
+  const set=await getSet(req,true);const saved=await repository.quizManage(set.id,req.course.id,req.params.lesson,b.version,b.action,b.title?.trim());if(!saved)conflict();res.json({set:clean(saved)});
  }));
  app.post(studio+'/sets/:set/chat',localPost,...review,edit,wrap(async(req,res)=>{
   const b=body(req,['text','version','requestId']);version(b.version);if(typeof b.text!=='string' || !b.text.trim() || b.text.length>4000 || !model.uuid(b.requestId))model.invalid('출제 요청은 1~4,000자로 작성해 주세요.');
