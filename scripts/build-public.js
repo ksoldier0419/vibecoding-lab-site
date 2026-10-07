@@ -6,6 +6,8 @@ const courseCatalog=JSON.parse(fs.readFileSync(path.join(root,'auth-dev/private/
 if(!courseCatalog.length || courseCatalog.some(c=>! /^[a-z0-9][a-z0-9_-]{0,99}$/.test(c.id)))throw new Error('Invalid generated teaching catalog.');
 for(const course of courseCatalog)for(const lesson of course.lessons) {
  if(!/^week[\w-]+\.html$/.test(lesson.id) || !fs.existsSync(path.join(root,'auth-dev/private',course.id,lesson.id)) || !fs.existsSync(path.join(root,course.id,lesson.id)))throw new Error('Missing registered lesson: '+course.id+'/'+lesson.id);
+ const context=JSON.parse(fs.readFileSync(path.join(root,'auth-dev/private',course.id,lesson.id+'.context.json'),'utf8'));
+ if(typeof context.text!=='string' || !context.text.trim() || context.text.length>100000)throw new Error('Invalid AI lesson context: '+course.id+'/'+lesson.id);
 }
 for(const course of courseCatalog)if(!fs.existsSync(path.join(root,'auth-dev/private',course.id,'index.html')))throw new Error('Generate course text pages before building.');
 if(fs.existsSync(out)) {

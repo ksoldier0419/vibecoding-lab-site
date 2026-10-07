@@ -1,6 +1,6 @@
 const path=require('node:path');
 const {catalog,findLesson}=require('./teaching-catalog');
-function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach}) {
+function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach,config={}}) {
  const idPattern=/^(0|[1-9][0-9]{0,18})$/;
  function fail(res){res.status(503).json({error:'교안·메모 정보를 처리하지 못했습니다. 다시 시도해 주세요.'});}
  async function staff(req,res,next) {
@@ -34,6 +34,7 @@ function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach}
   }catch{fail(res);}
  }
  const own=[signedIn,lesson,enrolled];
+ require('./chat-routes').chatRoutes(app,repository,{own,localPost,config});
  app.get('/api/study/:course/:lesson/note',...own,async(req,res)=>{
   try {res.json({note:await repository.getStudentNote(req.session.user.id,req.course.id,req.params.lesson)});}catch{fail(res);}
  });

@@ -20,6 +20,7 @@ function createRuntimeApp(env=process.env) {
  return createApp({
   origin,clientId:env.GOOGLE_CLIENT_ID,secret:env.SESSION_SECRET,
   professorEmail:env.PROFESSOR_EMAIL,
+  openAIKey:env.OPENAI_API_KEY,openAIModel:env.OPENAI_MODEL || 'gpt-4.1-mini',
   openRegistration:env.VERCEL_ENV==='production',
   allowedEmails:(env.LOGIN_ALLOWED_EMAILS || '').split(',').filter(Boolean),
   sessionStore:new NeonSessionStore(sessionSql(env.DATABASE_URL),origin),
