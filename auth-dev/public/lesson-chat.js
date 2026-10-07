@@ -2,7 +2,7 @@
  const get=id=>document.getElementById(id),params=new URLSearchParams(location.search);
  const url='/api/study/'+encodeURIComponent(params.get('course'))+'/'+encodeURIComponent(params.get('lesson'))+'/chat';
  let chat={messages:[],version:0},loaded=false,available=false,busy=false,pending=null;
- let activityTimer,replying=false;
+ let activityTimer,replying=false,suggestionDismissedAt=0;
  function chatActivity(){clearTimeout(activityTimer);window.setNotiChatActive(true);if(!replying)activityTimer=setTimeout(()=>window.setNotiChatActive(false),2500);}
  get('ai-chat').hidden=false;
  function status(text){get('chat-status').textContent=text;}
@@ -18,7 +18,7 @@
   nodes.push(document.createTextNode(source.slice(offset)));block.replaceChildren(...nodes);
  }
  function messageBubble(message){
-  const item=document.createElement('article'),label=document.createElement('span'),bubble=document.createElement('div');item.className='chat-message '+message.role;label.className='chat-speaker';label.textContent=message.role==='user'?'나':'Noti';if(message.role!=='user'){const icon=document.createElement('img');icon.src='/auth-assets/noti.gif';icon.alt='';icon.width=22;icon.height=22;label.prepend(icon);}bubble.className='chat-bubble';
+  const item=document.createElement('article'),label=document.createElement('span'),bubble=document.createElement('div');item.className='chat-message '+message.role;label.className='chat-speaker';label.textContent=message.role==='user'?'나':'Noti';bubble.className='chat-bubble';
   if(message.role==='user'){bubble.textContent=message.content;}else{
    let code=false,lines=[],language='';
    function flush(){if(!lines.length)return;const block=document.createElement(code?'pre':'div');block.className=code?'chat-code':'chat-prose';block.textContent=lines.join('\n');if(code)highlightCode(block,language);bubble.append(block);lines=[];}
@@ -31,6 +31,7 @@
   if(!chat.messages.length && !waiting){const empty=document.createElement('p');empty.className='chat-empty';empty.textContent='궁금한 내용을 물어보세요.\n선택한 교안을 함께 살펴볼게요.';get('chat-messages').append(empty);}
   for(const message of chat.messages)get('chat-messages').append(messageBubble(message));
   if(waiting){get('chat-messages').append(messageBubble({role:'user',content:waiting}));const reply=messageBubble({role:'assistant',content:'답변을 생각하고 있어요…'});reply.classList.add('chat-waiting');get('chat-messages').append(reply);}
+  const rounds=chat.messages.filter(m=>m.role==='user').length;get('chat-suggestion').hidden=rounds<5 || rounds<suggestionDismissedAt+5;
   get('chat-messages').scrollTop=get('chat-messages').scrollHeight;
  }
  async function api(body,suffix=''){const response=await fetch(url+suffix,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw Error(response.status===401?'로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인한 뒤 시도하세요.':data.error||'AI 대화를 처리하지 못했습니다.');return data;}
@@ -45,7 +46,8 @@
  get('chat-text').addEventListener('input',()=>{resizeInput();chatActivity();});
  get('chat-text').addEventListener('keydown',event=>{if(event.key==='Enter' && !event.shiftKey && !event.isComposing && event.keyCode!==229){event.preventDefault();if(!busy && available)get('chat-form').requestSubmit();}});
  get('chat-reload').addEventListener('click',load);
- get('chat-reset').addEventListener('click',async()=>{if(busy || !loaded || !confirm('이 교안의 기존 AI 대화 기록을 지우고 새 대화를 시작할까요? 교수자에게 등록한 질문은 유지됩니다.'))return;busy=true;controls();try{chat=(await api({version:chat.version},'/reset')).chat;pending=null;render();status('새 대화를 시작했습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}});
+ get('chat-reset').addEventListener('click',async()=>{if(busy || !loaded || !confirm('이 교안의 기존 AI 대화 기록을 지우고 새 대화를 시작할까요? 교수자에게 등록한 질문은 유지됩니다.'))return;busy=true;controls();try{chat=(await api({version:chat.version},'/reset')).chat;pending=null;suggestionDismissedAt=0;render();status('새 대화를 시작했습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}});
+ get('chat-keep').addEventListener('click',()=>{suggestionDismissedAt=chat.messages.filter(m=>m.role==='user').length;get('chat-suggestion').hidden=true;});
  get('chat-forward').addEventListener('click',()=>{
   const target=get('question-text');if(target.value.trim() && !confirm('작성 중인 담당자 질문을 AI 대화 일부로 바꿀까요?'))return;
   target.value='AI 답변으로 해결되지 않아 질문합니다.\n\n[질문할 내용]\n아래 내용을 확인하고 질문을 구체적으로 적어 주세요.\n\n[AI 대화 일부]\n'+chat.messages.slice(-4).map(m=>(m.role==='user'?'학생':'AI')+': '+m.content.slice(0,2000)).join('\n\n');

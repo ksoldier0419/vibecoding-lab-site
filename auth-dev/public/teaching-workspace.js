@@ -89,7 +89,7 @@ let notiPosition=null,notiDrag=null,dizzyTimer,lastNotiShake=-Infinity,notiSuppr
 let notiChatActive=false,notiReaction=false;
 function updateNotiActivity(){
  const src=notiChatActive?'/auth-assets/noti-chat.gif':'/auth-assets/noti.gif';
- const titleImage=notiHeader.querySelector('img');if(titleImage.getAttribute('src')!==src)titleImage.src=src;
+
  if(!notiReaction && notiImage.getAttribute('src')!==src)notiImage.src=src;
 }
 window.setNotiChatActive=active=>{notiChatActive=active;updateNotiActivity();};
@@ -113,6 +113,7 @@ function dizzyNoti(){
 }
 for(const handle of [notiHeader,$('noti-launcher')]){
 handle.addEventListener('pointerdown',event=>{
+ if($('questions-panel').classList.contains('noti-full') && handle===notiHeader)return;
  if(event.button!==0 || (handle===notiHeader && event.target.closest('button')))return;
  if(handle===$('noti-launcher'))notiSuppressClickUntil=0;
  const wasHidden=$('questions-panel').hidden;if(wasHidden)$('questions-panel').hidden=false;
@@ -139,14 +140,24 @@ handle.addEventListener('pointerup',endNotiDrag);handle.addEventListener('pointe
 function setTools(open){$('workspace-tools').hidden=!open;document.querySelector('.workspace-layout').classList.toggle('tools-collapsed',!open);$('tools-toggle').setAttribute('aria-expanded',String(open));$('tools-toggle').textContent=open?'메모·질의응답 접기':'메모·질의응답 열기';}
 window.openStaffQuestions=function(){setTools(true);$('staff-questions').open=true;};
 $('tools-toggle').addEventListener('click',()=>setTools($('workspace-tools').hidden));
+let normalNoti=null;
+function exitNotiFull(){const panel=$('questions-panel');if(!panel.classList.contains('noti-full'))return;panel.classList.remove('noti-full');$('noti-full').textContent='전체보기';$('noti-full').setAttribute('aria-pressed','false');if(normalNoti){panel.style.width=normalNoti.width+'px';panel.style.height=normalNoti.height+'px';placeNoti(normalNoti.x,normalNoti.y);}}
+$('noti-full').addEventListener('click',()=>{const panel=$('questions-panel');if(panel.classList.contains('noti-full')){exitNotiFull();return;}const rect=panel.getBoundingClientRect();normalNoti={x:rect.x,y:rect.y,width:rect.width,height:rect.height};panel.classList.add('noti-full');$('noti-full').textContent='이전 크기';$('noti-full').setAttribute('aria-pressed','true');});
+$('noti-small').addEventListener('click',()=>{exitNotiFull();const panel=$('questions-panel');panel.style.width=Math.min(360,innerWidth-28)+'px';panel.style.height=Math.min(480,innerHeight-145)+'px';const rect=panel.getBoundingClientRect();placeNoti(rect.x,rect.y);});
+let sizeStart=null;const sizeHandle=$('noti-size');
+function sizeNoti(width,height){exitNotiFull();const panel=$('questions-panel'),rect=panel.getBoundingClientRect();panel.style.width=Math.max(Math.min(320,innerWidth-28),Math.min(width,innerWidth-28))+'px';panel.style.height=Math.max(Math.min(300,innerHeight-145),Math.min(height,innerHeight-145))+'px';placeNoti(rect.x,rect.y);}
+sizeHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;const rect=$('questions-panel').getBoundingClientRect();sizeStart={id:event.pointerId,x:event.clientX,y:event.clientY,width:rect.width,height:rect.height};sizeHandle.setPointerCapture(event.pointerId);event.preventDefault();});
+sizeHandle.addEventListener('pointermove',event=>{if(sizeStart?.id===event.pointerId)sizeNoti(sizeStart.width+event.clientX-sizeStart.x,sizeStart.height+event.clientY-sizeStart.y);});
+for(const name of ['pointerup','pointercancel','lostpointercapture'])sizeHandle.addEventListener(name,()=>{sizeStart=null;});
+sizeHandle.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();const rect=$('questions-panel').getBoundingClientRect();sizeNoti(rect.width+(event.key==='ArrowRight'?40:event.key==='ArrowLeft'?-40:0),rect.height+(event.key==='ArrowDown'?40:event.key==='ArrowUp'?-40:0));}});
 let resizeStart=null;
 const resizeHandle=$('noti-resize');
-function resizeNoti(width){const panel=$('questions-panel'),rect=panel.getBoundingClientRect();panel.style.width=Math.max(Math.min(320,innerWidth-28),Math.min(width,innerWidth-28))+'px';placeNoti(rect.right-panel.getBoundingClientRect().width,rect.top);}
+function resizeNoti(width){exitNotiFull();const panel=$('questions-panel'),rect=panel.getBoundingClientRect();panel.style.width=Math.max(Math.min(320,innerWidth-28),Math.min(width,innerWidth-28))+'px';placeNoti(rect.right-panel.getBoundingClientRect().width,rect.top);}
 resizeHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;resizeStart={id:event.pointerId,x:event.clientX,width:$('questions-panel').getBoundingClientRect().width};resizeHandle.setPointerCapture(event.pointerId);event.preventDefault();});
 resizeHandle.addEventListener('pointermove',event=>{if(resizeStart?.id===event.pointerId)resizeNoti(resizeStart.width-event.clientX+resizeStart.x);});
 for(const name of ['pointerup','pointercancel','lostpointercapture'])resizeHandle.addEventListener(name,()=>{resizeStart=null;});
 resizeHandle.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();resizeNoti($('questions-panel').getBoundingClientRect().width+(event.key==='ArrowRight'?40:-40));}});
-window.addEventListener('resize',()=>{if($('questions-panel').style.width)resizeNoti(parseFloat($('questions-panel').style.width));if(notiPosition)placeNoti(notiPosition.x,notiPosition.y);});
+window.addEventListener('resize',()=>{if($('questions-panel').classList.contains('noti-full'))return;if($('questions-panel').style.height)sizeNoti(parseFloat($('questions-panel').style.width)||430,parseFloat($('questions-panel').style.height));if($('questions-panel').style.width)resizeNoti(parseFloat($('questions-panel').style.width));if(notiPosition)placeNoti(notiPosition.x,notiPosition.y);});
 $('tab-notes').addEventListener('click',()=>showPanel(false));$('tab-questions').addEventListener('click',()=>showPanel(true));
 for(const id of ['tab-notes','tab-questions'])$(id).addEventListener('keydown',event=>{
  if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();const question=event.key==='End' || (event.key!=='Home' && $('questions-panel').hidden);showPanel(question);$(question?'tab-questions':'tab-notes').focus();}
