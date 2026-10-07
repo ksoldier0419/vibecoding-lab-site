@@ -6,12 +6,16 @@ function learningRoutes(app,repository,{own,review,localPost,isProfessor,config}
  const wrap=fn=>async(req,res)=>{try{await fn(req,res);}catch(e){res.status(e.status||503).json({error:e.public?e.message:'학습 상태를 저장하지 못했습니다. 다시 불러와 주세요.'});}};
  const conflict=()=>{throw Object.assign(Error('다른 창에서 학습이 진행되었습니다. 다시 불러와 주세요.'),{public:true,status:409});};
  async function owned(req){if(!model.uuid(req.params.session))model.invalid('학습 세션을 확인해 주세요.');const row=await repository.learningGet(req.params.session,req.course.id,req.params.lesson,req.session.user.id);if(!row)throw Object.assign(Error('학습 세션을 찾을 수 없습니다.'),{public:true,status:404});return row;}
- app.get(base,...own,wrap(async(req,res)=>res.json({session:learning.publicSession(await repository.learningOpen(req.course.id,req.params.lesson,req.session.user.id))})));
+ async function availability(req){
+  const [rows,seenRows,passedRows,open]=await Promise.all([repository.quizStudentQuestions(req.course.id,req.params.lesson,req.session.user.id,req.course.courseId),repository.learningSeen(req.course.id,req.params.lesson,req.session.user.id),repository.learningPassed(req.course.id,req.params.lesson,req.session.user.id),repository.learningOpen(req.course.id,req.params.lesson,req.session.user.id)]);
+  const seen=new Set(seenRows.map(q=>q.id)),passed=new Map(passedRows.map(q=>[q.id,new Date(q.at).getTime()])),active=new Set(rows.map(q=>q.id));
+  const eligible=rows.filter(q=>!seen.has(q.id)&&(!q.content.measurement||q.content.measurement.purpose==='learning'||(passed.has(q.content.measurement.parentId)&&Date.now()>=passed.get(q.content.measurement.parentId)+q.content.measurement.delayDays*86400000)));
+  return {open,eligible,availability:{registered:rows.length,newCount:eligible.length,remaining:open?open.state.items.filter(q=>active.has(q.id)&&['unseen','repeat'].includes(q.status)).length:0}};
+ }
+ app.get(base,...own,wrap(async(req,res)=>{const a=await availability(req);res.json({session:learning.publicSession(a.open),availability:a.availability});}));
  app.post(base+'/start',localPost,...own,wrap(async(req,res)=>{
-  const open=await repository.learningOpen(req.course.id,req.params.lesson,req.session.user.id);if(open)return res.json({session:learning.publicSession(open)});
-  const rows=await repository.quizStudentQuestions(req.course.id,req.params.lesson,req.session.user.id,req.course.courseId),seen=new Set((await repository.learningSeen(req.course.id,req.params.lesson,req.session.user.id)).map(q=>q.id));
-  const passed=new Map((await repository.learningPassed(req.course.id,req.params.lesson,req.session.user.id)).map(q=>[q.id,new Date(q.at).getTime()]));
-  const eligible=rows.filter(q=>!seen.has(q.id)&&(!q.content.measurement||q.content.measurement.purpose==='learning'||(passed.has(q.content.measurement.parentId)&&Date.now()>=passed.get(q.content.measurement.parentId)+q.content.measurement.delayDays*86400000)));const purpose=eligible[0]?.content.measurement?.purpose||'learning';
+  const {open,eligible}=await availability(req);if(open)return res.json({session:learning.publicSession(open)});
+  const purpose=eligible[0]?.content.measurement?.purpose||'learning';
   const fresh=eligible.filter(q=>(q.content.measurement?.purpose||'learning')===purpose).slice(0,5);if(!fresh.length)return res.json({session:null,empty:true});
   const state=learning.create(fresh),registration=await repository.registration(req.session.user.id);state.enrollment={courseCode:req.course.courseId,sections:registration.courses.filter(c=>c.id===req.course.courseId).map(c=>c.section||''),term:req.course.id.split('-').slice(0,2).join('-')};
   const row=await repository.learningStart(randomUUID(),req.course.id,req.params.lesson,req.session.user.id,state);res.status(201).json({session:learning.publicSession(row)});

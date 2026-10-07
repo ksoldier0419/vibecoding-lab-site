@@ -1,6 +1,6 @@
 (()=>{
  const $=id=>document.getElementById(id),staff=location.pathname==='/quiz-studio.html',params=new URLSearchParams(location.search);
- let learning=null,learningStats=null;
+ let learning=null,learningStats=null,availability=null;
  let course,lesson,catalog=[],data,sets=[],set=null,stats,questions=[],answers=[],selected=null,busy=false,pending=null;
  function node(tag,text,className){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;}
  function button(text,fn,primary=false){const b=node('button',text);b.type='button';if(primary)b.className='primary';b.addEventListener('click',()=>run(fn));return b;}
@@ -49,15 +49,17 @@
  }
  function updateSet(value){set=value;const index=sets.findIndex(s=>s.id===value.id);if(index>=0)sets[index]=value;const item=[...$('set-select').options].find(o=>o.value===value.id);if(item)item.textContent=setLabel(value);}
  async function apply(action,itemId){if(!set)throw Error('문제 묶음을 먼저 선택해 주세요.');const changed=await api(base()+'/sets/'+set.id+'/apply',{action,itemId,version:set.version});updateSet(changed.set);renderStudio();message(action==='publish'?'문제를 공개했습니다.':'변경을 적용했습니다.');}
- async function loadStudent(){const result=await api(base()+'/learning');learning=result.session;await ensureShown();renderStudent();}
+ async function loadStudent(){const result=await api(base()+'/learning');learning=result.session;availability=result.availability;await ensureShown();renderStudent();}
  async function ensureShown(){let guard=0;while(learning&&!learning.paused&&!learning.finished&&learning.current&&!learning.current.shown&&guard++<6)await learningAction('show',{},false);}
  async function learningAction(action,fields={},show=true){
   const request={action,...fields,version:learning.version};if(!pending||JSON.stringify(pending.request)!==JSON.stringify(request))pending={request,requestId:crypto.randomUUID()};
   const result=await api(base()+'/learning/'+learning.id+'/action',{...request,requestId:pending.requestId});learning=result.session;pending=null;if(show){await ensureShown();renderStudent();}
  }
- async function startLearning(){const result=await api(base()+'/learning/start',{});learning=result.session;pending=null;await ensureShown();renderStudent();if(!learning)message('현재 배정 가능한 새 문제가 없습니다. 지연 확인은 지정한 날짜 이후 열립니다.');}
+ async function startLearning(){const result=await api(base()+'/learning/start',{});learning=result.session;pending=null;const overview=await api(base()+'/learning');availability=overview.availability;await ensureShown();renderStudent();if(!learning)message('현재 배정 가능한 새 문제가 없습니다. 지연 확인은 지정한 날짜 이후 열립니다.');}
  function renderStudent(){
   $('question-list').replaceChildren();$('problem').replaceChildren();
+  const remaining=learning&&!learning.finished?learning.items.filter(q=>['unseen','repeat'].includes(q.status)).length:0;
+  $('quiz-availability').textContent=availability?(!availability.registered?'미등록: 아직 공개된 문제가 없습니다.':'신규등록 ('+availability.newCount+') · 진행 중 남은 문항 '+remaining+'개'):'';
   if(!learning){$('progress').textContent='최대 5문항씩 진행합니다.';$('problem').append(node('h2','개념 확인 학습'),node('p','첫 순환을 마친 뒤 틀린 문제만 반복합니다. 의견을 보낸 문제는 반복에서 제외하고 검토 요청으로 남깁니다.'),button('학습 세트 시작',startLearning,true));return;}
   const labels={unseen:'미풀이',repeat:'반복 대기',complete:'정답 완료',review:'검토 요청',withdrawn:'공개 철회',assessed:'확인 완료'};
   const complete=learning.items.filter(q=>q.status==='complete').length,review=learning.items.filter(q=>q.status==='review').length;

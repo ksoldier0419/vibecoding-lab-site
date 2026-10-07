@@ -17,7 +17,7 @@ async function load(){
   $('workspace-lesson').replaceChildren(...course.lessons.map(l=>option(l.id,l.title)));$('workspace-lesson').value=lesson.id;
   $('workspace-course').disabled=false;$('workspace-lesson').disabled=false;$('workspace-course').title=course.title;$('workspace-lesson').title=lesson.title;
   $('quiz-entry').href=(staffView?'/quiz-studio.html':'/concept-quiz.html')+'?'+new URLSearchParams({course:course.id,lesson:lesson.id});$('quiz-entry').textContent=staffView?'문제 출제·통계':'개념 확인 문제';
-  if(!staffView){const invite=document.createElement('script');invite.src='/auth-assets/quiz-invite.js';document.body.append(invite);}
+  if(!staffView){refreshQuizEntry();const invite=document.createElement('script');invite.src='/auth-assets/quiz-invite.js';document.body.append(invite);}
   $('workspace-frame').src=staffView?'/instructor/courses/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id):'/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id);
   $('workspace-frame').hidden=false;$('workspace-status').textContent='';$('workspace-retry').hidden=true;
   questionsReady=!staffView || course.reviewAllowed;
@@ -32,6 +32,13 @@ async function load(){
   }
  }catch(error){$('workspace-status').textContent=error.message;}
 }
+async function refreshQuizEntry(){
+ try{const {availability:a}=await api('/api/study/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id)+'/quiz/learning');
+ $('quiz-entry').textContent='개념 확인 문제 · '+(!a.registered?'미등록':a.newCount?'신규등록 ('+a.newCount+')':a.remaining?'이어서 풀기 ('+a.remaining+')':'풀이 완료');
+ $('quiz-entry').title='새 문제 '+a.newCount+'개 · 진행 중 남은 문제 '+a.remaining+'개';
+ }catch{$('quiz-entry').textContent='개념 확인 문제 · 확인 필요';}
+}
+window.addEventListener('pageshow',()=>{if(!staffView&&course&&lesson)refreshQuizEntry();});
 const reviewURL=()=>'/api/teaching/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id)+'/student-notes';
 $('workspace-frame').addEventListener('load',()=>{
  try {
