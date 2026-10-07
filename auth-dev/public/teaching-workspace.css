@@ -42,3 +42,24 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 .noti-chat-header{background:var(--noti-title-color,#1d2433);color:#fff}
 
 .workspace-title-actions{display:flex;justify-content:flex-end;margin-top:18px}.workspace-title-actions #tools-toggle{margin:0;padding:9px 16px;border:1px solid #ffffff55;border-radius:10px;background:#ffffff12;color:#fff;font:600 .85rem/1.5 system-ui,-apple-system,"Malgun Gothic",sans-serif;cursor:pointer;transition:background .15s}.workspace-title-actions #tools-toggle:hover{background:#ffffff25}.workspace-title-actions #tools-toggle:focus-visible{outline:3px solid #fff;outline-offset:3px}.workspace-title-actions #tools-toggle[aria-expanded=true]{background:#fff;color:#1d2433}
+
+/* Lesson header control stays at the viewport edge, outside the centered title. */
+.workspace-lesson-header{position:relative;padding-bottom:76px}.workspace-lesson-header .workspace-title-actions{position:absolute;right:24px;bottom:18px;margin:0}
+#workspace-tools{font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:#203957}
+#workspace-tools .workspace-account-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.8rem;padding:0 4px 8px}
+#workspace-tools .workspace-account-links a{color:#466382;text-decoration:none}#workspace-tools .workspace-account-links a:hover{text-decoration:underline}
+#workspace-tools .student-note-fold{padding:20px;border-color:#dce5f1;border-radius:16px;box-shadow:0 4px 18px #203d6608}
+#workspace-tools .student-note-fold summary{font-size:1rem;color:#203957}
+#workspace-tools label{display:block;font-size:.85rem;font-weight:600;margin:18px 0 8px;color:#536c87}
+#workspace-tools textarea{display:block;box-sizing:border-box;width:100%;border:1px solid #d5e0ed;border-radius:11px;background:#fbfcfe;padding:14px;font: .93rem/1.8 system-ui,-apple-system,"Malgun Gothic",sans-serif;resize:vertical}
+#workspace-tools #lesson-note{min-height:240px;height:36vh;max-height:700px}
+#workspace-tools select{box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid #d5e0ed;border-radius:10px;background:#fff;font:inherit;color:#203957}
+#workspace-tools button{padding:10px 14px;margin:8px 8px 8px 0;border:1px solid #d5e0ed;border-radius:9px;background:#f7f9fc;color:#466382;font:600 .82rem/1.5 system-ui,-apple-system,"Malgun Gothic",sans-serif;cursor:pointer}
+#workspace-tools button:hover{background:#edf2f8}#workspace-tools button:disabled{opacity:.5;cursor:default}
+#workspace-tools #save-note,#workspace-tools #question-submit,#workspace-tools #answer-submit{background:#305ca5;border-color:#305ca5;color:#fff}#workspace-tools #save-note:hover,#workspace-tools #question-submit:hover,#workspace-tools #answer-submit:hover{background:#254b8b}
+#workspace-tools button:focus-visible,#workspace-tools textarea:focus-visible,#workspace-tools select:focus-visible{outline:3px solid #a8c8f1;outline-offset:3px}
+#workspace-tools .workspace-note-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}#workspace-tools .workspace-note-actions button{margin:0}
+#workspace-tools .workspace-help,#workspace-tools #note-status,#workspace-tools #questions-status{font-size:.8rem;line-height:1.7;color:#71839a}
+#workspace-tools .note-disclosure{border-radius:0 9px 9px 0;font-size:.82rem;line-height:1.7;background:#edf3fb;padding:12px 14px}
+#workspace-tools #staff-questions{margin-top:18px}#workspace-tools #questions-select{margin-top:8px}
+@media(max-width:600px){.workspace-lesson-header .workspace-title-actions{right:16px}#workspace-tools .student-note-fold{padding:16px}}

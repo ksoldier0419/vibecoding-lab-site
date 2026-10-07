@@ -39,7 +39,7 @@ $('workspace-frame').addEventListener('load',()=>{
   const doc=frame.contentDocument,toc=doc.querySelector('.toc');
   const heading=doc.querySelector('.lesson h1,.lesson h2')||doc.querySelector('h1');if(heading)document.documentElement.style.setProperty('--noti-title-color',frame.contentWindow.getComputedStyle(heading).color);
   if(toc){toc.classList.add('workspace-toc');const style=doc.createElement('link');style.rel='stylesheet';style.href=document.querySelector('link[href*="teaching-workspace.css"]').href;doc.head.append(style);toc.prepend($('workspace-selectors'));}
-  const header=doc.querySelector('.site-header .wrap');if(header){const actions=doc.createElement('div');actions.className='workspace-title-actions';header.append(actions);actions.append($('tools-toggle'));$('tools-toggle').hidden=false;}
+  const header=doc.querySelector('.site-header');if(header){header.classList.add('workspace-lesson-header');const actions=doc.createElement('div');actions.className='workspace-title-actions';header.append(actions);actions.append($('tools-toggle'));$('tools-toggle').hidden=false;}
   const noteBox=doc.querySelector('.instructor-notes');if(noteBox)noteBox.previousElementSibling?.remove();
   if(!staffView)connectSelectionQuestion(doc);
   frame.contentDocument.addEventListener('click',event=>{
