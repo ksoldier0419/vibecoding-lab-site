@@ -86,6 +86,13 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape' && !$('quest
 // Keep the window and mascot together, including after viewport changes.
 const notiHeader=$('questions-panel').querySelector('.noti-chat-header'),notiImage=$('noti-launcher').querySelector('img');
 let notiPosition=null,notiDrag=null,dizzyTimer,lastNotiShake=-Infinity,notiSuppressClickUntil=0;
+let notiChatActive=false,notiReaction=false;
+function updateNotiActivity(){
+ const src=notiChatActive?'/auth-assets/noti-chat.gif':'/auth-assets/noti.gif';
+ const titleImage=notiHeader.querySelector('img');if(titleImage.getAttribute('src')!==src)titleImage.src=src;
+ if(!notiReaction && notiImage.getAttribute('src')!==src)notiImage.src=src;
+}
+window.setNotiChatActive=active=>{notiChatActive=active;updateNotiActivity();};
 function placeNoti(x,y){
  const panel=$('questions-panel'),icon=$('noti-launcher'),wasHidden=panel.hidden;
  if(wasHidden)panel.hidden=false;
@@ -101,8 +108,8 @@ function placeNoti(x,y){
 }
 function dizzyNoti(){
  const now=performance.now(),throwing=now-lastNotiShake<1800;lastNotiShake=throwing?-Infinity:now;
- clearTimeout(dizzyTimer);notiImage.src=throwing?'/auth-assets/noti-throw.gif':'/auth-assets/noti-dizzy.gif';$('noti-launcher').querySelector('span').textContent=throwing?'에잇!':'어질어질…';
- dizzyTimer=setTimeout(()=>{notiImage.src='/auth-assets/noti.gif';$('noti-launcher').querySelector('span').textContent='질의응답';},2500);
+ clearTimeout(dizzyTimer);notiReaction=true;notiImage.src=throwing?'/auth-assets/noti-throw.gif':'/auth-assets/noti-dizzy.gif';$('noti-launcher').querySelector('span').textContent=throwing?'에잇!':'어질어질…';
+ dizzyTimer=setTimeout(()=>{notiReaction=false;updateNotiActivity();$('noti-launcher').querySelector('span').textContent='질의응답';},2500);
 }
 for(const handle of [notiHeader,$('noti-launcher')]){
 handle.addEventListener('pointerdown',event=>{

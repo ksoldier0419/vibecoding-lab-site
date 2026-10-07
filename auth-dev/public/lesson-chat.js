@@ -2,6 +2,8 @@
  const get=id=>document.getElementById(id),params=new URLSearchParams(location.search);
  const url='/api/study/'+encodeURIComponent(params.get('course'))+'/'+encodeURIComponent(params.get('lesson'))+'/chat';
  let chat={messages:[],version:0},loaded=false,available=false,busy=false,pending=null;
+ let activityTimer,replying=false;
+ function chatActivity(){clearTimeout(activityTimer);window.setNotiChatActive(true);if(!replying)activityTimer=setTimeout(()=>window.setNotiChatActive(false),2500);}
  get('ai-chat').hidden=false;
  function status(text){get('chat-status').textContent=text;}
  function controls(){get('chat-text').disabled=!loaded || !available;get('chat-text').readOnly=busy;get('chat-send').disabled=!loaded || !available || busy;get('chat-reset').disabled=!loaded || !chat.messages.length || busy;get('chat-reload').disabled=busy;get('chat-forward').disabled=!loaded || !chat.messages.length || busy;}
@@ -36,11 +38,11 @@
  get('chat-form').addEventListener('submit',async event=>{
   event.preventDefault();if(busy || !loaded || !available)return;const text=get('chat-text').value.trim();if(!text)return;
   if(!pending || pending.text!==text || pending.version!==chat.version)pending={text,version:chat.version,requestId:crypto.randomUUID()};
-  busy=true;controls();render(text);status('답변을 기다리는 중…');
-  try{const data=await api(pending);chat=data.chat;pending=null;get('chat-text').value='';resizeInput();render();status('AI 답변을 저장했습니다. 참고한 교안 내용도 확인해 주세요.');}catch(e){render();status(e.message);}finally{busy=false;controls();if(available)get('chat-text').focus();}
+  busy=true;replying=true;chatActivity();controls();render(text);status('답변을 기다리는 중…');
+  try{const data=await api(pending);chat=data.chat;pending=null;get('chat-text').value='';resizeInput();render();status('AI 답변을 저장했습니다. 참고한 교안 내용도 확인해 주세요.');}catch(e){render();status(e.message);}finally{busy=false;replying=false;chatActivity();controls();if(available)get('chat-text').focus();}
  });
  function resizeInput(){const input=get('chat-text');input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px';}
- get('chat-text').addEventListener('input',resizeInput);
+ get('chat-text').addEventListener('input',()=>{resizeInput();chatActivity();});
  get('chat-text').addEventListener('keydown',event=>{if(event.key==='Enter' && !event.shiftKey && !event.isComposing && event.keyCode!==229){event.preventDefault();if(!busy && available)get('chat-form').requestSubmit();}});
  get('chat-reload').addEventListener('click',load);
  get('chat-reset').addEventListener('click',async()=>{if(busy || !loaded || !confirm('이 교안의 기존 AI 대화 기록을 지우고 새 대화를 시작할까요? 교수자에게 등록한 질문은 유지됩니다.'))return;busy=true;controls();try{chat=(await api({version:chat.version},'/reset')).chat;pending=null;render();status('새 대화를 시작했습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}});
