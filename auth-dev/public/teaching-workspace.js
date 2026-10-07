@@ -1,6 +1,7 @@
 const elements=new Map([...document.querySelectorAll('[id]')].map(n=>[n.id,n]));
 const $=id=>elements.get(id),staffView=location.pathname==='/teaching.html',params=new URLSearchParams(location.search);
 let courses=[],course,lesson,nextPage=null,readVersion=0,listBusy=false;
+$('staff-questions').open=false;
 function option(value,text){const node=document.createElement('option');node.value=value;node.textContent=text;return node;}
 async function api(url){const response=await fetch(url,{cache:'no-store'});const data=await response.json();if(response.status===401)throw Error('로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인해 주세요.');if(!response.ok)throw Error(data.error || '불러오지 못했습니다.');return data;}
 function navigate(folder,page){$('workspace-course').value=course.id;$('workspace-lesson').value=lesson.id;location.assign(location.pathname+'?'+new URLSearchParams({course:folder,lesson:page,panel:$('questions-panel').hidden?'notes':'questions'}));}

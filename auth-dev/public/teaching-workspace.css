@@ -52,7 +52,7 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 #workspace-tools .student-note-fold summary{font-size:1rem;color:#203957}
 #workspace-tools label{display:block;font-size:.85rem;font-weight:600;margin:18px 0 8px;color:#536c87}
 #workspace-tools textarea{display:block;box-sizing:border-box;width:100%;border:1px solid #d5e0ed;border-radius:11px;background:#fbfcfe;padding:14px;font: .93rem/1.8 system-ui,-apple-system,"Malgun Gothic",sans-serif;resize:vertical}
-#workspace-tools #lesson-note{min-height:240px;height:36vh;max-height:700px}
+#workspace-tools #lesson-note{min-height:420px;height:60vh;max-height:1000px}
 #workspace-tools select{box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid #d5e0ed;border-radius:10px;background:#fff;font:inherit;color:#203957}
 #workspace-tools button{padding:10px 14px;margin:8px 8px 8px 0;border:1px solid #d5e0ed;border-radius:9px;background:#f7f9fc;color:#466382;font:600 .82rem/1.5 system-ui,-apple-system,"Malgun Gothic",sans-serif;cursor:pointer}
 #workspace-tools button:hover{background:#edf2f8}#workspace-tools button:disabled{opacity:.5;cursor:default}
