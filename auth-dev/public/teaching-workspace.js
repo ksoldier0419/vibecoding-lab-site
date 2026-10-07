@@ -15,7 +15,7 @@ async function load(){
   if(!params.has('course') || !params.has('lesson')){location.replace(location.pathname+'?'+new URLSearchParams({course:course.id,lesson:lesson.id,panel:params.get('panel')==='questions'?'questions':'notes'}));return;}
   $('workspace-course').replaceChildren(...courses.map(c=>option(c.id,c.title)));$('workspace-course').value=course.id;
   $('workspace-lesson').replaceChildren(...course.lessons.map(l=>option(l.id,l.title)));$('workspace-lesson').value=lesson.id;
-  $('workspace-course').disabled=false;$('workspace-lesson').disabled=false;
+  $('workspace-course').disabled=false;$('workspace-lesson').disabled=false;$('workspace-course').title=course.title;$('workspace-lesson').title=lesson.title;
   $('quiz-entry').href=(staffView?'/quiz-studio.html':'/concept-quiz.html')+'?'+new URLSearchParams({course:course.id,lesson:lesson.id});$('quiz-entry').textContent=staffView?'문제 출제·통계':'개념 확인 문제';
   if(!staffView){const invite=document.createElement('script');invite.src='/auth-assets/quiz-invite.js';document.body.append(invite);}
   $('workspace-frame').src=staffView?'/instructor/courses/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id):'/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id);
@@ -37,7 +37,7 @@ $('workspace-frame').addEventListener('load',()=>{
  try {
   const frame=$('workspace-frame');
   const doc=frame.contentDocument,toc=doc.querySelector('.toc');
-  if(toc){const style=doc.createElement('link');style.rel='stylesheet';style.href='/auth-assets/teaching-workspace.css';doc.head.append(style);toc.prepend($('workspace-selectors'));}
+  if(toc){toc.classList.add('workspace-toc');const style=doc.createElement('link');style.rel='stylesheet';style.href='/auth-assets/teaching-workspace.css';doc.head.append(style);toc.prepend($('workspace-selectors'));}
   const noteBox=doc.querySelector('.instructor-notes');if(noteBox)noteBox.previousElementSibling?.remove();
   if(!staffView)connectSelectionQuestion(doc);
   frame.contentDocument.addEventListener('click',event=>{
