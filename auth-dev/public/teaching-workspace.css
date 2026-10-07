@@ -38,3 +38,5 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 .workspace-toc .toc-section-list a{padding-left:25px;color:#6a7d98;font-size:.81rem}
 .workspace-toc .toc-section summary a{padding:0;color:#254c7b;font-weight:600;flex:1}
 .workspace-toc .toc-section summary:hover,.workspace-toc a:hover{background:#f0f5fc}
+
+.noti-chat-header{background:var(--noti-title-color,#1d2433);color:#fff}

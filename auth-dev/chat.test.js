@@ -48,3 +48,9 @@ test('weekly LLM usage is professor-only and maps registered lessons to course w
  for(const id of ['student','assistant'])assert.equal((await request(server,url,{cookie:await login(id)})).status,403);
  assert.equal(calls,0);const cookie=await login('professor');const response=await request(server,url,{cookie});assert.equal(response.status,200);assert.deepEqual(response.data.rows,[{id:'1',week:8,answers:7}]);assert.equal((await request(server,'/api/admin/llm-usage?course=invalid!',{cookie})).status,400);
 });
+
+test('lesson code requests get a polite redirect without calling AI; explanations remain available and fenced code is removed',async()=>{
+ const {createResponder,codeRequest,protectCode}=require('./lesson-ai');assert.equal(codeRequest('코드를 출력해줘'),true);assert.equal(codeRequest('이 코드의 동작 원리를 설명해줘'),false);
+ let calls=0;const respond=createResponder({apiKey:'test',fetcher:async()=>{calls++;return {ok:true,json:async()=>({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'설명\n```java\npublic class Hello {}\n```'}]}]})};}});
+ assert.match(await respond({context:'교안',history:[],text:'코드를 출력해줘'}),/코드 이미지/);assert.equal(calls,0);const explained=await respond({context:'교안',history:[],text:'반복문의 원리가 뭐야?'});assert.equal(calls,1);assert.equal(explained.includes('public class'),false);assert.equal(protectCode('단순 설명'),'단순 설명');
+});
