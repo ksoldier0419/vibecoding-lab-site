@@ -144,6 +144,7 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
   require('./assistant-routes').assistantRoutes(app,repository,{signedIn,localPost,isProfessor,professorEmail});
   require('./instructor-routes').instructorRoutes(app,repository,{signedIn,localPost,canTeach});
   require('./course-pages').coursePages(app,repository,{isProfessor,canTeach});
+  require('./teaching-routes').teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach});
   app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
   app.get('/login.html', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
   app.use('/auth-assets', express.static(path.join(__dirname, 'public'), { dotfiles: 'deny', index: false }));

@@ -10,8 +10,11 @@ function createRepository(url) {
     return row ? { studentNumber: row.student_number, name: row.student_name, major1: row.major1,
       major2: row.major2 || '', phone: row.phone || '' } : null;
   }
+  const assistants=require('./assistant-db').createAssistantRepository(sql);
   return {
-    ...require('./assistant-db').createAssistantRepository(sql),
+    ...assistants,
+    ...require('./assistant-scopes-db').createScopeRepository(sql,assistants.setupAssistantRoles),
+    ...require('./student-notes-db').createStudentNoteRepository(sql),
     ...require('./instructor-db').createInstructorRepository(sql),
     ...require("./roster-db").createRosterRepository(sql),
     async getProfile(id) {

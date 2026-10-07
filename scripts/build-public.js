@@ -2,11 +2,12 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'public');
 const marker=path.join(out,'.generated-site');
-const instructorRoot=path.join(root,'auth-dev/private/2026-2-java_basic');
-const lessons=JSON.parse(fs.readFileSync(path.join(instructorRoot,'manifest.json'),'utf8'));
-if(!lessons.length || !fs.existsSync(path.join(instructorRoot,'index.html')) || lessons.some(item=>!/^week[\w-]+\.html$/.test(item.id) || !fs.existsSync(path.join(instructorRoot,item.id)))) {
- throw new Error('Generate Java instructor pages before building.');
+const courseCatalog=JSON.parse(fs.readFileSync(path.join(root,'auth-dev/private/catalog.json'),'utf8'));
+if(!courseCatalog.length || courseCatalog.some(c=>! /^[a-z0-9][a-z0-9_-]{0,99}$/.test(c.id)))throw new Error('Invalid generated teaching catalog.');
+for(const course of courseCatalog)for(const lesson of course.lessons) {
+ if(!/^week[\w-]+\.html$/.test(lesson.id) || !fs.existsSync(path.join(root,'auth-dev/private',course.id,lesson.id)) || !fs.existsSync(path.join(root,course.id,lesson.id)))throw new Error('Missing registered lesson: '+course.id+'/'+lesson.id);
 }
+for(const course of courseCatalog)if(!fs.existsSync(path.join(root,'auth-dev/private',course.id,'index.html')))throw new Error('Generate course text pages before building.');
 if(fs.existsSync(out)) {
  if(fs.lstatSync(out).isSymbolicLink() || fs.realpathSync(out)!==out || !fs.existsSync(marker)) throw new Error('Refusing to replace an unmarked public directory.');
  fs.rmSync(out,{recursive:true});
@@ -22,7 +23,7 @@ function copy(source,destination) {
   for(const name of fs.readdirSync(source)) if(!name.startsWith('.')) copy(path.join(source,name),path.join(destination,name));
  } else if(allowedExt.has(path.extname(source).toLowerCase())) fs.copyFileSync(source,destination);
 }
-for(const name of ['index.html','assets','materials','2026-2-python_adv','2026-2-java_basic']) copy(path.join(root,name),path.join(out,name));
+for(const name of ['index.html','assets','materials',...courseCatalog.map(c=>c.id)]) copy(path.join(root,name),path.join(out,name));
 copy(path.join(root,'auth-dev/public'),path.join(out,'auth-assets'));
 // Only login shell is public at its top-level URL. courses/admin URLs retain server guards.
 copy(path.join(root,'auth-dev/public/login.html'),path.join(out,'login.html'));
@@ -30,7 +31,7 @@ const index=path.join(out,'index.html');
 fs.writeFileSync(index,fs.readFileSync(index,'utf8').replace('</header>','<div class="wrap"><p><a style="color:inherit" href="/login.html">로그인 · 내 강의자료</a></p></div></header>'));
 console.log('Public lecture materials and login assets built. Server code and environment files excluded.');
 
-for(const folder of ['2026-2-java_basic','2026-2-python_adv']) {
+for(const folder of courseCatalog.map(c=>c.id)) {
  const file=path.join(out,folder,'index.html');
  if(!fs.readFileSync(file,'utf8').includes('<h1>')) throw new Error('Missing course index: '+folder);
  console.log('Verified static output: '+folder+'/index.html');

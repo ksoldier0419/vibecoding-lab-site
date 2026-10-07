@@ -8,6 +8,7 @@ function instructorRoutes(app,repository,{signedIn,localPost,canTeach}) {
   try {
    if(!await canTeach(req.session.user)) return res.status(403).json({error:'관리자 또는 조교만 이용할 수 있습니다.'});
    res.set('Cache-Control','private, no-store');
+   res.set('X-Frame-Options','SAMEORIGIN');
    next();
   }catch {res.status(503).json({error:'교안 접근 권한을 확인하지 못했습니다. 다시 시도해 주세요.'});}
  }
@@ -19,6 +20,22 @@ function instructorRoutes(app,repository,{signedIn,localPost,canTeach}) {
   next();
  }
  const guard=[signedIn,teachingAccess];
+ const {findLesson,catalog}=require('./teaching-catalog');
+ app.use('/instructor/courses/:course',...guard,(req,res,next)=>{
+  try {
+   const course=catalog().find(c=>c.id===req.params.course);if(!course)return res.sendStatus(404);
+   return express.static(path.join(__dirname,'private',course.id),{dotfiles:'deny',index:'index.html',setHeaders:res=>res.setHeader('Cache-Control','private, no-store')})(req,res,next);
+  }catch{return res.sendStatus(503);}
+ });
+ async function genericLesson(req,res,next){try{req.course=findLesson(req.params.course,req.params.lesson);if(!req.course)return res.sendStatus(404);next();}catch{res.sendStatus(503);}}
+ app.get('/api/instructor/courses/:course/:lesson/note',...guard,genericLesson,async(req,res)=>{
+  try{res.json({note:await repository.getInstructorNote(req.session.user.id,req.course.id,req.params.lesson)});}catch{res.status(503).json({error:'메모를 불러오지 못했습니다.'});}
+ });
+ app.post('/api/instructor/courses/:course/:lesson/note',localPost,...guard,genericLesson,async(req,res)=>{
+  const value=req.body;
+  if(!value || Object.keys(value).some(k=>!['text','version'].includes(k)) || typeof value.text!=='string' || value.text.length>20000 || !Number.isSafeInteger(value.version) || value.version<0)return res.sendStatus(400);
+  try{const note=await repository.saveInstructorNote(req.session.user.id,req.course.id,req.params.lesson,value);if(!note)return res.status(409).json({error:'다른 창에서 메모가 변경되었습니다. 입력 내용을 복사한 뒤 다시 불러와 주세요.'});res.json({note});}catch{res.status(503).json({error:'메모를 저장하지 못했습니다. 다시 시도해 주세요.'});}
+ });
  app.use('/instructor/java',...guard,express.static(root,{dotfiles:'deny',index:'index.html',setHeaders:res=>res.setHeader('Cache-Control','private, no-store')}));
  app.get('/api/instructor/java/:lesson/note',...guard,lesson,async(req,res)=>{
   try {res.json({note:await repository.getInstructorNote(req.session.user.id,folder,req.params.lesson)});}

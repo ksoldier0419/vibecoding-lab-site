@@ -1,7 +1,7 @@
 const express=require('express');
 const path=require('node:path');
-// Explicit course-code mapping; do not derive filesystem paths from requests.
-const pages={'603108':'2026-2-python_adv','903131':'2026-2-java_basic'};
+// Only generated, allowlisted course folders may be served.
+const pages=Object.fromEntries(require('./teaching-catalog').catalog().map(c=>[c.courseId,c.id]));
 function coursePages(app,repository,{isProfessor,canTeach}) {
  const root=path.join(__dirname,'..');
  async function accessible(user) {
@@ -24,7 +24,7 @@ function coursePages(app,repository,{isProfessor,canTeach}) {
    for(const c of result.courses) {
     if(!grouped.has(c.id)) {
      const folder=pages[c.id],available=!!folder;
-     grouped.set(c.id,{id:c.id,title:c.title,sections:[],url:available?'/'+folder+'/index.html':null});
+     grouped.set(c.id,{id:c.id,title:c.title,sections:[],url:available?'/'+folder+'/index.html':null,studyUrl:available?'/study.html?course='+encodeURIComponent(folder):null});
     }
     if(c.section && !grouped.get(c.id).sections.includes(c.section)) grouped.get(c.id).sections.push(c.section);
    }
@@ -36,7 +36,7 @@ function coursePages(app,repository,{isProfessor,canTeach}) {
   // Vercel serves files from public/, but does not use express.static's directory index.
   // Keep existing folder links working and preserve relative URLs on the index page.
   app.get(['/'+folder,'/'+folder+'/'],(req,res)=>res.redirect(307,'/'+folder+'/index.html'));
-  app.use('/'+folder,express.static(path.join(root,folder),{dotfiles:'deny',index:'index.html'}));
+  app.use('/'+folder,express.static(path.join(root,folder),{dotfiles:'deny',index:'index.html',setHeaders:res=>res.setHeader('X-Frame-Options','SAMEORIGIN')}));
  }
  app.use('/materials',express.static(path.join(root,'materials'),{dotfiles:'deny',index:false}));
  app.use('/assets',express.static(path.join(root,'assets'),{dotfiles:'deny',index:false}));

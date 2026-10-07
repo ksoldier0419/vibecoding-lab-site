@@ -1,0 +1,64 @@
+[
+  {
+    "id": "2026-2-java_basic",
+    "courseId": "903131",
+    "title": "2026-2 창의코딩-모두의자바",
+    "lessons": [
+      {
+        "id": "week02-1-java.html",
+        "title": "자바 실습 환경 준비(1)"
+      },
+      {
+        "id": "week02-2-vscode-java.html",
+        "title": "VSCode + Java 실습 환경 준비(1)"
+      },
+      {
+        "id": "week03-1-hello.html",
+        "title": "Hello Java"
+      },
+      {
+        "id": "week05-variables-constants.html",
+        "title": "변수와 상수"
+      },
+      {
+        "id": "week06-data-types.html",
+        "title": "자료형과 형 변환"
+      },
+      {
+        "id": "week07-standard-io.html",
+        "title": "표준 입출력"
+      },
+      {
+        "id": "week08-operators-conditions.html",
+        "title": "연산자와 조건문"
+      },
+      {
+        "id": "week10-condition-applications.html",
+        "title": "조건문 활용"
+      },
+      {
+        "id": "week11-loops.html",
+        "title": "반복문"
+      }
+    ]
+  },
+  {
+    "id": "2026-2-python_adv",
+    "courseId": "603108",
+    "title": "2026-2 파이썬고급프로그래밍",
+    "lessons": [
+      {
+        "id": "week01-colab.html",
+        "title": "Colab 실습 환경 준비(1)"
+      },
+      {
+        "id": "week02-colab.html",
+        "title": "Colab 실습 환경 준비(2)"
+      },
+      {
+        "id": "week03-string-fct1.html",
+        "title": "문자열 함수 정리(1)"
+      }
+    ]
+  }
+]

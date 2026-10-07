@@ -1,0 +1,6 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>조교 담당 과목·분반</title><link rel="stylesheet" href="/auth-assets/login.css"><script src="/auth-assets/assistant-scopes.js" defer></script></head><body><main>
+<h1>조교 담당 과목·분반</h1><p><a href="/students.html">전체 학생 관리</a></p><p id="scope-student"></p>
+<p>지정한 과목·분반의 학생 메모만 열람할 수 있습니다. 담당 범위가 없으면 학생 메모 열람을 허용하지 않습니다.</p>
+<form id="scope-form"><label for="scope-course">과목</label><select id="scope-course" required></select><label for="scope-section">분반</label><select id="scope-section" required></select><button type="submit">담당 추가</button></form>
+<ul id="scope-list"></ul><button id="scope-retry" type="button">다시 불러오기</button><p id="scope-status" role="status"></p>
+</main></body></html>

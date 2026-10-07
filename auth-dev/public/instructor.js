@@ -7,7 +7,8 @@ const input=document.getElementById('lesson-note');
 if(input) {
  const status=document.getElementById('note-status'),saveButton=document.getElementById('save-note'),reload=document.getElementById('reload-note');
  const lesson=location.pathname.split('/').pop();
- const url='/api/instructor/java/'+encodeURIComponent(lesson)+'/note';
+ const parts=location.pathname.split('/');
+ const url=input.dataset?.noteUrl || (parts[2]==='courses'?'/api/instructor/courses/'+encodeURIComponent(parts[3])+'/'+encodeURIComponent(lesson)+'/note':'/api/instructor/java/'+encodeURIComponent(lesson)+'/note');
  let version=0,saved='',busy=false,timer,conflict=false,loaded=false;
  const dirty=()=>loaded && input.value!==saved;
  async function result(response) {

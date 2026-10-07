@@ -8,6 +8,7 @@ function createAssistantRepository(sql) {
   return ready;
  }
  return {
+  setupAssistantRoles:setup,
   async isTeachingAssistant(id) {
    await setup();
    const rows=await sql.query('SELECT google_id FROM teaching_assistants WHERE google_id=$1',[id]);

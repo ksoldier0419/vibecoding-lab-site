@@ -14,7 +14,9 @@ async function loadCourses() {
    if(c.url)card.href=c.url;else card.className='course-pending';
    title.textContent=c.title;
    detail.textContent='과목코드 '+c.id+(c.sections.length?' · '+c.sections.map(s=>s+'분반').join(', '):'')+(c.url?' · 강의자료 열기':' · 강의자료 준비 중');
-   card.append(title,detail);li.append(card);list.append(li);
+   card.append(title,detail);li.append(card);
+   if(c.studyUrl){const notes=document.createElement('a');notes.href=c.studyUrl;notes.textContent='내 메모와 함께 보기';li.append(notes);}
+   list.append(li);
   }
   statusText.hidden=data.courses.length>0;statusText.textContent='등록된 수강 과목이 없습니다.';
  }catch(error){statusText.textContent=error.message || '목록을 불러오지 못했습니다.';retry.hidden=false;}

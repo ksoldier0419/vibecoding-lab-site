@@ -26,7 +26,7 @@ function renderPeople(){
   const enabled=assistantPeople.get(p.id),toggle=document.createElement('button');toggle.type='button';toggle.textContent=enabled?'조교 해제':'조교 지정';
   toggle.addEventListener('click',()=>action(toggle,async()=>{await api('/api/admin/assistants',{studentId:p.id,enabled:!enabled});await loadPeople();message(p.name+' 학생의 조교 권한을 '+(enabled?'해제':'부여')+'했습니다.');}));
   actions.append(toggle);
-  if(enabled){const badge=document.createElement('strong');badge.textContent='조교';actions.append(badge);}
+  if(enabled){const badge=document.createElement('strong');badge.textContent='조교';const scopes=document.createElement('a');scopes.textContent='담당 과목·분반';scopes.href='/assistant-scopes.html?student='+encodeURIComponent(p.id);actions.append(badge,scopes);}
  }
  td.append(actions);tr.append(td);$('person-rows').append(tr);}
 }
