@@ -16,6 +16,8 @@ async function load(){
   $('workspace-course').replaceChildren(...courses.map(c=>option(c.id,c.title)));$('workspace-course').value=course.id;
   $('workspace-lesson').replaceChildren(...course.lessons.map(l=>option(l.id,l.title)));$('workspace-lesson').value=lesson.id;
   $('workspace-course').disabled=false;$('workspace-lesson').disabled=false;
+  $('quiz-entry').href=(staffView?'/quiz-studio.html':'/concept-quiz.html')+'?'+new URLSearchParams({course:course.id,lesson:lesson.id});$('quiz-entry').textContent=staffView?'문제 출제·통계':'개념 확인 문제';
+  if(!staffView){const invite=document.createElement('script');invite.src='/auth-assets/quiz-invite.js';document.body.append(invite);}
   $('workspace-frame').src=staffView?'/instructor/courses/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id):'/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id);
   $('workspace-frame').hidden=false;$('workspace-status').textContent='';$('workspace-retry').hidden=true;
   questionsReady=!staffView || course.reviewAllowed;

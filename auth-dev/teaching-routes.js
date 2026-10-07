@@ -56,6 +56,7 @@ function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach,
   }catch{fail(res);}
  }
  const review=[signedIn,staff,lesson,reviewScope];
+ require('./quiz-routes').quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfessor,config});
  for(const [prefix,guards,student] of [['/api/study',own,true],['/api/teaching',review,false]]) {
   app.get(prefix+'/:course/:lesson/questions',...guards,async(req,res)=>{
    const after=req.query.after || '0';if(typeof after!=='string' || !idPattern.test(after))return res.status(400).json({error:'목록 위치를 확인해 주세요.'});

@@ -15,3 +15,5 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 .noti-chat-window{width:66.666667vw;height:50dvh}
 
 #noti-size-bl,#noti-size-tr{position:absolute;z-index:2;border:0;background:white;color:#526078;cursor:nesw-resize;touch-action:none;padding:3px}#noti-size-bl{left:1px;bottom:1px}#noti-size-tr{right:1px;top:1px;background:transparent;color:white}.noti-full #noti-size-bl,.noti-full #noti-size-tr{display:none}
+
+#quiz-invitation{position:fixed;right:22px;bottom:125px;z-index:12;max-width:260px;background:white;border:1px solid #d6e0ed;border-radius:16px;padding:14px;box-shadow:0 6px 24px #182d4c25}#quiz-invitation p{margin:0 0 10px}#quiz-invitation a{color:#305ca5;margin-right:12px}#quiz-invitation button{border:0;background:transparent;color:#64748b;cursor:pointer}#quiz-invitation[hidden]{display:none}body:has(.noti-chat-window:not([hidden])) #quiz-invitation{display:none}
