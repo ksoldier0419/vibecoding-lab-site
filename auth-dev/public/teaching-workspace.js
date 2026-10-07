@@ -75,9 +75,13 @@ const questionURL=()=>'/api/'+(staffView?'teaching':'study')+'/'+encodeURICompon
 function hasQuestionDraft(){return Boolean($('question-text').value.trim() || (selectedQuestion && $('answer-text').value!==answerBaseline));}
 window.addEventListener('beforeunload',event=>{if(hasQuestionDraft()){event.preventDefault();event.returnValue='';}});
 function showPanel(question){
- $('notes-panel').hidden=question;$('questions-panel').hidden=!question;
+ $('notes-panel').hidden=false;$('questions-panel').hidden=!question;
+ $('noti-launcher').setAttribute('aria-expanded',String(question));
  for(const [id,active] of [['tab-notes',!question],['tab-questions',question]]){$(id).setAttribute('aria-selected',String(active));$(id).tabIndex=active?0:-1;}
 }
+$('noti-launcher').addEventListener('click',()=>{const opening=$('questions-panel').hidden;showPanel(opening);if(opening)$('noti-close').focus();});
+$('noti-close').addEventListener('click',()=>{showPanel(false);$('noti-launcher').focus();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape' && !$('questions-panel').hidden){showPanel(false);$('noti-launcher').focus();}});
 $('tab-notes').addEventListener('click',()=>showPanel(false));$('tab-questions').addEventListener('click',()=>showPanel(true));
 for(const id of ['tab-notes','tab-questions'])$(id).addEventListener('keydown',event=>{
  if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();const question=event.key==='End' || (event.key!=='Home' && $('questions-panel').hidden);showPanel(question);$(question?'tab-questions':'tab-notes').focus();}
