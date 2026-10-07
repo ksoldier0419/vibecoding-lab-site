@@ -34,4 +34,17 @@ test('chat database reserves per owner and version, caps daily attempts and turn
  const calls=[];const sql={query:(query,params)=>{calls.push({query,params});return Promise.resolve([]);},transaction:async()=>[]};const repo=require('./chat-db').createChatRepository(sql);
  await repo.beginChat('one','java','lesson',2,'12345678-1234-4123-8123-123456789abc');let call=calls.at(-1);assert.match(call.query,/FOR UPDATE/);assert.match(call.query,/attempts<\$6/);assert.match(call.query,/jsonb_array_length\(messages\)<60/);assert.deepEqual(call.params.slice(0,4),['one','java','lesson',2]);
  await repo.finishChat('one','java','lesson',2,'id',[]);assert.match(calls.at(-1).query,/request_id=\$5::uuid/);assert.match(calls.at(-1).query,/version=\$4/);
+ assert.match(calls.at(-1).query,/SELECT \$1,\$2,\$3,1 FROM saved/);assert.match(calls.at(-1).query,/answers=lesson_ai_counts.answers\+1/);
+ await repo.resetChat('one','java','lesson',3);assert.ok(!calls.at(-1).query.includes('lesson_ai_counts'));
+ await repo.studentLLMUsage('903131',[{course:'java',lesson:'week08.html',week:8}]);assert.match(calls.at(-1).query,/WHERE EXISTS/);assert.deepEqual(calls.at(-1).params,['903131','[{"course":"java","lesson":"week08.html","week":8}]']);
+});
+
+test('weekly LLM usage is professor-only and maps registered lessons to course weeks',async t=>{
+ let nonce,who='student',calls=0;
+ const repository={recordLogin:async()=>({}),isTeachingAssistant:async id=>id==='assistant',studentLLMUsage:async(course,lessons)=>{calls++;assert.equal(course,'903131');assert.ok(lessons.some(l=>l.week===8 && l.course==='2026-2-java_basic'));assert.ok(!lessons.some(l=>l.course.includes('python')));return [{id:'1',week:8,answers:7}];}};
+ const server=createApp({clientId:'test',secret:'x'.repeat(64),openRegistration:true,professorEmail:'professor@gmail.com'},{verifyIdToken:async()=>({getPayload:()=>({sub:who,email:who+'@gmail.com',email_verified:true,nonce,exp:Date.now()/1000+3600})})},repository).listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));t.after(()=>new Promise(r=>server.close(r)));
+ async function login(id){who=id;const c=await request(server,'/api/auth/config');nonce=c.data.nonce;return(await request(server,'/api/auth/google',{cookie:c.cookie,body:{credential:'test',nonce}})).cookie;}
+ const url='/api/admin/llm-usage?course=903131';assert.equal((await request(server,url)).status,401);
+ for(const id of ['student','assistant'])assert.equal((await request(server,url,{cookie:await login(id)})).status,403);
+ assert.equal(calls,0);const cookie=await login('professor');const response=await request(server,url,{cookie});assert.equal(response.status,200);assert.deepEqual(response.data.rows,[{id:'1',week:8,answers:7}]);assert.equal((await request(server,'/api/admin/llm-usage?course=invalid!',{cookie})).status,400);
 });

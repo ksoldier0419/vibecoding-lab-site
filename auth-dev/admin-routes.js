@@ -12,6 +12,15 @@ function adminRoutes(app, repository, {signedIn,localPost,isProfessor}) {
   return res.status(503).json({error:'명단을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.'});
  }
  const guard=[signedIn,professor];
+ app.get('/api/admin/llm-usage',...guard,async(req,res)=>{
+  let course;try{course=v.courseId(req.query.course);}catch(e){return res.status(400).json({error:e.message});}
+  try{
+   const lessons=require('./teaching-catalog').catalog().filter(c=>c.courseId===course).flatMap(c=>c.lessons.map(l=>{
+    const match=/^week(\d+)(?:[-.]|$)/.exec(l.id);return {course:c.id,lesson:l.id,week:match?Number(match[1]):0};
+   }));
+   res.json({rows:await repository.studentLLMUsage(course,lessons),unit:'completed_answers'});
+  }catch(e){fail(res,e);}
+ });
  app.get('/api/admin/students',...guard,async(req,res)=>{
   try {res.json({rows:await repository.students()});}catch(e){fail(res,e);}
  });

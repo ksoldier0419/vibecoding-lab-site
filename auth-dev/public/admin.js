@@ -1,6 +1,7 @@
 const $=id=>document.getElementById(id);
 const rosterCollator=new Intl.Collator('ko',{numeric:true});
-let rosterSort='name-asc';
+let rosterSort='name-asc',usageByStudent=null;
+for(const title of [...Array.from({length:16},(_,i)=>(i+1)+'주차'),'총합']){const th=document.createElement('th');th.textContent=title;$('usage-head').append(th);}
 let allRows=[],assistantPeople=new Map(),editing=null,previewToken=null,loadedCourse=null;
 async function api(url,body) {
  const response=await fetch(url,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -53,6 +54,7 @@ function render() {
  for(const value of filtered) {
   const tr=document.createElement('tr');cells(tr,[value.studentNumber,value.name,value.section||'—',assistantPeople.get(value.id)?'조교':'학생',value.registered?'가입 완료':'미가입',value.email||'—',value.registered?formatRegisteredAt(value.registeredAt):'—']);
   tr.lastElementChild.className='registered-at';
+  cells(tr,[usageByStudent?usageByStudent.get(value.id)?.total||0:'—']);
   const td=document.createElement('td'),button=document.createElement('button');button.type='button';button.textContent='수정';
   button.addEventListener('click',()=>{
    editing={id:value.id,section:value.section};for(const key of ['studentNumber','name','section']) $('editor').elements.namedItem(key).value=value[key];
@@ -69,7 +71,15 @@ function render() {
   });
   const actions=document.createElement('div');actions.className='row-actions';actions.append(button,remove);td.append(actions);tr.append(td);target.append(tr);
  }
+ const usageRows=$('usage-rows');usageRows.replaceChildren();const seen=new Set();
+ for(const person of filtered){if(seen.has(person.id))continue;seen.add(person.id);const usage=usageByStudent?.get(person.id),tr=document.createElement('tr');cells(tr,[person.studentNumber,person.name,[...new Set(sectionRows.filter(r=>r.id===person.id).map(r=>r.section||'—'))].join(', '),...Array.from({length:16},(_,i)=>usageByStudent?usage?.weeks[i]||0:'—'),usageByStudent?usage?.total||0:'—']);usageRows.append(tr);}
 }
+async function loadUsage(course){
+ usageByStudent=null;$('usage-status').textContent='사용량을 불러오는 중…';
+ try{const data=await api('/api/admin/llm-usage?course='+encodeURIComponent(course));if($('course').value!==course)return;const usage=new Map();for(const row of data.rows){const value=usage.get(row.id)||{weeks:Array(16).fill(0),total:0};const count=Number(row.answers);value.total+=count;if(row.week>=1 && row.week<=16)value.weeks[row.week-1]+=count;usage.set(row.id,value);}usageByStudent=usage;$('usage-status').textContent='단위: 답변 완료 횟수(회). 주차는 사용 날짜가 아닌 교안 주차입니다. 주차 범위 밖의 사용량도 총합에 포함합니다.';}
+ catch(e){$('usage-status').textContent='사용량을 불러오지 못했습니다. 새로고침해 주세요.';}
+}
+$('usage-refresh').addEventListener('click',()=>action($('usage-refresh'),async()=>{await loadUsage($('course').value);render();}));
 async function loadCourses() {
  const {courses}=await api('/api/admin/courses');$('course').replaceChildren();$('course-codes').replaceChildren();
  for(const c of courses){const option=document.createElement('option');option.value=c.id;option.textContent=c.title+' ('+c.id+')';$('course').append(option);const item=document.createElement('li');item.textContent=c.id+' : '+c.title;$('course-codes').append(item);}
@@ -91,7 +101,7 @@ async function loadRoster() {
  if(!course){allRows=[];loadedCourse=null;updateSections();render();$('empty').textContent='과목을 먼저 등록해 주세요.';return;}
  const [data,roles]=await Promise.all([api('/api/admin/roster?course='+encodeURIComponent(course)),api('/api/admin/assistants')]);
  assistantPeople=new Map(roles.rows.map(r=>[r.id,r.assistant]));
- allRows=data.rows;loadedCourse=course;updateSections(previous);render();
+ allRows=data.rows;loadedCourse=course;updateSections(previous);await loadUsage(course);render();
  if(!editing) $('section').value=selectedSection() || '';
 }
 async function action(button,fn) {
@@ -108,7 +118,7 @@ $('section-filter').addEventListener('change',()=>{
 });
 $('cancel').addEventListener('click',resetEditor);
 $('course').addEventListener('change',async()=>{
- invalidatePreview();allRows=[];updateSections();resetEditor();render();$('admin-content').inert=true;
+ invalidatePreview();allRows=[];usageByStudent=null;updateSections();resetEditor();render();$('admin-content').inert=true;
  try {await loadRoster();message('선택한 과목의 명단입니다.');} catch(e){message(e.message);} finally {$('admin-content').inert=false;}
 });
 $('editor').addEventListener('invalid',event=>{

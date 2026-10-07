@@ -6,7 +6,12 @@ function createChatRepository(sql) {
    request_id UUID,busy_until TIMESTAMPTZ,updated_at TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),PRIMARY KEY(google_id,course,lesson))`),
   sql.query(`CREATE TABLE IF NOT EXISTS lesson_ai_usage (google_id TEXT NOT NULL REFERENCES login_dev_users(google_id) ON DELETE CASCADE,
    day DATE NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(google_id,day))`)
- ]).catch(e=>{ready=undefined;throw e;});return ready;}
+ ]).then(()=>sql.transaction([
+  sql.query(`CREATE TABLE IF NOT EXISTS lesson_ai_counts (google_id TEXT NOT NULL REFERENCES login_dev_users(google_id) ON DELETE CASCADE,
+   course VARCHAR(100) NOT NULL,lesson VARCHAR(150) NOT NULL,answers INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(google_id,course,lesson))`),
+  sql.query(`INSERT INTO lesson_ai_counts(google_id,course,lesson,answers) SELECT google_id,course,lesson,jsonb_array_length(messages)/2
+   FROM lesson_ai_chats WHERE true ON CONFLICT DO NOTHING`)
+ ])).catch(e=>{ready=undefined;throw e;});return ready;}
  async function read(user,course,lesson){await setup();const rows=await sql.query(`SELECT messages,version,request_id AS "requestId",busy_until AS "busyUntil" FROM lesson_ai_chats WHERE google_id=$1 AND course=$2 AND lesson=$3`,[user,course,lesson]);return rows[0]||{messages:[],version:0};}
  return {
   getChat:read,
@@ -20,8 +25,19 @@ function createChatRepository(sql) {
     WHERE google_id=$1 AND course=$2 AND lesson=$3 AND EXISTS(SELECT 1 FROM quota) RETURNING messages,version`,[user,course,lesson,version,requestId,limit]);return rows[0]||null;
   },
   async finishChat(user,course,lesson,version,requestId,messages){
-   const rows=await sql.query(`UPDATE lesson_ai_chats SET messages=$6::jsonb,version=version+1,busy_until=NULL,updated_at=clock_timestamp()
-    WHERE google_id=$1 AND course=$2 AND lesson=$3 AND version=$4 AND request_id=$5::uuid AND busy_until IS NOT NULL RETURNING messages,version`,[user,course,lesson,version,requestId,JSON.stringify(messages)]);return rows[0]||null;
+   await setup();const rows=await sql.query(`WITH saved AS (UPDATE lesson_ai_chats SET messages=$6::jsonb,version=version+1,busy_until=NULL,updated_at=clock_timestamp()
+    WHERE google_id=$1 AND course=$2 AND lesson=$3 AND version=$4 AND request_id=$5::uuid AND busy_until IS NOT NULL RETURNING messages,version),
+    counted AS (INSERT INTO lesson_ai_counts(google_id,course,lesson,answers) SELECT $1,$2,$3,1 FROM saved
+     ON CONFLICT(google_id,course,lesson) DO UPDATE SET answers=lesson_ai_counts.answers+1 RETURNING answers)
+    SELECT messages,version FROM saved`,[user,course,lesson,version,requestId,JSON.stringify(messages)]);return rows[0]||null;
+  },
+  async studentLLMUsage(course,lessons){
+   await setup();return sql.query(`WITH mapping AS (SELECT * FROM jsonb_to_recordset($2::jsonb) AS m(course text,lesson text,week int))
+    SELECT r.id::text AS id,m.week,COALESCE(sum(c.answers),0)::int AS answers
+    FROM login_dev_roster r JOIN lesson_ai_counts c ON c.google_id=r.google_id
+    JOIN mapping m ON m.course=c.course AND m.lesson=c.lesson
+    WHERE EXISTS(SELECT 1 FROM login_dev_enrollments e WHERE e.roster_id=r.id AND e.course_id=$1)
+    GROUP BY r.id,m.week`,[course,JSON.stringify(lessons)]);
   },
   async cancelChat(user,course,lesson,requestId){await sql.query(`UPDATE lesson_ai_chats SET busy_until=NULL,request_id=NULL WHERE google_id=$1 AND course=$2 AND lesson=$3 AND request_id=$4::uuid`,[user,course,lesson,requestId]);},
   async resetChat(user,course,lesson,version){await setup();const rows=await sql.query(`UPDATE lesson_ai_chats SET messages='[]',version=version+1,request_id=NULL WHERE google_id=$1 AND course=$2 AND lesson=$3 AND version=$4 AND (busy_until IS NULL OR busy_until<clock_timestamp()) RETURNING messages,version`,[user,course,lesson,version]);return rows[0]||null;}
