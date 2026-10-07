@@ -14,3 +14,5 @@ test('assessment does not repeat; withdrawn is distinct; identical permutations 
  const withdrawn=step(learning.create([row()]),'withdraw');assert.equal(withdrawn.items[0].status,'withdrawn');assert.equal(withdrawn.finished,true);
  for(let i=0;i<100;i++){const order=learning.shuffle([0,1,2,3]);assert.deepEqual([...order].sort(),[0,1,2,3]);assert.notDeepEqual(order,[0,1,2,3]);}
 });
+
+test('opening explanation is recorded and understanding can be unchecked without deleting comments',()=>{let s=step(learning.create([row()]),'show');s=step(s,'answer',{position:0});assert.equal(learning.current(s).answer.explanationOpened,undefined);s=step(s,'explanation');assert.equal(learning.current(s).answer.explanationOpened,true);s=step(s,'comment',{comment:'표현 검토'});s=step(s,'understand',{understood:true});s=step(s,'understand',{understood:false});assert.equal(learning.current(s).answer.understood,false);assert.equal(learning.current(s).answer.comment,'표현 검토');});

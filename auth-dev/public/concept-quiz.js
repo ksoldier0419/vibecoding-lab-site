@@ -63,7 +63,7 @@
   const complete=learning.items.filter(q=>q.status==='complete').length,review=learning.items.filter(q=>q.status==='review').length;
   $('progress').textContent=learning.cycle+'회차 · 정답 완료 '+complete+' / '+learning.items.length+' · 검토 요청 '+review;
   learning.items.forEach((q,i)=>$('question-list').append(node('p',(i+1)+'번 · '+labels[q.status])));
-  if(learning.paused){$('problem').append(node('h2','오늘은 여기까지'),node('p','진행 상태를 저장했습니다. 이어서 풀 수 있습니다.'),button('이어서 풀기',()=>learningAction('resume'),true));return;}
+  if(learning.paused){$('problem').append(node('h2','다음에 다시할께요'),node('p','진행 상태를 저장했습니다. 이어서 풀 수 있습니다.'),button('이어서 풀기',()=>learningAction('resume'),true));return;}
   if(learning.finished){$('problem').append(node('h2','이번 세트를 마쳤어요'),node('p','정답 완료 '+complete+'개 · 검토 요청 '+review+'개. 반복 정답은 같은 문항의 수행 확인이며 개념 이해의 확정값은 아닙니다.'),button('다음 학습 세트',startLearning,true));return;}
   const q=learning.current;if(!q)return;
   $('problem').append(node('p','문제 번호: '+q.id,'question-id'),node('p',({learning:'학습 문제',transfer:'다른 상황의 개념 확인',delayed:'시간이 지난 뒤 개념 확인'})[q.purpose]),node('h2',q.prompt,'question-prompt'));
@@ -71,12 +71,14 @@
   const a=q.answer;
   if(!a){const form=node('form');q.choices.forEach((text,i)=>{const label=node('label',undefined,'answer-choice'),radio=node('input');radio.type='radio';radio.name='position';radio.value=i;radio.required=true;label.append(radio,node('span',(i+1)+'. '+text));form.append(label);});const submit=node('button','답 확인하기');submit.type='submit';submit.className='primary';form.append(submit);form.addEventListener('submit',e=>{e.preventDefault();const position=Number(new FormData(form).get('position'));run(()=>learningAction('answer',{position}));});$('problem').append(form);}
   else{
-   $('problem').append(node('p',a.correct?'정답이에요!':'선택한 답은 '+(a.position+1)+'번, 정답은 '+(a.correctPosition+1)+'번이에요.',a.correct?'correct':'incorrect'));
-   q.choices.forEach((text,i)=>$('problem').append(node('p',(i+1)+'. '+text+(i===a.correctPosition?' ✓ 정답':''))));
-   $('problem').append(node('div',a.explanation,'explanation'),node('p','선택한 보기의 해설: '+a.choiceExplanation),node('p','교안에서 확인: '+a.sourceTitle),button(a.understood?'이해했어요 ✓':'이해했어요',()=>learningAction('understand')));
-   const form=node('form'),text=node('textarea');text.rows=3;text.maxLength=2000;text.required=true;text.value=a.comment;text.placeholder='문제나 해설의 어떤 부분이 이상한가요?';text.setAttribute('aria-label','문제 의견');const send=node('button','교수자·조교에게 의견 보내기');send.type='submit';form.append(text,send);form.addEventListener('submit',e=>{e.preventDefault();run(()=>learningAction('comment',{comment:text.value.trim()}));});$('problem').append(form,node('p',a.comment?'검토 요청으로 기록했습니다. 오답 학습 문제는 반복에서 제외합니다.':!a.correct&&q.purpose==='learning'?'다음으로 이동하면 첫 순환 뒤 다시 확인합니다.':'다음 문제로 이동하세요.'),button('다음으로',()=>learningAction('next'),true));
+   $('problem').append(node('p',a.correct?'정답이에요!':'선택한 답은 오답이에요.',a.correct?'correct':'incorrect'));
+   const reveal=button('정답 확인하기',()=>learningAction('explanation'));reveal.setAttribute('aria-expanded',String(!!a.explanationOpened));reveal.setAttribute('aria-controls','answer-explanation');
+   if(!a.explanationOpened)$('problem').append(reveal);
+   else{const detail=node('section',undefined,'answer-explanation');detail.id='answer-explanation';detail.append(node('p','선택한 답은 '+(a.position+1)+'번, 정답은 '+(a.correctPosition+1)+'번이에요.'));q.choices.forEach((text,i)=>detail.append(node('p',(i+1)+'. '+text+(i===a.correctPosition?' ✓ 정답':''))));detail.append(node('div',a.explanation,'explanation'),node('p','선택한 보기의 해설: '+a.choiceExplanation),node('p','교안에서 확인: '+a.sourceTitle));$('problem').append(detail);}
+   const actions=node('div',undefined,'learning-actions'),label=node('label',undefined,'understanding-check'),check=node('input');check.type='checkbox';check.checked=a.understood;check.addEventListener('change',()=>{const understood=check.checked;run(async()=>{try{await learningAction('understand',{understood});}catch(e){check.checked=a.understood;throw e;}});});label.append(check,node('span','이해했어요'));actions.append(label,button('다음으로',()=>learningAction('next'),true));$('problem').append(actions);
+   const form=node('form',undefined,'learning-feedback'),text=node('textarea'),caption=node('label','문제나 해설의 어떤 부분이 이상한가요?');caption.htmlFor='learning-comment';text.id='learning-comment';text.rows=3;text.maxLength=2000;text.required=true;text.value=a.comment;text.placeholder='어떤 보기나 설명이 왜 이상한지 알려 주세요.';const send=node('button','교수자·조교에게 의견 보내기');send.type='submit';form.append(caption,text,send);form.addEventListener('submit',e=>{e.preventDefault();const comment=text.value.trim();run(()=>learningAction('comment',{comment}));});$('problem').append(form,node('p',a.comment?'검토 요청으로 기록했습니다. 오답 학습 문제는 반복에서 제외합니다.':!a.correct&&q.purpose==='learning'?'다음으로 이동하면 첫 순환 뒤 다시 확인합니다.':'다음 문제로 이동하세요.','learning-hint'));
   }
-  $('problem').append(button('오늘은 여기까지',()=>learningAction('pause')));
+  const footer=node('div',undefined,'learning-footer');footer.append(button('다음에 다시할께요',()=>learningAction('pause')));$('problem').append(footer);
  }
  function renderStats(){
   if(learningStats){const v=learningStats.summary;$('learning-summary').textContent='배정 세션 '+v.sessions+' · 전체 정답 완료 '+v.completed+' · 순환 종료 '+v.finished+' · 중단 '+v.paused+' · 반복 제출 '+v.repeatAttempts+'회 · 반복 후 정답 '+v.reached+'문항 · 남은 학습 문제 '+v.remaining+' · 검토 요청 '+v.review+' · 공개 철회 '+v.withdrawn+' · 별도 확인 제출 '+v.assessmentSubmitted+' / 정답 '+v.assessmentCorrect;}$('research-export').hidden=!data.professor;

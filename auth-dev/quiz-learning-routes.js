@@ -17,11 +17,11 @@ function learningRoutes(app,repository,{own,review,localPost,isProfessor,config}
   const row=await repository.learningStart(randomUUID(),req.course.id,req.params.lesson,req.session.user.id,state);res.status(201).json({session:learning.publicSession(row)});
  }));
  app.post(base+'/:session/action',localPost,...own,wrap(async(req,res)=>{
-  const b=req.body;if(!b||Object.keys(b).some(k=>!['action','version','requestId','position','comment'].includes(k))||!model.uuid(b.requestId)||!Number.isSafeInteger(b.version)||b.version<0||!['show','answer','understand','comment','next','pause','resume'].includes(b.action))model.invalid('학습 요청을 확인해 주세요.');
-  const row=await owned(req),old=await repository.learningEvent(row.id,b.requestId);if(old){if(old.requestAction!==b.action||old.requestPosition!==(b.position??null)||old.requestComment!==(b.comment??null))conflict();return res.json({session:learning.publicSession(row)});}if(row.version!==b.version)conflict();
+  const b=req.body;if(!b||Object.keys(b).some(k=>!['action','version','requestId','position','comment','understood'].includes(k))||!model.uuid(b.requestId)||!Number.isSafeInteger(b.version)||b.version<0||!['show','answer','explanation','understand','comment','next','pause','resume'].includes(b.action))model.invalid('학습 요청을 확인해 주세요.');
+  const row=await owned(req),old=await repository.learningEvent(row.id,b.requestId);if(old){if(old.requestAction!==b.action||old.requestPosition!==(b.position??null)||old.requestComment!==(b.comment??null)||(old.requestUnderstood??null)!==(b.understood??null))conflict();return res.json({session:learning.publicSession(row)});}if(row.version!==b.version)conflict();
   const q=learning.current(row.state);let action=b.action;
   if(q && !['pause','resume'].includes(action)){const rows=await repository.quizStudentQuestions(req.course.id,req.params.lesson,req.session.user.id,req.course.courseId);if(!rows.some(v=>v.id===q.id))action='withdraw';}
-  const changed=learning.change(row.state,action,b,b.requestId);Object.assign(changed.event,{requestAction:b.action,requestPosition:b.position??null,requestComment:b.comment??null});
+  const changed=learning.change(row.state,action,b,b.requestId);Object.assign(changed.event,{requestAction:b.action,requestPosition:b.position??null,requestComment:b.comment??null,requestUnderstood:b.understood??null,interfaceVersion:'quiz-feedback-v2'});
   const saved=await repository.learningSave(row,req.session.user.id,b.requestId,changed);if(!saved)conflict();res.json({session:learning.publicSession(saved)});
  }));
  app.get(staff+'/learning-stats',...review,wrap(async(req,res)=>{
