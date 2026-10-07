@@ -104,7 +104,7 @@ function showPanel(question){
 }
 $('noti-launcher').addEventListener('click',event=>{if(event.detail && performance.now()<notiSuppressClickUntil)return;const opening=$('questions-panel').hidden;showPanel(opening);if(opening)$('noti-close').focus();});
 $('noti-close').addEventListener('click',()=>{showPanel(false);$('noti-launcher').focus();});
-document.addEventListener('keydown',event=>{if(event.key==='Escape' && !$('questions-panel').hidden){event.preventDefault();$('noti-small').click();$('noti-small').focus();}});
+document.addEventListener('keydown',event=>{if(event.key==='Escape' && !$('questions-panel').hidden){event.preventDefault();$('noti-small').click();}});
 // Keep the window and mascot together, including after viewport changes.
 const notiHeader=$('questions-panel').querySelector('.noti-chat-header'),notiImage=$('noti-launcher').querySelector('img');
 let notiPosition=null,notiDrag=null,dizzyTimer,lastNotiShake=-Infinity,notiSuppressClickUntil=0;
@@ -165,7 +165,7 @@ $('tools-toggle').addEventListener('click',()=>setTools($('workspace-tools').hid
 let normalNoti=null;
 function exitNotiFull(){const panel=$('questions-panel');if(!panel.classList.contains('noti-full'))return;panel.classList.remove('noti-full');$('noti-full').textContent='전체보기';$('noti-full').setAttribute('aria-pressed','false');if(normalNoti){panel.style.width=normalNoti.width+'px';panel.style.height=normalNoti.height+'px';placeNoti(normalNoti.x,normalNoti.y);}}
 $('noti-full').addEventListener('click',()=>{const panel=$('questions-panel');if(panel.classList.contains('noti-full')){exitNotiFull();return;}const rect=panel.getBoundingClientRect();normalNoti={x:rect.x,y:rect.y,width:rect.width,height:rect.height};panel.classList.add('noti-full');$('noti-full').textContent='이전 크기';$('noti-full').setAttribute('aria-pressed','true');});
-$('noti-small').addEventListener('click',()=>{exitNotiFull();const panel=$('questions-panel');panel.style.width=Math.min(360,innerWidth-28)+'px';panel.style.height=Math.min(480,innerHeight-145)+'px';const rect=panel.getBoundingClientRect();placeNoti(rect.x,rect.y);});
+$('noti-small').addEventListener('click',()=>{exitNotiFull();showPanel(false);$('noti-launcher').focus();});
 let sizeStart=null;const sizeHandle=$('noti-size');
 function sizeNoti(width,height){exitNotiFull();const panel=$('questions-panel'),rect=panel.getBoundingClientRect();panel.style.width=Math.max(Math.min(320,innerWidth-28),Math.min(width,innerWidth-28))+'px';panel.style.height=Math.max(Math.min(300,innerHeight-145),Math.min(height,innerHeight-145))+'px';placeNoti(rect.x,rect.y);}
 sizeHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;const rect=$('questions-panel').getBoundingClientRect();sizeStart={id:event.pointerId,x:event.clientX,y:event.clientY,width:rect.width,height:rect.height};sizeHandle.setPointerCapture(event.pointerId);event.preventDefault();});
