@@ -3,7 +3,7 @@ async function api(url,body){const r=await fetch(url,body===undefined?{cache:'no
 function message(text){$('status').textContent=text;$('person-status').textContent=text;}
 function cells(row,values){for(const value of values){const td=document.createElement('td');td.textContent=value;row.append(td);}}
 async function action(button,fn){button.disabled=true;$('admin-content').inert=true;try{await fn();}catch(e){message(e.message);}finally{button.disabled=false;$('admin-content').inert=false;}}
-let people=[],personId=null,personSort='name',personDirection=1;
+let people=[],assistantPeople=new Map(),personId=null,personSort='name',personDirection=1;
 const personCollator=new Intl.Collator('ko',{numeric:true});
 function courseKey(p){return p.courses.map(c=>c.title+' '+(c.section||'')).sort(personCollator.compare).join(' / ');}
 function comparePeople(a,b){
@@ -21,9 +21,16 @@ function renderPeople(){
  for(const p of rows){const tr=document.createElement('tr');cells(tr,[p.studentNumber,p.name,p.courses.map(c=>c.title+' · '+(c.section?c.section+'분반':'분반 미지정')).join(', ')||'수강 과목 없음',p.registered?'가입 완료':'미가입']);
  const td=document.createElement('td'),edit=document.createElement('button');edit.type='button';edit.textContent='수정';edit.addEventListener('click',()=>{personId=p.id;$('person-number').value=p.studentNumber;$('person-name').value=p.name;$('person-title').textContent='학생 기본 정보 수정';$('person-cancel').hidden=false;$('person-number').focus();});
  const enroll=document.createElement('button');enroll.type='button';enroll.textContent='수강 등록';enroll.addEventListener('click',()=>{location.href='/admin.html?student='+encodeURIComponent(p.id);});
- const actions=document.createElement('div');actions.className='row-actions';actions.append(edit,enroll);td.append(actions);tr.append(td);$('person-rows').append(tr);}
+ const actions=document.createElement('div');actions.className='row-actions';actions.append(edit,enroll);
+ if(assistantPeople.has(p.id)) {
+  const enabled=assistantPeople.get(p.id),toggle=document.createElement('button');toggle.type='button';toggle.textContent=enabled?'조교 해제':'조교 지정';
+  toggle.addEventListener('click',()=>action(toggle,async()=>{await api('/api/admin/assistants',{studentId:p.id,enabled:!enabled});await loadPeople();message(p.name+' 학생의 조교 권한을 '+(enabled?'해제':'부여')+'했습니다.');}));
+  actions.append(toggle);
+  if(enabled){const badge=document.createElement('strong');badge.textContent='조교';actions.append(badge);}
+ }
+ td.append(actions);tr.append(td);$('person-rows').append(tr);}
 }
-async function loadPeople(){const data=await api('/api/admin/students');people=data.rows;renderPeople();}
+async function loadPeople(){const [data,roles]=await Promise.all([api('/api/admin/students'),api('/api/admin/assistants')]);people=data.rows;assistantPeople=new Map(roles.rows.map(p=>[p.id,p.assistant]));renderPeople();}
 for(const key of ['studentNumber','name','courses']) $('person-sort-'+key).addEventListener('click',()=>{personDirection=personSort===key?-personDirection:1;personSort=key;renderPeople();});
 $('person-search').addEventListener('input',renderPeople);
 $('person-unenrolled').addEventListener('change',renderPeople);

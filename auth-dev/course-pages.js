@@ -2,7 +2,7 @@ const express=require('express');
 const path=require('node:path');
 // Explicit course-code mapping; do not derive filesystem paths from requests.
 const pages={'603108':'2026-2-python_adv','903131':'2026-2-java_basic'};
-function coursePages(app,repository,{isProfessor}) {
+function coursePages(app,repository,{isProfessor,canTeach}) {
  const root=path.join(__dirname,'..');
  async function accessible(user) {
   if(isProfessor(user)) return {ready:true,courses:await repository.courses()};
@@ -18,7 +18,8 @@ function coursePages(app,repository,{isProfessor}) {
   if(!req.session.user) return res.status(401).json({error:'로그인해 주세요.'});
   try {
    const result=await accessible(req.session.user);
-   if(!result.ready) return res.status(403).json({error:'학생 등록과 전화번호 입력을 완료해 주세요.',profileRequired:true});
+   const role=isProfessor(req.session.user)?'professor':await canTeach(req.session.user)?'assistant':'student';
+   if(!result.ready && role!=='assistant') return res.status(403).json({error:'학생 등록과 전화번호 입력을 완료해 주세요.',profileRequired:true});
    const grouped=new Map();
    for(const c of result.courses) {
     if(!grouped.has(c.id)) {
@@ -27,7 +28,7 @@ function coursePages(app,repository,{isProfessor}) {
     }
     if(c.section && !grouped.get(c.id).sections.includes(c.section)) grouped.get(c.id).sections.push(c.section);
    }
-   res.json({courses:[...grouped.values()],role:isProfessor(req.session.user)?'professor':'student'});
+   res.json({courses:[...grouped.values()],role});
   } catch {res.status(503).json({error:'수강 과목을 불러오지 못했습니다. 다시 시도해 주세요.'});}
  });
  // Lecture materials remain public; personal lists and admin data use authenticated APIs.

@@ -2,12 +2,14 @@ const fs=require('node:fs');
 const path=require('node:path');
 const express=require('express');
 const folder='2026-2-java_basic';
-function instructorRoutes(app,repository,{signedIn,localPost,isProfessor}) {
+function instructorRoutes(app,repository,{signedIn,localPost,canTeach}) {
  const root=path.join(__dirname,'private',folder);
- function professor(req,res,next) {
-  if(!isProfessor(req.session.user)) return res.status(403).json({error:'교수 계정만 이용할 수 있습니다.'});
-  res.set('Cache-Control','private, no-store');
-  next();
+ async function teachingAccess(req,res,next) {
+  try {
+   if(!await canTeach(req.session.user)) return res.status(403).json({error:'관리자 또는 조교만 이용할 수 있습니다.'});
+   res.set('Cache-Control','private, no-store');
+   next();
+  }catch {res.status(503).json({error:'교안 접근 권한을 확인하지 못했습니다. 다시 시도해 주세요.'});}
  }
  function lesson(req,res,next) {
   let lessons;
@@ -16,7 +18,7 @@ function instructorRoutes(app,repository,{signedIn,localPost,isProfessor}) {
   if(!lessons.some(item=>item.id===req.params.lesson)) return res.status(404).json({error:'교안을 찾을 수 없습니다.'});
   next();
  }
- const guard=[signedIn,professor];
+ const guard=[signedIn,teachingAccess];
  app.use('/instructor/java',...guard,express.static(root,{dotfiles:'deny',index:'index.html',setHeaders:res=>res.setHeader('Cache-Control','private, no-store')}));
  app.get('/api/instructor/java/:lesson/note',...guard,lesson,async(req,res)=>{
   try {res.json({note:await repository.getInstructorNote(req.session.user.id,folder,req.params.lesson)});}

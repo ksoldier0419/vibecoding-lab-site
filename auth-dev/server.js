@@ -25,7 +25,9 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
   const professorEmail = (config.professorEmail || '').trim().toLowerCase();
   if(professorEmail) allowed.add(professorEmail);
   const isProfessor = user => !!professorEmail && user?.email?.toLowerCase() === professorEmail;
-  const publicUser = user => user ? {...user, role:isProfessor(user)?'professor':'student'} : null;
+  const isAssistant = async user => !!(user && repository?.isTeachingAssistant && await repository.isTeachingAssistant(user.id));
+  const canTeach = async user => isProfessor(user) || await isAssistant(user);
+  const publicUser = async user => user ? {...user, role:isProfessor(user)?'professor':await isAssistant(user)?'assistant':'student'} : null;
   const app = express();
   app.disable('x-powered-by');
   if(config.trustProxy) app.set('trust proxy', 1);
@@ -88,20 +90,26 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
           return res.status(503).json({ error: '사용자 정보를 DB에 저장하지 못했습니다. 잠시 후 새로고침하여 다시 로그인해 주세요.' });
         }
       }
+      let account;
+      try { account=await publicUser(user); }
+      catch { return res.status(503).json({error:'계정 권한을 확인하지 못했습니다. 다시 시도해 주세요.'}); }
       req.session.regenerate(err => {
         if (err) return res.status(500).json({ error: '로그인 상태를 만들지 못했습니다.' });
         req.session.user = user;
         req.session.cookie.maxAge = Math.min(60 * 60 * 1000, p.exp * 1000 - Date.now());
         req.session.save(err => {
           if (err) return res.status(500).json({ error: '로그인 상태를 저장하지 못했습니다.' });
-          res.json({ user: publicUser(user) });
+          res.json({ user: account });
         });
       });
     } catch {
       res.status(401).json({ error: 'Google 인증을 확인하지 못했습니다. 새로고침 후 다시 시도해 주세요.' });
     }
   });
-  app.get('/api/auth/me', (req, res) => res.json({ user: publicUser(req.session.user) }));
+  app.get('/api/auth/me', async (req, res) => {
+    try {res.json({ user: await publicUser(req.session.user) });}
+    catch {res.status(503).json({error:'계정 권한을 확인하지 못했습니다. 다시 시도해 주세요.'});}
+  });
   app.post('/api/auth/logout', localPost, (req, res) => {
     req.session.destroy(err => {
       if (err) return res.sendStatus(500);
@@ -133,8 +141,9 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
     }
   });
   require('./admin-routes').adminRoutes(app,repository,{signedIn,localPost,isProfessor});
-  require('./instructor-routes').instructorRoutes(app,repository,{signedIn,localPost,isProfessor});
-  require('./course-pages').coursePages(app,repository,{isProfessor});
+  require('./assistant-routes').assistantRoutes(app,repository,{signedIn,localPost,isProfessor,professorEmail});
+  require('./instructor-routes').instructorRoutes(app,repository,{signedIn,localPost,canTeach});
+  require('./course-pages').coursePages(app,repository,{isProfessor,canTeach});
   app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
   app.get('/login.html', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
   app.use('/auth-assets', express.static(path.join(__dirname, 'public'), { dotfiles: 'deny', index: false }));

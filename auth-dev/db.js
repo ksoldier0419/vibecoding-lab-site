@@ -11,6 +11,7 @@ function createRepository(url) {
       major2: row.major2 || '', phone: row.phone || '' } : null;
   }
   return {
+    ...require('./assistant-db').createAssistantRepository(sql),
     ...require('./instructor-db').createInstructorRepository(sql),
     ...require("./roster-db").createRosterRepository(sql),
     async getProfile(id) {
