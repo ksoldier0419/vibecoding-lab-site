@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/auth-assets/instructor.css"><script src="/auth-assets/instructor.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2주차(1). 자바 실습 환경 준비(1)</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 2주차(1)</p>
+        <h1>자바 실습 환경 준비(1)</h1>
+      </div>
+    </header>
+
+    
+<div class="wrap"><p><a href="/courses.html">내 강의자료</a> · <a href="/2026-2-java_basic/">학생용 화면</a> · 강사용</p>
+<details class="instructor-notes"><summary>수업 메모 (강사 전용)</summary>
+<label for="lesson-note">준비 사항, 분반별 진행 상황, 다음 시간에 할 일을 적으세요.</label>
+<textarea id="lesson-note" rows="8" maxlength="20000" disabled></textarea>
+<p id="note-status" role="status">메모를 불러오고 있습니다.</p>
+<button id="save-note" type="button" disabled>지금 저장</button>
+<button id="reload-note" type="button">다시 불러오기</button>
+<a href="/login.html" target="_blank" rel="noopener">로그인 새 창</a>
+</details></div><main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-자바-설치-확인">1. 자바 설치 확인</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-수동설치">2. 수동설치</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-환경변수-설정">3. 환경변수 설정</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#3-1-windows-검색에서-환경-변수-검색-시스템-환경-변수-편집-환경-변수-클릭">3.1 Windows 검색에서 환경 변수 검색 → 시스템 환경 변수 편집 → 환경 변수 클릭.</a></li>
+              <li><a href="#3-2-환경변수-java_home-생성-및-path-등록">3.2 환경변수 JAVA_HOME 생성 및 Path 등록</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-q-a">4. Q&amp;A</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#4-1-vscode-모두-닫고-재실행">4.1 vscode 모두 닫고 재실행</a></li>
+              </ol>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<h2 id="1-자바-설치-확인">1. 자바 설치 확인</h2>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>java -version
+javac -version</code></pre></div>
+<ul>
+  <li>java : 이미 컴파일된 <code>.class</code> 파일을 실행할 때 사용</li>
+  <li>javac : <code>.java</code> 파일을 <code>.class</code> 파일로 바꿀 때 사용</li>
+</ul>
+<h2 id="2-수동설치">2. 수동설치</h2>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><img src="./images/2026-09-01-17-16-51.png" alt=""></td>
+<td><a href="https://www.oracle.com/java/technologies/downloads/#jdk26-windows">JDK 다운로드</a></td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-17-11-14.png" alt=""></td>
+<td>설치</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-17-12-25.png" alt=""></td>
+<td>설치완료</td>
+</tr>
+  </tbody>
+</table>
+<table>
+  <tr>
+    <th>실행 결과</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td>
+      <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>C:\Program Files\Java\jdk-26.0.2.1&gt;java -version
+java version &quot;26.0.2.1&quot; 2026-08-18
+Java(TM) SE Runtime Environment (build 26.0.2.1+1-7)
+Java HotSpot(TM) 64-Bit Server VM (build 26.0.2.1+1-7, mixed mode, sharing)
+
+C:\Program Files\Java\jdk-26.0.2.1&gt;</code></pre></div>
+    </td>
+    <td>
+      <p><strong>[설치 확인]</strong></p>
+      <p><code>java -version</code> 명령어로 설치된 JDK 버전을 확인한다.</p>
+      <p><code>java version "26.0.2.1"</code>이 출력되면 Java 실행 환경이 정상적으로 설치된 것이다.</p>
+    </td>
+  </tr>
+</table>
+<h2 id="3-환경변수-설정">3. 환경변수 설정</h2>
+<h3 id="3-1-windows-검색에서-환경-변수-검색-시스템-환경-변수-편집-환경-변수-클릭">3.1 Windows 검색에서 <strong>환경 변수</strong> 검색 → <strong>시스템 환경 변수 편집</strong> → <strong>환경 변수</strong> 클릭.</h3>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><img src="./images/2026-09-01-19-09-42.png" alt=""></td>
+<td>환경변수 클릭</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-19-08-36.png" alt=""></td>
+<td>새로만들기</td>
+</tr>
+  </tbody>
+</table>
+<h3 id="3-2-환경변수-java_home-생성-및-path-등록">3.2 환경변수 JAVA_HOME 생성 및 Path 등록</h3>
+<table>
+  <thead><tr>
+<th>이미지</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><img src="./images/2026-09-01-19-08-19.png" alt=""></td>
+<td>JAVA_HOME 생성</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-19-07-57.png" alt=""></td>
+<td>JAVA_HOME 변수 확인</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-10-00-12-47.png" alt=""></td>
+<td>Path 변수 편집</td>
+</tr>
+    <tr>
+<td><img src="./images/2026-09-01-19-07-44.png" alt=""></td>
+<td><code>%JAVA_HOME%\bin</code> 등록</td>
+</tr>
+  </tbody>
+</table>
+<h2 id="4-q-a">4. Q&amp;A</h2>
+<h3 id="4-1-vscode-모두-닫고-재실행">4.1 vscode 모두 닫고 재실행</h3>
+<p><img src="./images/2026-09-01-19-07-01.png" alt=""></p>
+<p><img src="./images/2026-09-01-19-06-54.png" alt=""></p>
+<p>외부 cmd 에서는 확인 but vs code 에서는 안됨 vs code 를 모두 닫은 후 다시 재실행</p>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/tools/javajdk/ch1.md</span><small>최종 수정일: 2026-09-16 09:47</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

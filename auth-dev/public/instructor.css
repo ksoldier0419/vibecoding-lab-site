@@ -1,0 +1,10 @@
+.instructor-code {position:relative;margin:1rem 0;background:#20242c;color:#f4f4f4;border-radius:8px;padding:1rem;}
+.instructor-code pre {overflow:auto;white-space:pre;font-size:16px;line-height:1.65;background:transparent;color:inherit;}
+.instructor-code code {background:transparent;color:inherit;}
+.copy-code {display:block;margin-left:auto;cursor:pointer;}
+.instructor-notes {margin:1rem 0;border:1px solid #bbb;border-radius:8px;padding:1rem;}
+.instructor-notes summary {cursor:pointer;font-weight:bold;}
+.instructor-notes label {display:block;margin:1rem 0 .5rem;}
+.instructor-notes textarea {box-sizing:border-box;width:100%;font:inherit;line-height:1.6;padding:.7rem;}
+.instructor-notes button {margin-right:.5rem;}
+@media print {.instructor-notes,.copy-code {display:none;}}

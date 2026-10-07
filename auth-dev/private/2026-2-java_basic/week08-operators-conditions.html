@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/auth-assets/instructor.css"><script src="/auth-assets/instructor.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>8주차. 5-1. 연산자와 조건문</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 8주차</p>
+        <h1>5-1. 연산자와 조건문</h1>
+      </div>
+    </header>
+
+    
+<div class="wrap"><p><a href="/courses.html">내 강의자료</a> · <a href="/2026-2-java_basic/">학생용 화면</a> · 강사용</p>
+<details class="instructor-notes"><summary>수업 메모 (강사 전용)</summary>
+<label for="lesson-note">준비 사항, 분반별 진행 상황, 다음 시간에 할 일을 적으세요.</label>
+<textarea id="lesson-note" rows="8" maxlength="20000" disabled></textarea>
+<p id="note-status" role="status">메모를 불러오고 있습니다.</p>
+<button id="save-note" type="button" disabled>지금 저장</button>
+<button id="reload-note" type="button">다시 불러오기</button>
+<a href="/login.html" target="_blank" rel="noopener">로그인 새 창</a>
+</details></div><main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-산술-연산자">1. 산술 연산자</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-비교-연산자">2. 비교 연산자</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-if-조건을-만족할-때-실행하기">3. if: 조건을 만족할 때 실행하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-if-else-두-경우로-나누기">4. if ~ else: 두 경우로 나누기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-논리-연산자-조건-결합하기">6. 논리 연산자: 조건 결합하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#7-연습-양수-음수-0-판정">7. 연습: 양수·음수·0 판정</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>앞에서는 입력한 값을 계산하고 출력했습니다. 이번에는 값을 비교하고, 조건에 따라 다른 코드를 실행합니다.</p>
+<ul>
+  <li>산술 연산자로 값을 계산합니다.</li>
+  <li>비교·논리 연산자로 조건을 만듭니다.</li>
+  <li><code>if</code>, <code>else</code>, <code>else if</code>로 실행할 코드를 선택합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-산술-연산자">1. 산술 연산자</h2>
+<p><strong>연산자</strong>는 계산이나 비교를 수행하는 기호입니다. 산술 연산자는 덧셈, 뺄셈과 같은 계산에 사용합니다.</p>
+<table>
+  <thead><tr>
+<th>연산자</th>
+<th>의미</th>
+<th>예</th>
+<th>결과</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>+</code></td>
+<td>덧셈</td>
+<td><code>7 + 2</code></td>
+<td><code>9</code></td>
+</tr>
+    <tr>
+<td><code>-</code></td>
+<td>뺄셈</td>
+<td><code>7 - 2</code></td>
+<td><code>5</code></td>
+</tr>
+    <tr>
+<td><code>*</code></td>
+<td>곱셈</td>
+<td><code>7 * 2</code></td>
+<td><code>14</code></td>
+</tr>
+    <tr>
+<td><code>/</code></td>
+<td>나눗셈</td>
+<td><code>7 / 2</code></td>
+<td><code>3</code></td>
+</tr>
+    <tr>
+<td><code>%</code></td>
+<td>나머지</td>
+<td><code>7 % 2</code></td>
+<td><code>1</code></td>
+</tr>
+  </tbody>
+</table>
+<p>정수끼리 나누면 소수 부분을 버린 정수 결과가 나옵니다. 실수 결과가 필요하면 계산할 때 한쪽 값을 실수로 만듭니다.</p>
+<p>파일 이름은 <code>ArithmeticExample.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class ArithmeticExample {
+    public static void main(String[] args) {
+        int x = 7;
+        int y = 2;
+
+        System.out.printf(&quot;합: %d%n&quot;, x + y);
+        System.out.printf(&quot;몫: %d%n&quot;, x / y);
+        System.out.printf(&quot;나머지: %d%n&quot;, x % y);
+        System.out.printf(&quot;실수 나눗셈: %.1f%n&quot;, (double) x / y);
+    }
+}</code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>합: 9
+몫: 3
+나머지: 1
+실수 나눗셈: 3.5</code></pre></div>
+<p>⚠️ 주의: <code>double result = 7 / 2;</code>는 정수 나눗셈 후 저장하므로 결과가 <code>3.0</code>입니다. 정수 나눗셈과 나머지 연산에서 나누는 수가 <code>0</code>이면 오류가 발생합니다.</p>
+<p>곱셈·나눗셈·나머지는 덧셈·뺄셈보다 먼저 계산합니다. 계산 순서를 명확하게 하려면 괄호를 사용합니다.</p>
+<table>
+  <thead><tr>
+<th>식</th>
+<th>결과</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>2 + 3 * 4</code></td>
+<td><code>14</code></td>
+</tr>
+    <tr>
+<td><code>(2 + 3) * 4</code></td>
+<td><code>20</code></td>
+</tr>
+  </tbody>
+</table>
+<h2 id="2-비교-연산자">2. 비교 연산자</h2>
+<p>두 값을 비교한 결과는 <code>boolean</code> 값인 <code>true</code> 또는 <code>false</code>입니다.</p>
+<table>
+  <thead><tr>
+<th>연산자</th>
+<th>의미</th>
+<th>예</th>
+<th>결과</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>&gt;</code></td>
+<td>크다</td>
+<td><code>7 &gt; 2</code></td>
+<td><code>true</code></td>
+</tr>
+    <tr>
+<td><code>&gt;=</code></td>
+<td>크거나 같다</td>
+<td><code>7 &gt;= 7</code></td>
+<td><code>true</code></td>
+</tr>
+    <tr>
+<td><code>&lt;</code></td>
+<td>작다</td>
+<td><code>7 &lt; 2</code></td>
+<td><code>false</code></td>
+</tr>
+    <tr>
+<td><code>&lt;=</code></td>
+<td>작거나 같다</td>
+<td><code>7 &lt;= 7</code></td>
+<td><code>true</code></td>
+</tr>
+    <tr>
+<td><code>==</code></td>
+<td>같다</td>
+<td><code>7 == 2</code></td>
+<td><code>false</code></td>
+</tr>
+    <tr>
+<td><code>!=</code></td>
+<td>다르다</td>
+<td><code>7 != 2</code></td>
+<td><code>true</code></td>
+</tr>
+  </tbody>
+</table>
+<p>📌 <code>score = 60</code>은 변수에 값을 저장합니다. <code>score == 60</code>은 값이 같은지 비교합니다. 이 표의 예제는 정수 비교이며, 문자열 내용 비교는 다음 장에서 다룹니다.</p>
+<h2 id="3-if-조건을-만족할-때-실행하기">3. if: 조건을 만족할 때 실행하기</h2>
+<p><strong>조건문</strong>은 조건에 따라 실행할 코드를 선택하는 문장입니다. <code>if</code>의 괄호 안에는 참 또는 거짓이 되는 식을 적습니다. 참이면 중괄호 <code>{ }</code> 안의 코드를 실행합니다.</p>
+<p>파일 이름은 <code>PassCheck.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+
+public class PassCheck {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print(&quot;점수를 입력하세요: &quot;);
+        int score = scanner.nextInt();
+
+        if (score &gt;= 60) {
+            System.out.printf(&quot;합격입니다.%n&quot;);
+        }
+        System.out.printf(&quot;판정을 마쳤습니다.%n&quot;);
+
+        scanner.close();
+    }
+}</code></pre></div>
+<p>예상 실행 화면:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>점수를 입력하세요: 75
+합격입니다.
+판정을 마쳤습니다.</code></pre></div>
+<p><code>50</code>을 입력하면 <code>합격입니다.</code>는 출력하지 않습니다. 중괄호 밖의 <code>판정을 마쳤습니다.</code>는 조건과 관계없이 출력합니다. 이 예제는 0~100 사이의 정수가 입력된다고 가정합니다.</p>
+<p>⚠️ 주의: <code>if (score &gt;= 60)</code> 바로 뒤에 세미콜론(<code>;</code>)을 붙이지 않습니다. 실행할 코드는 중괄호 안에 작성합니다.</p>
+<h2 id="4-if-else-두-경우로-나누기">4. if ~ else: 두 경우로 나누기</h2>
+<p><code>else</code>에는 조건이 거짓일 때 실행할 코드를 적습니다. 앞 예제의 <code>if</code> 부분을 다음 코드로 교체합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>if (score &gt;= 60) {
+    System.out.printf(&quot;합격입니다.%n&quot;);
+} else {
+    System.out.printf(&quot;불합격입니다.%n&quot;);
+}</code></pre></div>
+<table>
+  <thead><tr>
+<th>입력한 점수</th>
+<th>선택되는 출력</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>60</code></td>
+<td>합격입니다.</td>
+</tr>
+    <tr>
+<td><code>59</code></td>
+<td>불합격입니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>두 중괄호 영역 중 하나만 실행합니다.</p>
+<h2 id="5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</h2>
+<p><code>else if</code>는 앞의 조건이 거짓일 때 다음 조건을 검사합니다. 하나의 연결된 조건문에서는 <strong>처음 참이 된 조건의 코드만</strong> 실행합니다.</p>
+<p>앞 예제의 조건문을 다음 코드로 교체합니다. 입력 점수는 0~100 사이라고 가정합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>if (score &gt;= 90) {
+    System.out.printf(&quot;A등급%n&quot;);
+} else if (score &gt;= 80) {
+    System.out.printf(&quot;B등급%n&quot;);
+} else if (score &gt;= 70) {
+    System.out.printf(&quot;C등급%n&quot;);
+} else {
+    System.out.printf(&quot;재학습이 필요합니다.%n&quot;);
+}</code></pre></div>
+<p><code>85</code>를 입력하면 첫 조건은 거짓이고 두 번째 조건은 참이므로 <code>B등급</code>을 출력합니다. 이때 <code>score &gt;= 70</code>은 더 검사하지 않습니다.</p>
+<p>⚠️ 주의: <code>score &gt;= 70</code>부터 검사하면 <code>95</code>도 그 조건에 먼저 해당합니다. 이 예제에서는 높은 점수부터 검사해야 합니다.</p>
+<h2 id="6-논리-연산자-조건-결합하기">6. 논리 연산자: 조건 결합하기</h2>
+<p>논리 연산자는 조건 여러 개를 결합하거나 참과 거짓을 뒤집습니다.</p>
+<table>
+  <thead><tr>
+<th>연산자</th>
+<th>의미</th>
+<th>예</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>&amp;&amp;</code></td>
+<td>두 조건이 모두 참이면 참</td>
+<td><code>score &gt;= 0 &amp;&amp; score &lt;= 100</code></td>
+</tr>
+    <tr>
+<td>`\</td>
+<td>\</td>
+<td>`</td>
+<td>하나 이상의 조건이 참이면 참</td>
+<td>`score &lt; 0 \</td>
+<td>\</td>
+<td>score &gt; 100`</td>
+</tr>
+    <tr>
+<td><code>!</code></td>
+<td>참과 거짓을 반대로 바꿈</td>
+<td><code>!isValid</code></td>
+</tr>
+  </tbody>
+</table>
+<p>파일 이름은 <code>ScoreRangeCheck.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+
+public class ScoreRangeCheck {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print(&quot;점수를 입력하세요: &quot;);
+        int score = scanner.nextInt();
+        boolean isValid = score &gt;= 0 &amp;&amp; score &lt;= 100;
+
+        if (!isValid) {
+            System.out.printf(&quot;점수는 0~100 사이여야 합니다.%n&quot;);
+        } else {
+            System.out.printf(&quot;입력 가능한 점수입니다.%n&quot;);
+        }
+
+        scanner.close();
+    }
+}</code></pre></div>
+<p>예상 실행 화면:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>점수를 입력하세요: 105
+점수는 0~100 사이여야 합니다.</code></pre></div>
+<p>📌 Java에서는 <code>0 &lt;= score &lt;= 100</code>으로 작성하지 않습니다. <code>score &gt;= 0 &amp;&amp; score &lt;= 100</code>처럼 비교식을 각각 적습니다.</p>
+<h2 id="7-연습-양수-음수-0-판정">7. 연습: 양수·음수·0 판정</h2>
+<ul>
+  <li>파일 이름은 <code>NumberSignCheck.java</code>로 저장합니다.</li>
+  <li><code>Scanner</code>로 정수 하나를 입력받습니다.</li>
+  <li><code>if</code>, <code>else if</code>, <code>else</code>를 사용해 양수, 음수, 0 중 하나를 출력합니다.</li>
+  <li>입력값은 <code>int</code> 범위의 정수라고 가정합니다.</li>
+</ul>
+<p>예상 실행 화면:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>정수를 입력하세요: -3
+음수입니다.</code></pre></div>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li><code>5</code>를 입력하면 <code>양수입니다.</code>가 출력됩니다.</li>
+  <li><code>-3</code>을 입력하면 <code>음수입니다.</code>가 출력됩니다.</li>
+  <li><code>0</code>을 입력하면 <code>0입니다.</code>가 출력됩니다.</li>
+  <li>한 번 실행할 때 판정 결과는 하나만 출력됩니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/5-1_operators_conditions.md</span><small>최종 수정일: 2026-10-06 18:15</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

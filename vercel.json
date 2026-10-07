@@ -15,12 +15,18 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
-          "auth-dev/public/**"
+          "auth-dev/public/**",
+          "auth-dev/private/**"
         ]
       }
     }
   ],
   "routes": [
+    {
+      "src": "/instructor/(.*)",
+      "dest": "/server.js",
+      "headers": {"Cache-Control": "private, no-store"}
+    },
     {
       "src": "/api/(.*)",
       "headers": {

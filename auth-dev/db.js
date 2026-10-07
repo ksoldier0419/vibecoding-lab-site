@@ -11,6 +11,7 @@ function createRepository(url) {
       major2: row.major2 || '', phone: row.phone || '' } : null;
   }
   return {
+    ...require('./instructor-db').createInstructorRepository(sql),
     ...require("./roster-db").createRosterRepository(sql),
     async getProfile(id) {
       const rows = await sql`SELECT student_number, student_name, major1, major2, phone FROM login_dev_student_profiles WHERE google_id = ${id}`;

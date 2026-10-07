@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/auth-assets/instructor.css"><script src="/auth-assets/instructor.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2주차(2). VSCode + Java 실습 환경 준비(1)</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 2주차(2)</p>
+        <h1>VSCode + Java 실습 환경 준비(1)</h1>
+      </div>
+    </header>
+
+    
+<div class="wrap"><p><a href="/courses.html">내 강의자료</a> · <a href="/2026-2-java_basic/">학생용 화면</a> · 강사용</p>
+<details class="instructor-notes"><summary>수업 메모 (강사 전용)</summary>
+<label for="lesson-note">준비 사항, 분반별 진행 상황, 다음 시간에 할 일을 적으세요.</label>
+<textarea id="lesson-note" rows="8" maxlength="20000" disabled></textarea>
+<p id="note-status" role="status">메모를 불러오고 있습니다.</p>
+<button id="save-note" type="button" disabled>지금 저장</button>
+<button id="reload-note" type="button">다시 불러오기</button>
+<a href="/login.html" target="_blank" rel="noopener">로그인 새 창</a>
+</details></div><main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-vscode-java">1. VSCode + Java</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#1-1-java를-쉽게-쓰기-위한-확장팩">1.1 Java를 쉽게 쓰기 위한 확장팩</a></li>
+              <li><a href="#1-2-java-실습에서-자주-쓰는-vs-code-단축키">1.2 Java 실습에서 자주 쓰는 VS Code 단축키</a></li>
+              <li><a href="#1-3-vscode-폴더-위치에서-터미널-열기">1.3 VSCode 폴더 위치에서 터미널 열기</a></li>
+              <li><a href="#1-4-inlay-off">1.4 inlay off</a></li>
+              </ol>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<h2 id="1-vscode-java">1. VSCode + Java</h2>
+<h3 id="1-1-java를-쉽게-쓰기-위한-확장팩">1.1 Java를 쉽게 쓰기 위한 확장팩</h3>
+<p>VS Code에서 Java를 편하게 사용하려면 먼저 <strong>Extension Pack for Java</strong>를 설치합니다. 이 확장팩 하나를 설치하면 Java 코드 작성, 실행, 디버깅에 필요한 기본 기능을 함께 사용할 수 있습니다.</p>
+<table>
+  <thead><tr>
+<th>확장팩</th>
+<th>설명</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>Extension Pack for Java</code></td>
+<td>Java 개발에 필요한 대표 확장 모음입니다.</td>
+</tr>
+    <tr>
+<td><code>Language Support for Java(TM) by Red Hat</code></td>
+<td>자동 완성, 문법 검사, 코드 이동 기능을 제공합니다.</td>
+</tr>
+    <tr>
+<td><code>Debugger for Java</code></td>
+<td>Java 프로그램을 한 줄씩 실행하며 확인할 수 있습니다.</td>
+</tr>
+    <tr>
+<td><code>Test Runner for Java</code></td>
+<td>JUnit 같은 테스트 코드를 실행할 수 있습니다.</td>
+</tr>
+    <tr>
+<td><code>Maven for Java</code>, <code>Gradle for Java</code></td>
+<td>Maven, Gradle 프로젝트를 다룰 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Project Manager for Java</code></td>
+<td>Java 프로젝트, 패키지, 클래스 구조를 쉽게 볼 수 있습니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>설치 방법:</p>
+<ol>
+  <li>VS Code 왼쪽의 <strong>확장(Extensions)</strong> 아이콘을 클릭합니다.</li>
+  <li>검색창에 <code>Extension Pack for Java</code>를 입력합니다.</li>
+  <li>게시자가 Microsoft인 확장팩을 선택합니다.</li>
+  <li><strong>Install</strong> 버튼을 눌러 설치합니다.</li>
+</ol>
+<p>💡 참고: 처음 Java를 배우는 단계에서는 <code>Extension Pack for Java</code> 하나만 설치해도 충분합니다. Spring, 서버, 데이터베이스 관련 확장팩은 나중에 필요한 시점에 추가합니다.</p>
+<h3 id="1-2-java-실습에서-자주-쓰는-vs-code-단축키">1.2 Java 실습에서 자주 쓰는 VS Code 단축키</h3>
+<table>
+  <thead><tr>
+<th>단축키</th>
+<th>기능</th>
+<th>사용 상황</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>Ctrl + Shift + X</code></td>
+<td>확장 화면 열기</td>
+<td>Java 확장팩을 설치할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Ctrl + Shift + P</code></td>
+<td>명령 팔레트 열기</td>
+<td>Java 관련 명령을 검색해서 실행할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td>`<code> Ctrl + </code> ``</td>
+<td>터미널 열기/닫기</td>
+<td><code>javac</code>, <code>java</code> 명령을 직접 입력할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Ctrl + S</code></td>
+<td>파일 저장</td>
+<td>실행 전에 <code>.java</code> 파일을 저장할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Ctrl + Space</code></td>
+<td>자동 완성 보기</td>
+<td>클래스, 메소드, 변수 이름을 완성할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Ctrl + .</code></td>
+<td>빠른 수정 보기</td>
+<td>import 추가, 오류 수정 제안을 볼 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Shift + Alt + F</code></td>
+<td>코드 정리</td>
+<td>들여쓰기와 코드 모양을 자동으로 정리할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>F2</code></td>
+<td>이름 바꾸기</td>
+<td>변수, 클래스 이름을 한 번에 바꿀 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>F5</code></td>
+<td>디버깅 시작</td>
+<td>중단점을 걸고 한 줄씩 확인할 때 사용합니다.</td>
+</tr>
+    <tr>
+<td><code>Ctrl + F5</code></td>
+<td>디버깅 없이 실행</td>
+<td>간단히 실행 결과만 확인할 때 사용합니다.</td>
+</tr>
+  </tbody>
+</table>
+<p>✅ Java 파일을 실행하기 전에 먼저 <code>Ctrl + S</code>로 저장하는 습관을 들입니다. 저장하지 않은 코드는 이전 내용으로 실행될 수 있습니다.</p>
+<h3 id="1-3-vscode-폴더-위치에서-터미널-열기">1.3 VSCode 폴더 위치에서 터미널 열기</h3>
+<p>VS Code <strong>탐색기(Explorer)</strong> 에서 폴더 위치 기준으로 터미널 여는 방법은 이겁니다.</p>
+<ol>
+  <li>왼쪽 <strong>탐색기</strong>에서 원하는 폴더를 찾습니다.</li>
+  <li>예: <code>src &gt; ch01 &gt; sec08</code></li>
+  <li><code>sec08</code> 폴더 위에서 <strong>마우스 오른쪽 클릭</strong></li>
+  <li><strong>통합 터미널에서 열기</strong> 또는 <strong>Open in Integrated Terminal</strong> 선택</li>
+</ol>
+<p>그러면 VS Code 아래쪽 터미널이 열리고, 현재 위치가 바로 그 폴더가 됩니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>/*
+장제목: 1장 자바 시작하기
+작성일: 2024.01.01
+*/
+public class Hello {
+	//프로그램 실행 진입점
+	public static void main(String[] args) {
+		//콘솔에 출력하는 실행문
+		System.out.printf(&quot;Hello, Java%n&quot;);
+	} 
+}
+</code></pre></div>
+<p>실행방법</p>
+<table>
+  <tr>
+    <th>실행 결과</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td>
+      <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>javac Hello.java
+java Hello
+Hello, Java</code></pre></div>
+    </td>
+    <td>
+      <p><strong>[Hello 실행]</strong></p>
+      <p><code>javac Hello.java</code> 명령어로 <code>Hello.java</code>를 컴파일해서 <code>Hello.class</code> 파일을 만든다.</p>
+      <p><code>java Hello</code> 명령어로 컴파일된 <code>Hello.class</code>의 <code>main()</code> 메소드를 실행한다.</p>
+      <p>정상 실행되면 콘솔에 <code>Hello, Java</code>가 출력되는지 확인한다.</p>
+      <p>교안 예제에서는 출력할 때 <code>println()</code> 대신 <code>printf()</code>를 사용한다.</p>
+    </td>
+  </tr>
+</table>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class Calculator {
+	public static void main(String[] args) {
+		int x = 1;						//변수 x를 선언하고 1을 저장
+		int y = 2;						//변수 y를 선언하고 2를 저장
+		int result = x + y;				//변수 result를 선언하고 x와 y를 더한 값을 저장
+		System.out.printf(&quot;%d%n&quot;, result);		//모니터에 출력하는 메소드 호출
+	}
+}</code></pre></div>
+<p>실행방법</p>
+<table>
+  <tr>
+    <th>실행 결과</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td>
+      <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>javac Calculator.java
+java Calculator
+3</code></pre></div>
+    </td>
+    <td>
+      <p><strong>[Calculator 실행]</strong></p>
+      <p><code>javac Calculator.java</code> 명령어로 <code>Calculator.java</code>를 컴파일해서 <code>Calculator.class</code> 파일을 만든다.</p>
+      <p><code>java Calculator</code> 명령어로 컴파일된 <code>Calculator.class</code>의 <code>main()</code> 메소드를 실행한다.</p>
+      <p>정상 실행되면 <code>1 + 2</code>의 결과인 <code>3</code>이 출력되는지 확인한다.</p>
+    </td>
+  </tr>
+</table>
+<h3 id="1-4-inlay-off">1.4 inlay off</h3>
+<p><img src="./images/2026-09-09-23-51-45.png" alt=""></p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>Ctrl + ,
+inlay off</code></pre></div>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/tools/vscode_java/vscode_java01.md</span><small>최종 수정일: 2026-09-17 10:03</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

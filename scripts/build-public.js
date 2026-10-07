@@ -2,6 +2,11 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'public');
 const marker=path.join(out,'.generated-site');
+const instructorRoot=path.join(root,'auth-dev/private/2026-2-java_basic');
+const lessons=JSON.parse(fs.readFileSync(path.join(instructorRoot,'manifest.json'),'utf8'));
+if(!lessons.length || !fs.existsSync(path.join(instructorRoot,'index.html')) || lessons.some(item=>!/^week[\w-]+\.html$/.test(item.id) || !fs.existsSync(path.join(instructorRoot,item.id)))) {
+ throw new Error('Generate Java instructor pages before building.');
+}
 if(fs.existsSync(out)) {
  if(fs.lstatSync(out).isSymbolicLink() || fs.realpathSync(out)!==out || !fs.existsSync(marker)) throw new Error('Refusing to replace an unmarked public directory.');
  fs.rmSync(out,{recursive:true});

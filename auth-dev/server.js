@@ -133,6 +133,7 @@ function createApp(config, verifier = new OAuth2Client(), repository = null) {
     }
   });
   require('./admin-routes').adminRoutes(app,repository,{signedIn,localPost,isProfessor});
+  require('./instructor-routes').instructorRoutes(app,repository,{signedIn,localPost,isProfessor});
   require('./course-pages').coursePages(app,repository,{isProfessor});
   app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
   app.get('/login.html', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));

@@ -8,6 +8,7 @@ async function loadCourses() {
   if(data.profileRequired){location.replace('/login.html?profile=1');return;}
   if(!response.ok)throw new Error(data.error);
   document.getElementById('admin').hidden=data.role!=='professor';
+  document.getElementById('java-instructor').hidden=data.role!=='professor';
   for(const c of data.courses){
    const li=document.createElement('li'),card=document.createElement(c.url?'a':'div'),title=document.createElement('strong'),detail=document.createElement('small');
    if(c.url)card.href=c.url;else card.className='course-pending';

@@ -7,7 +7,8 @@
     "test": "node --test auth-dev/*.test.js",
     "db:setup": "node --env-file=.env.local auth-dev/db-setup.js",
     "build": "node scripts/build-public.js",
-    "db:sessions": "node --env-file=.env.local auth-dev/session-setup.js"
+    "db:sessions": "node --env-file=.env.local auth-dev/session-setup.js",
+    "db:instructor": "node --env-file=.env.local auth-dev/instructor-setup.js"
   },
   "engines": {
     "node": ">=22"
