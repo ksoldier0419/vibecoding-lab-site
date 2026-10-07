@@ -6,6 +6,7 @@ function question(value,context){
  if(!value || !['prompt','concept','intent','explanation','sourceTitle','sourceQuote'].every(k=>typeof value[k]==='string' && value[k].trim() && value[k].length<=4000))invalid('문제·출제 의도·해설·교안 근거를 확인해 주세요.');
  if(!Array.isArray(value.choices) || value.choices.length!==4 || value.choices.some(c=>typeof c!=='string' || !c.trim() || c.length>2000) || new Set(value.choices.map(c=>c.trim())).size!==4)invalid('서로 다른 보기 4개가 필요합니다.');
  if(!Array.isArray(value.choiceExplanations) || value.choiceExplanations.length!==4 || value.choiceExplanations.some(c=>typeof c!=='string' || !c.trim() || c.length>2000) || !Number.isInteger(value.answer) || value.answer<0 || value.answer>3)invalid('정답과 보기별 해설을 확인해 주세요.');
+ if(value.choices.some(c=>/(?:[①②③④]|[1-4]번).*(?:보기|모두|둘|함께)|위의 모든|이상의 모든/.test(c)))invalid('보기 순서에 의존하는 표현을 바꿔 주세요.');
  const normalize=s=>s.replace(/\s+/g,' ').trim();
  if(!normalize(context).includes(normalize(value.sourceQuote)) || !context.includes(value.sourceTitle))invalid('문제 근거가 현재 교안에 없습니다. 다시 생성해 주세요.');
  return Object.fromEntries(['prompt','choices','answer','choiceExplanations','concept','intent','explanation','sourceTitle','sourceQuote'].map(k=>[k,value[k]]));
@@ -41,7 +42,7 @@ function apply(set,action,itemId,context,targetCount){
    const pending=state.items.filter(q=>q.status==='accepted');
    if(target && pending.some(q=>q.replaces===target.id))invalid('이미 수정 후보를 채택한 문제입니다. 기존 채택을 취소한 뒤 다시 선택해 주세요.');
    if(target?.status==='accepted')target.status='retired';
-   state.items.push({id:randomUUID(),...candidate.question,status:'accepted',replaces:target?.status==='published'?target.id:null,contextHash:candidate.contextHash});
+   state.items.push({id:randomUUID(),...candidate.question,sourceParentId:candidate.sourceParentId||target?.id||null,status:'accepted',replaces:target?.status==='published'?target.id:null,contextHash:candidate.contextHash});
   }
   state.proposals=state.proposals.filter(p=>p.id!==itemId);
  }else if(action==='publish'){

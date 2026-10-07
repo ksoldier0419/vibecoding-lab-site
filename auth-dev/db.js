@@ -11,13 +11,15 @@ function createRepository(url) {
       major2: row.major2 || '', phone: row.phone || '' } : null;
   }
   const assistants=require('./assistant-db').createAssistantRepository(sql);
+  const quiz=require('./quiz-db').createQuizRepository(sql,assistants.setupAssistantRoles);
   return {
     ...assistants,
     ...require('./assistant-scopes-db').createScopeRepository(sql,assistants.setupAssistantRoles),
     ...require('./student-notes-db').createStudentNoteRepository(sql),
     ...require('./questions-db').createQuestionRepository(sql),
     ...require('./chat-db').createChatRepository(sql),
-    ...require('./quiz-db').createQuizRepository(sql,assistants.setupAssistantRoles),
+    ...quiz,
+    ...require('./quiz-learning-db').createLearningRepository(sql,quiz.setupQuiz),
     ...require('./instructor-db').createInstructorRepository(sql),
     ...require("./roster-db").createRosterRepository(sql),
     async getProfile(id) {
