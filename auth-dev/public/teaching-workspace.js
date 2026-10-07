@@ -1,7 +1,7 @@
 const elements=new Map([...document.querySelectorAll('[id]')].map(n=>[n.id,n]));
 const $=id=>elements.get(id),staffView=location.pathname==='/teaching.html',params=new URLSearchParams(location.search);
 let courses=[],course,lesson,nextPage=null,readVersion=0,listBusy=false;
-$('staff-questions').open=false;
+$('staff-questions').open=false;$('staff-questions').hidden=true;
 function option(value,text){const node=document.createElement('option');node.value=value;node.textContent=text;return node;}
 async function api(url){const response=await fetch(url,{cache:'no-store'});const data=await response.json();if(response.status===401)throw Error('로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인해 주세요.');if(!response.ok)throw Error(data.error || '불러오지 못했습니다.');return data;}
 function navigate(folder,page){$('workspace-course').value=course.id;$('workspace-lesson').value=lesson.id;location.assign(location.pathname+'?'+new URLSearchParams({course:folder,lesson:page,panel:$('questions-panel').hidden?'notes':'questions'}));}
@@ -24,7 +24,7 @@ async function load(){
   questionsReady=!staffView || course.reviewAllowed;
   $('question-form').hidden=staffView;$('question-text').disabled=!questionsReady;$('question-submit').disabled=!questionsReady;$('questions-refresh').disabled=!questionsReady;
   if(questionsReady)await loadQuestions(true);else $('questions-status').textContent='관리자가 담당 과목·분반을 지정하면 질문을 열람하고 답변할 수 있습니다.';
-  if(params.get('panel')==='questions')openStaffQuestions();showPanel(!staffView && params.get('panel')==='questions');
+  showPanel(!staffView && params.get('panel')==='questions');
   if(staffView){$('noti-launcher').hidden=true;$('student-review').hidden=false;if(course.reviewAllowed)await reviewList(true);else{$('review-status').textContent='관리자가 담당 과목·분반을 지정하면 학생 메모를 열람할 수 있습니다.';$('review-refresh').disabled=true;}}
   else {
    const chatScript=document.createElement('script');chatScript.src='/auth-assets/lesson-chat.js';chatScript.onerror=()=>{$('chat-status').textContent='AI 채팅을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(chatScript);
@@ -164,8 +164,8 @@ handle.addEventListener('pointermove',event=>{
 function endNotiDrag(event){if(notiDrag?.id===event.pointerId){if(notiDrag.moved && notiDrag.handle===$('noti-launcher'))notiSuppressClickUntil=performance.now()+400;notiDrag=null;}}
 handle.addEventListener('pointerup',endNotiDrag);handle.addEventListener('pointercancel',endNotiDrag);handle.addEventListener('lostpointercapture',endNotiDrag);
 }
-function setTools(open){$('workspace-tools').hidden=!open;document.querySelector('.workspace-layout').classList.toggle('tools-collapsed',!open);$('tools-toggle').setAttribute('aria-expanded',String(open));$('tools-toggle').textContent=open?'메모·질의응답 접기':'메모·질의응답 열기';}
-window.openStaffQuestions=function(){setTools(true);$('staff-questions').open=true;};
+function setTools(open){$('workspace-tools').hidden=!open;document.querySelector('.workspace-layout').classList.toggle('tools-collapsed',!open);$('tools-toggle').setAttribute('aria-expanded',String(open));$('tools-toggle').textContent=open?'학습 메모 접기':'학습 메모 열기';}
+window.openStaffQuestions=function(){return false;};
 $('tools-toggle').addEventListener('click',()=>setTools($('workspace-tools').hidden));
 let normalNoti=null;
 function exitNotiFull(){const panel=$('questions-panel');if(!panel.classList.contains('noti-full'))return;panel.classList.remove('noti-full');$('noti-full').textContent='전체보기';$('noti-full').setAttribute('aria-pressed','false');if(normalNoti){panel.style.width=normalNoti.width+'px';panel.style.height=normalNoti.height+'px';placeNoti(normalNoti.x,normalNoti.y);}}

@@ -63,3 +63,6 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 #workspace-tools .note-disclosure{border-radius:0 9px 9px 0;font-size:.82rem;line-height:1.7;background:#edf3fb;padding:12px 14px}
 #workspace-tools #staff-questions{margin-top:18px}#workspace-tools #questions-select{margin-top:8px}
 @media(max-width:600px){.workspace-lesson-header .workspace-title-actions{right:16px}#workspace-tools .student-note-fold{padding:16px}}
+
+/* Temporarily pause instructor/assistant Q&A entry points; keep stored records. */
+#staff-questions,#chat-forward,#chat-suggestion{display:none!important}
