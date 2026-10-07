@@ -37,6 +37,7 @@ $('workspace-frame').addEventListener('load',()=>{
   const doc=frame.contentDocument,toc=doc.querySelector('.toc');
   if(toc){const style=doc.createElement('link');style.rel='stylesheet';style.href='/auth-assets/teaching-workspace.css';doc.head.append(style);toc.prepend($('workspace-selectors'));}
   const noteBox=doc.querySelector('.instructor-notes');if(noteBox)noteBox.previousElementSibling?.remove();
+  if(!staffView)connectSelectionQuestion(doc);
   frame.contentDocument.addEventListener('click',event=>{
    const link=event.target.closest('a');if(!link)return;
    const target=new URL(link.href),current=new URL(frame.contentWindow.location.href);
@@ -51,6 +52,27 @@ $('workspace-frame').addEventListener('load',()=>{
   });
  }catch{$('workspace-status').textContent='교안 내부 탐색을 연결하지 못했습니다. 과목·교안 선택 메뉴를 이용해 주세요.';}
 });
+function connectSelectionQuestion(doc){
+ const menu=doc.createElement('button');menu.type='button';menu.textContent='Noti에게 질문하기';menu.hidden=true;menu.setAttribute('aria-label','선택한 교안 내용으로 Noti에게 질문하기');
+ Object.assign(menu.style,{position:'fixed',zIndex:'1000',padding:'10px 14px',border:'1px solid #d6e0ed',borderRadius:'8px',background:'#fff',color:'#172b4d',boxShadow:'0 4px 20px #172b4d33',font:'14px sans-serif',cursor:'pointer'});doc.body.append(menu);
+ let excerpt='';
+ function dismiss(){menu.hidden=true;}
+ doc.addEventListener('contextmenu',event=>{
+  if(event.target.closest('input,textarea,select,[contenteditable],.workspace-selectors'))return;
+  const selection=doc.getSelection();if(!selection || selection.isCollapsed || !selection.toString().trim()){dismiss();return;}
+  excerpt=selection.toString().trim();event.preventDefault();menu.hidden=false;
+  menu.style.left=Math.max(8,Math.min(event.clientX,doc.defaultView.innerWidth-menu.offsetWidth-8))+'px';menu.style.top=Math.max(8,Math.min(event.clientY,doc.defaultView.innerHeight-menu.offsetHeight-8))+'px';menu.focus();
+ });
+ menu.addEventListener('click',()=>{
+  dismiss();showPanel(true);const input=$('chat-text');
+  if(input.disabled || input.readOnly){$('chat-status').textContent='Noti 연결 또는 답변이 끝난 뒤 선택한 내용으로 다시 질문해 주세요.';return;}
+  const addition='[교안에서 선택한 내용]\n'+excerpt+'\n\n이 부분을 설명해 주세요.';
+  const draft=input.value.trim();const combined=(draft?draft+'\n\n':'')+addition;
+  if(combined.length>input.maxLength){$('chat-status').textContent='선택한 내용과 작성 중인 질문이 너무 깁니다. 선택 범위를 줄여 다시 시도해 주세요.';input.focus();return;}
+  input.value=combined;input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();input.setSelectionRange(input.value.length,input.value.length);$('chat-status').textContent='선택한 내용을 넣었습니다. 질문을 수정한 뒤 보내기를 누르세요.';
+ });
+ doc.addEventListener('pointerdown',event=>{if(event.target!==menu)dismiss();});doc.addEventListener('keydown',event=>{if(event.key==='Escape')dismiss();});doc.addEventListener('scroll',dismiss,true);window.addEventListener('pointerdown',dismiss);window.addEventListener('resize',dismiss);
+}
 async function reviewList(reset){
  if(listBusy)return;listBusy=true;$('review-refresh').disabled=true;$('review-more').disabled=true;
  try {
