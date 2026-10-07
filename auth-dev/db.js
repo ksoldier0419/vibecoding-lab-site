@@ -15,6 +15,7 @@ function createRepository(url) {
     ...assistants,
     ...require('./assistant-scopes-db').createScopeRepository(sql,assistants.setupAssistantRoles),
     ...require('./student-notes-db').createStudentNoteRepository(sql),
+    ...require('./questions-db').createQuestionRepository(sql),
     ...require('./instructor-db').createInstructorRepository(sql),
     ...require("./roster-db").createRosterRepository(sql),
     async getProfile(id) {

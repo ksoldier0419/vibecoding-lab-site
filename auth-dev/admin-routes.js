@@ -70,7 +70,16 @@ function adminRoutes(app, repository, {signedIn,localPost,isProfessor}) {
    course=v.courseId(req.body?.course); id=req.body?.id;
    if(id!==undefined && (typeof id!=='string'|| !/^[1-9][0-9]{0,18}$/.test(id))) throw new Error('수정할 학생을 선택해 주세요.');
    if(id!==undefined) {if(typeof req.body.originalSection!=='string') throw new Error('수정 전 분반을 확인해 주세요.');originalSection=v.section(req.body.originalSection);}
-   value={...v.identity(req.body||{}),section:v.section(req.body?.section)};
+   const raw=req.body?.section;
+   if(id===undefined && typeof raw==='string' && raw.includes(',')) {
+    if(raw.length>320)throw new Error('분반은 최대 10개까지 입력해 주세요.');
+    const sections=[...new Set(raw.split(',').map(s=>v.section(s)))];
+    if(sections.length>10 || sections.some(s=>!s))throw new Error('분반은 빈 값 없이 최대 10개까지 입력해 주세요.');
+    value={...v.identity(req.body),sections};
+   } else {
+    if(id!==undefined && typeof raw==='string' && raw.includes(','))throw new Error('수정할 때는 한 분반만 입력하세요. 추가 분반은 학생 직접 등록으로 등록해 주세요.');
+    value={...v.identity(req.body||{}),section:v.section(raw)};
+   }
   } catch(e) { return res.status(400).json({error:e.message}); }
   try {
    res.json(id ? await repository.editRoster(id,course,value,originalSection) : await repository.addRoster(course,value));

@@ -24,7 +24,7 @@ function coursePages(app,repository,{isProfessor,canTeach}) {
    for(const c of result.courses) {
     if(!grouped.has(c.id)) {
      const folder=pages[c.id],available=!!folder;
-     grouped.set(c.id,{id:c.id,title:c.title,sections:[],url:available?'/'+folder+'/index.html':null,studyUrl:available?'/study.html?course='+encodeURIComponent(folder):null});
+     grouped.set(c.id,{id:c.id,title:c.title,sections:[],url:available?'/'+folder+'/index.html':null,studyUrl:available?(role==='professor'?'/teaching.html':'/study.html')+'?course='+encodeURIComponent(folder):null});
     }
     if(c.section && !grouped.get(c.id).sections.includes(c.section)) grouped.get(c.id).sections.push(c.section);
    }

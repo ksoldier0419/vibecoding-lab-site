@@ -138,24 +138,24 @@
 <h2 id="3-입력-방법-1-scanner">3. 입력 방법 1: Scanner</h2>
 <p><code>Scanner</code>는 입력한 내용을 정수, 실수, 문자열 등으로 읽을 수 있는 도구입니다. <code>nextInt()</code>를 호출하면 다음 정수 하나를 읽습니다.</p>
 <p>파일 이름은 <code>CalculatorScannerIO.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
 
-public class CalculatorScannerIO {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // 키보드 입력 준비
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">CalculatorScannerIO</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span><span class="syntax-w"> </span><span class="syntax-c1">// 키보드 입력 준비</span>
 
-        System.out.print(&quot;첫 번째 정수를 입력하세요: &quot;);
-        int x = scanner.nextInt();                // 첫 번째 정수 저장
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"첫 번째 정수를 입력하세요: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span><span class="syntax-w">                </span><span class="syntax-c1">// 첫 번째 정수 저장</span>
 
-        System.out.print(&quot;두 번째 정수를 입력하세요: &quot;);
-        int y = scanner.nextInt();                // 두 번째 정수 저장
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"두 번째 정수를 입력하세요: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span><span class="syntax-w">                </span><span class="syntax-c1">// 두 번째 정수 저장</span>
 
-        int result = x + y;
-        System.out.println(&quot;덧셈 결과: &quot; + result);
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"덧셈 결과: "</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span>
 
-        scanner.close();                          // 입력 도구 닫기
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span><span class="syntax-w">                          </span><span class="syntax-c1">// 입력 도구 닫기</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>첫 번째 정수를 입력하세요: 3
 두 번째 정수를 입력하세요: 4
@@ -198,27 +198,27 @@ public class CalculatorScannerIO {
 <h2 id="4-입력-방법-2-bufferedreader">4. 입력 방법 2: BufferedReader</h2>
 <p><code>BufferedReader</code>는 입력 내용을 임시 공간인 <strong>버퍼</strong>에 모아 읽는 도구입니다. <code>readLine()</code>은 한 줄을 <strong>문자열</strong>로 읽습니다. 계산에 사용할 정수로 바꾸려면 <code>Integer.parseInt()</code>가 필요합니다.</p>
 <p>파일 이름은 <code>CalculatorBufferedReaderIO.java</code>로 저장합니다. 각 예제는 클래스 이름과 같은 이름의 파일에 저장하고 독립적으로 실행합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.io.BufferedReader</span><span class="syntax-p">;</span>
+<span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.io.InputStreamReader</span><span class="syntax-p">;</span>
+<span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.io.IOException</span><span class="syntax-p">;</span>
 
-public class CalculatorBufferedReaderIO {
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader =
-            new BufferedReader(new InputStreamReader(System.in));
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">CalculatorBufferedReaderIO</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-kd">throws</span><span class="syntax-w"> </span><span class="syntax-n">IOException</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">BufferedReader</span><span class="syntax-w"> </span><span class="syntax-n">reader</span><span class="syntax-w"> </span><span class="syntax-o">=</span>
+<span class="syntax-w">            </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">BufferedReader</span><span class="syntax-p">(</span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">InputStreamReader</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">));</span>
 
-        System.out.print(&quot;첫 번째 정수를 입력하세요: &quot;);
-        int x = Integer.parseInt(reader.readLine());
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"첫 번째 정수를 입력하세요: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">Integer</span><span class="syntax-p">.</span><span class="syntax-na">parseInt</span><span class="syntax-p">(</span><span class="syntax-n">reader</span><span class="syntax-p">.</span><span class="syntax-na">readLine</span><span class="syntax-p">());</span>
 
-        System.out.print(&quot;두 번째 정수를 입력하세요: &quot;);
-        int y = Integer.parseInt(reader.readLine());
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"두 번째 정수를 입력하세요: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">Integer</span><span class="syntax-p">.</span><span class="syntax-na">parseInt</span><span class="syntax-p">(</span><span class="syntax-n">reader</span><span class="syntax-p">.</span><span class="syntax-na">readLine</span><span class="syntax-p">());</span>
 
-        int result = x + y;
-        System.out.println(&quot;덧셈 결과: &quot; + result);
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"덧셈 결과: "</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span>
 
-        reader.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">reader</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>첫 번째 정수를 입력하세요: 3
 두 번째 정수를 입력하세요: 4
@@ -264,22 +264,22 @@ public class CalculatorBufferedReaderIO {
 <h3 id="5-1-scanner로-입력받기">5.1 Scanner로 입력받기</h3>
 <p><code>Scanner</code>는 기본적으로 공백, 탭, 줄바꿈을 값 사이의 구분자로 사용합니다. <strong>구분자</strong>는 입력값을 나누는 기준입니다. <code>nextInt()</code>를 두 번 호출하면 한 줄에 입력한 두 정수를 차례로 읽습니다.</p>
 <p>파일 이름은 <code>CalculatorScannerIO2.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
 
-public class CalculatorScannerIO2 {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">CalculatorScannerIO2</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
 
-        System.out.print(&quot;두 정수를 입력하세요 (예: 3 4): &quot;);
-        int x = scanner.nextInt(); // 첫 번째 정수: 3
-        int y = scanner.nextInt(); // 두 번째 정수: 4
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"두 정수를 입력하세요 (예: 3 4): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span><span class="syntax-w"> </span><span class="syntax-c1">// 첫 번째 정수: 3</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span><span class="syntax-w"> </span><span class="syntax-c1">// 두 번째 정수: 4</span>
 
-        int result = x + y;
-        System.out.println(&quot;덧셈 결과: &quot; + result);
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"덧셈 결과: "</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span>
 
-        scanner.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>두 정수를 입력하세요 (예: 3 4): 3 4
 덧셈 결과: 7</code></pre></div>
@@ -313,28 +313,28 @@ public class CalculatorScannerIO2 {
 </table>
 <p>💡 참고: <code>&quot;\\s+&quot;</code>는 문자를 찾는 규칙인 <strong>정규 표현식</strong>을 Java 문자열로 적은 것입니다. 여기서는 공백이 여러 개여도 나눌 수 있는 표현으로 사용합니다. 배열과 정규 표현식의 자세한 사용법은 이후에 배웁니다.</p>
 <p>파일 이름은 <code>CalculatorBufferedReaderIO2.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.io.BufferedReader</span><span class="syntax-p">;</span>
+<span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.io.InputStreamReader</span><span class="syntax-p">;</span>
+<span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.io.IOException</span><span class="syntax-p">;</span>
 
-public class CalculatorBufferedReaderIO2 {
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader =
-            new BufferedReader(new InputStreamReader(System.in));
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">CalculatorBufferedReaderIO2</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-kd">throws</span><span class="syntax-w"> </span><span class="syntax-n">IOException</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">BufferedReader</span><span class="syntax-w"> </span><span class="syntax-n">reader</span><span class="syntax-w"> </span><span class="syntax-o">=</span>
+<span class="syntax-w">            </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">BufferedReader</span><span class="syntax-p">(</span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">InputStreamReader</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">));</span>
 
-        System.out.print(&quot;두 정수를 입력하세요 (예: 3 4): &quot;);
-        String line = reader.readLine();
-        String[] values = line.trim().split(&quot;\\s+&quot;);
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"두 정수를 입력하세요 (예: 3 4): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">line</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">reader</span><span class="syntax-p">.</span><span class="syntax-na">readLine</span><span class="syntax-p">();</span>
+<span class="syntax-w">        </span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">values</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">line</span><span class="syntax-p">.</span><span class="syntax-na">trim</span><span class="syntax-p">().</span><span class="syntax-na">split</span><span class="syntax-p">(</span><span class="syntax-s">"\\s+"</span><span class="syntax-p">);</span>
 
-        int x = Integer.parseInt(values[0]);
-        int y = Integer.parseInt(values[1]);
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">Integer</span><span class="syntax-p">.</span><span class="syntax-na">parseInt</span><span class="syntax-p">(</span><span class="syntax-n">values</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">Integer</span><span class="syntax-p">.</span><span class="syntax-na">parseInt</span><span class="syntax-p">(</span><span class="syntax-n">values</span><span class="syntax-o">[</span><span class="syntax-mi">1</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
 
-        int result = x + y;
-        System.out.println(&quot;덧셈 결과: &quot; + result);
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"덧셈 결과: "</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span>
 
-        reader.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">reader</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>두 정수를 입력하세요 (예: 3 4): 3 4
 덧셈 결과: 7</code></pre></div>

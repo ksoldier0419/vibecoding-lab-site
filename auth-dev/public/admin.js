@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id);
 const rosterCollator=new Intl.Collator('ko',{numeric:true});
 let rosterSort='name-asc';
-let allRows=[],editing=null,previewToken=null,loadedCourse=null;
+let allRows=[],assistantPeople=new Map(),editing=null,previewToken=null,loadedCourse=null;
 async function api(url,body) {
  const response=await fetch(url,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
  const data=await response.json();
@@ -51,7 +51,7 @@ function render() {
  $('count').textContent='('+(section===null?'전체':section ? section+'분반':'분반 미지정')+' '+new Set(sectionRows.map(r=>r.id)).size+'명 · '+sectionRows.length+'건'+(query?' · 검색 '+filtered.length+'명':'')+')';$('empty').hidden=filtered.length>0;
  $('empty').textContent=query?'검색 결과가 없습니다.':'등록된 수강생이 없습니다.';
  for(const value of filtered) {
-  const tr=document.createElement('tr');cells(tr,[value.studentNumber,value.name,value.section||'—',value.registered?'가입 완료':'미가입',value.registered?formatRegisteredAt(value.registeredAt):'—']);
+  const tr=document.createElement('tr');cells(tr,[value.studentNumber,value.name,value.section||'—',assistantPeople.get(value.id)?'조교':'학생',value.registered?'가입 완료':'미가입',value.email||'—',value.registered?formatRegisteredAt(value.registeredAt):'—']);
   tr.lastElementChild.className='registered-at';
   const td=document.createElement('td'),button=document.createElement('button');button.type='button';button.textContent='수정';
   button.addEventListener('click',()=>{
@@ -89,7 +89,8 @@ function updateSections(previous='') {
 async function loadRoster() {
  const course=$('course').value,previous=loadedCourse===course?$('section-filter').value:'';
  if(!course){allRows=[];loadedCourse=null;updateSections();render();$('empty').textContent='과목을 먼저 등록해 주세요.';return;}
- const data=await api('/api/admin/roster?course='+encodeURIComponent(course));
+ const [data,roles]=await Promise.all([api('/api/admin/roster?course='+encodeURIComponent(course)),api('/api/admin/assistants')]);
+ assistantPeople=new Map(roles.rows.map(r=>[r.id,r.assistant]));
  allRows=data.rows;loadedCourse=course;updateSections(previous);render();
  if(!editing) $('section').value=selectedSection() || '';
 }

@@ -18,7 +18,7 @@ function renderPeople(){
  rows.sort(comparePeople);
  for(const key of ['studentNumber','name','courses']){const active=key===personSort;$('person-sort-'+key+'-heading').setAttribute('aria-sort',active?(personDirection===1?'ascending':'descending'):'none');$('person-sort-'+key).querySelector('span').textContent=active?(personDirection===1?'↑':'↓'):'↕';}
  $('person-rows').replaceChildren();$('person-count').textContent=rows.length+'명';
- for(const p of rows){const tr=document.createElement('tr');cells(tr,[p.studentNumber,p.name,p.courses.map(c=>c.title+' · '+(c.section?c.section+'분반':'분반 미지정')).join(', ')||'수강 과목 없음',p.registered?'가입 완료':'미가입']);
+ for(const p of rows){const tr=document.createElement('tr');cells(tr,[p.studentNumber,p.name,p.courses.map(c=>c.title+' · '+(c.section?c.section+'분반':'분반 미지정')).join(', ')||'수강 과목 없음',(assistantPeople.get(p.id)?'조교 · ':'학생 · ')+(p.registered?'가입 완료':'미가입')]);
  const td=document.createElement('td'),edit=document.createElement('button');edit.type='button';edit.textContent='수정';edit.addEventListener('click',()=>{personId=p.id;$('person-number').value=p.studentNumber;$('person-name').value=p.name;$('person-title').textContent='학생 기본 정보 수정';$('person-cancel').hidden=false;$('person-number').focus();});
  const enroll=document.createElement('button');enroll.type='button';enroll.textContent='수강 등록';enroll.addEventListener('click',()=>{location.href='/admin.html?student='+encodeURIComponent(p.id);});
  const actions=document.createElement('div');actions.className='row-actions';actions.append(edit,enroll);

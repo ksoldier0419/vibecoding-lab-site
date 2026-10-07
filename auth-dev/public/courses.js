@@ -9,6 +9,8 @@ async function loadCourses() {
   if(!response.ok)throw new Error(data.error);
   document.getElementById('admin').hidden=data.role!=='professor';
   document.getElementById('java-instructor').hidden=!['professor','assistant'].includes(data.role);
+  if(data.role==='professor')document.getElementById('study-link').href='/teaching.html';
+  if(['professor','assistant'].includes(data.role))document.getElementById('questions-link').href='/teaching.html?panel=questions';
   for(const c of data.courses){
    const li=document.createElement('li'),card=document.createElement(c.url?'a':'div'),title=document.createElement('strong'),detail=document.createElement('small');
    if(c.url)card.href=c.url;else card.className='course-pending';

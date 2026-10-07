@@ -55,6 +55,26 @@ function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach}
   }catch{fail(res);}
  }
  const review=[signedIn,staff,lesson,reviewScope];
+ for(const [prefix,guards,student] of [['/api/study',own,true],['/api/teaching',review,false]]) {
+  app.get(prefix+'/:course/:lesson/questions',...guards,async(req,res)=>{
+   const after=req.query.after || '0';if(typeof after!=='string' || !idPattern.test(after))return res.status(400).json({error:'목록 위치를 확인해 주세요.'});
+   try {res.json(await repository.questionList(req.course.courseId,req.course.id,req.params.lesson,student?req.session.user.id:null,student?null:req.sections,after));}catch{fail(res);}
+  });
+ }
+ app.post('/api/study/:course/:lesson/questions',localPost,...own,async(req,res)=>{
+  const value=req.body;
+  if(!value || Object.keys(value).some(k=>k!=='question') || typeof value.question!=='string' || !value.question.trim() || value.question.length>20000)return res.status(400).json({error:'질문은 1~20,000자로 작성해 주세요.'});
+  try {res.status(201).json({question:await repository.createQuestion(req.session.user.id,req.course.id,req.params.lesson,value.question.trim())});}catch{fail(res);}
+ });
+ app.post('/api/teaching/:course/:lesson/questions/:questionId/answer',localPost,...review,async(req,res)=>{
+  const value=req.body;
+  if(!idPattern.test(req.params.questionId) || req.params.questionId==='0' || !value || Object.keys(value).some(k=>!['answer','version'].includes(k)) || typeof value.answer!=='string' || value.answer.length>20000 || !Number.isSafeInteger(value.version) || value.version<0)return res.status(400).json({error:'답변은 20,000자 이내로 작성해 주세요.'});
+  try {
+   const question=await repository.answerQuestion(req.course.courseId,req.course.id,req.params.lesson,req.sections,req.params.questionId,req.session.user.id,value.answer,value.version);
+   if(!question)return res.status(409).json({error:'답변이 변경되었거나 열람 권한이 없습니다. 작성한 내용을 복사하고 목록을 다시 불러와 주세요.'});
+   res.json({question});
+  }catch{fail(res);}
+ });
  app.get('/api/teaching/:course/:lesson/student-notes',...review,async(req,res)=>{
   const after=req.query.after || '0';if(typeof after!=='string' || !idPattern.test(after))return res.sendStatus(400);
   try {res.json(await repository.studentNoteList(req.course.courseId,req.course.id,req.params.lesson,req.sections,after));}catch{fail(res);}

@@ -72,9 +72,10 @@ function createRosterRepository(sql) {
   async courses() { return sql.query('SELECT id,title FROM login_dev_courses ORDER BY title'); },
   async roster(course) {
    return sql.query(`SELECT r.id::text AS id, r.student_number AS "studentNumber",r.student_name AS name,
-    e.section,(r.google_id IS NOT NULL) AS registered,p.created_at AS "registeredAt"
+    e.section,(r.google_id IS NOT NULL) AS registered,p.created_at AS "registeredAt",u.email
     FROM login_dev_enrollments e JOIN login_dev_roster r ON r.id=e.roster_id
     LEFT JOIN login_dev_student_profiles p ON p.google_id=r.google_id
+    LEFT JOIN login_dev_users u ON u.google_id=r.google_id
     WHERE e.course_id=$1 ORDER BY r.student_number,e.section`,[course]);
   },
   previewRoster: summary,
@@ -102,9 +103,10 @@ function createRosterRepository(sql) {
    return result[0];
   },
   async addRoster(course,value) {
-   const report=await summary(course,[value]);
+   const rows=(value.sections || [value.section]).map(section=>({studentNumber:value.studentNumber,name:value.name,section}));
+   const report=await summary(course,rows);
    if(report.conflicts.length) throw Object.assign(new Error('이 학번은 기존 명단에 다른 이름으로 등록되어 있습니다. 기존 학생의 이름을 확인해 주세요. 이름 정정은 기존 명단의 수정 버튼을 사용해 주세요.'),{code:'ROSTER_CONFLICT'});
-   return this.importRoster(course,[value],true);
+   return this.importRoster(course,rows,true);
   },
   async deleteEnrollment(id,course,section) {
    const rows=await locked('DELETE FROM login_dev_enrollments WHERE roster_id=$1::bigint AND course_id=$2 AND section=$3 RETURNING roster_id',[id,course,section]);

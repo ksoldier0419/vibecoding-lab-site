@@ -1,8 +1,9 @@
-const $=id=>document.getElementById(id),staffView=location.pathname==='/teaching.html',params=new URLSearchParams(location.search);
+const elements=new Map([...document.querySelectorAll('[id]')].map(n=>[n.id,n]));
+const $=id=>elements.get(id),staffView=location.pathname==='/teaching.html',params=new URLSearchParams(location.search);
 let courses=[],course,lesson,nextPage=null,readVersion=0,listBusy=false;
 function option(value,text){const node=document.createElement('option');node.value=value;node.textContent=text;return node;}
 async function api(url){const response=await fetch(url,{cache:'no-store'});const data=await response.json();if(response.status===401)throw Error('로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인해 주세요.');if(!response.ok)throw Error(data.error || '불러오지 못했습니다.');return data;}
-function navigate(folder,page){$('workspace-course').value=course.id;$('workspace-lesson').value=lesson.id;location.assign(location.pathname+'?'+new URLSearchParams({course:folder,lesson:page}));}
+function navigate(folder,page){$('workspace-course').value=course.id;$('workspace-lesson').value=lesson.id;location.assign(location.pathname+'?'+new URLSearchParams({course:folder,lesson:page,panel:$('questions-panel').hidden?'notes':'questions'}));}
 async function load(){
  try {
   const data=await api('/api/teaching/catalog'+(staffView?'?view=staff':''));courses=data.courses;
@@ -11,13 +12,16 @@ async function load(){
   if(!course)throw Error('이 과목을 선택할 수 없습니다.');
   lesson=course.lessons.find(l=>l.id===params.get('lesson')) || (!params.has('lesson')?course.lessons[0]:null);
   if(!lesson)throw Error('등록된 교안이 없습니다.');
-  if(!params.has('course') || !params.has('lesson')){location.replace(location.pathname+'?'+new URLSearchParams({course:course.id,lesson:lesson.id}));return;}
+  if(!params.has('course') || !params.has('lesson')){location.replace(location.pathname+'?'+new URLSearchParams({course:course.id,lesson:lesson.id,panel:params.get('panel')==='questions'?'questions':'notes'}));return;}
   $('workspace-course').replaceChildren(...courses.map(c=>option(c.id,c.title)));$('workspace-course').value=course.id;
   $('workspace-lesson').replaceChildren(...course.lessons.map(l=>option(l.id,l.title)));$('workspace-lesson').value=lesson.id;
   $('workspace-course').disabled=false;$('workspace-lesson').disabled=false;
-  $('workspace-title').textContent=staffView?'교안과 학생 메모':'내 교안과 학습 메모';
   $('workspace-frame').src=staffView?'/instructor/courses/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id):'/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id);
-  $('workspace-frame').hidden=false;$('workspace-status').textContent=course.title+' · '+lesson.title;$('workspace-retry').hidden=true;
+  $('workspace-frame').hidden=false;$('workspace-status').textContent='';$('workspace-retry').hidden=true;
+  questionsReady=!staffView || course.reviewAllowed;
+  $('question-form').hidden=staffView;$('question-text').disabled=!questionsReady;$('question-submit').disabled=!questionsReady;$('questions-refresh').disabled=!questionsReady;
+  if(questionsReady)await loadQuestions(true);else $('questions-status').textContent='관리자가 담당 과목·분반을 지정하면 질문을 열람하고 답변할 수 있습니다.';
+  showPanel(params.get('panel')==='questions');
   if(staffView){$('student-review').hidden=false;if(course.reviewAllowed)await reviewList(true);else{$('review-status').textContent='관리자가 담당 과목·분반을 지정하면 학생 메모를 열람할 수 있습니다.';$('review-refresh').disabled=true;}}
   else {
    $('student-editor').hidden=false;$('lesson-note').dataset.noteUrl='/api/study/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id)+'/note';
@@ -29,6 +33,9 @@ const reviewURL=()=>'/api/teaching/'+encodeURIComponent(course.id)+'/'+encodeURI
 $('workspace-frame').addEventListener('load',()=>{
  try {
   const frame=$('workspace-frame');
+  const doc=frame.contentDocument,toc=doc.querySelector('.toc');
+  if(toc){const style=doc.createElement('link');style.rel='stylesheet';style.href='/auth-assets/teaching-workspace.css';doc.head.append(style);toc.prepend($('workspace-selectors'));}
+  const noteBox=doc.querySelector('.instructor-notes');if(noteBox)noteBox.previousElementSibling?.remove();
   frame.contentDocument.addEventListener('click',event=>{
    const link=event.target.closest('a');if(!link)return;
    const target=new URL(link.href),current=new URL(frame.contentWindow.location.href);
@@ -41,7 +48,7 @@ $('workspace-frame').addEventListener('load',()=>{
    }
    link.target='_blank';link.rel='noopener';
   });
- }catch{$('workspace-status').textContent='교안 내부 탐색을 연결하지 못했습니다. 상단 선택 메뉴를 이용해 주세요.';}
+ }catch{$('workspace-status').textContent='교안 내부 탐색을 연결하지 못했습니다. 과목·교안 선택 메뉴를 이용해 주세요.';}
 });
 async function reviewList(reset){
  if(listBusy)return;listBusy=true;$('review-refresh').disabled=true;$('review-more').disabled=true;
@@ -61,4 +68,57 @@ $('review-student').addEventListener('change',async()=>{
 });
 $('review-refresh').addEventListener('click',()=>reviewList(true));$('review-more').addEventListener('click',()=>reviewList(false));
 $('workspace-course').addEventListener('change',()=>{const selected=courses.find(c=>c.id===$('workspace-course').value);if(selected?.lessons.length)navigate(selected.id,selected.lessons[0].id);});
-$('workspace-lesson').addEventListener('change',()=>navigate(course.id,$('workspace-lesson').value));$('workspace-retry').addEventListener('click',()=>location.reload());load();
+$('workspace-lesson').addEventListener('change',()=>navigate(course.id,$('workspace-lesson').value));$('workspace-retry').addEventListener('click',()=>location.reload());
+let questionsReady=false,questions=[],questionNext=null,questionBusy=false,selectedQuestion=null,answerBaseline='';
+const questionURL=()=>'/api/'+(staffView?'teaching':'study')+'/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id)+'/questions';
+function hasQuestionDraft(){return Boolean($('question-text').value.trim() || (selectedQuestion && $('answer-text').value!==answerBaseline));}
+window.addEventListener('beforeunload',event=>{if(hasQuestionDraft()){event.preventDefault();event.returnValue='';}});
+function showPanel(question){
+ $('notes-panel').hidden=question;$('questions-panel').hidden=!question;
+ for(const [id,active] of [['tab-notes',!question],['tab-questions',question]]){$(id).setAttribute('aria-selected',String(active));$(id).tabIndex=active?0:-1;}
+}
+$('tab-notes').addEventListener('click',()=>showPanel(false));$('tab-questions').addEventListener('click',()=>showPanel(true));
+for(const id of ['tab-notes','tab-questions'])$(id).addEventListener('keydown',event=>{
+ if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();const question=event.key==='End' || (event.key!=='Home' && $('questions-panel').hidden);showPanel(question);$(question?'tab-questions':'tab-notes').focus();}
+});
+function questionDetail(row){
+ selectedQuestion=row;$('question-detail').hidden=!row;$('answer-form').hidden=!staffView || !row;
+ if(!row){$('answer-text').value='';answerBaseline='';return;}
+ $('question-author').textContent=staffView?row.studentNumber+' · '+row.name:'내 질문';
+ $('question-date').textContent='등록: '+new Date(row.createdAt).toLocaleString('ko-KR');
+ $('question-body').textContent=row.question;$('question-answer').textContent=row.answer || '아직 답변이 없습니다.';
+ $('answer-text').value=row.answer;answerBaseline=row.answer;
+}
+async function loadQuestions(reset){
+ if(!questionsReady || questionBusy)return;questionBusy=true;$('questions-refresh').disabled=true;$('questions-more').disabled=true;
+ $('questions-select').disabled=true;$('answer-text').readOnly=true;$('answer-submit').disabled=true;
+ try{
+  if(reset && selectedQuestion && $('answer-text').value!==answerBaseline && !window.confirm('저장하지 않은 답변을 버리고 목록을 다시 불러올까요?'))return;
+  const data=await api(questionURL()+(!reset && questionNext?'?after='+encodeURIComponent(questionNext):''));
+  if(reset){questions=[];questionDetail(null);$('questions-select').replaceChildren(option('','질문 선택'));}
+  questions.push(...data.rows);for(const row of data.rows)$('questions-select').append(option(row.id,(row.answer?'답변 완료 · ':'답변 대기 · ')+(staffView?row.name+' · ':'')+row.question.slice(0,50)));
+  questionNext=data.next;$('questions-more').hidden=!questionNext;$('questions-select').disabled=!questions.length;
+  $('questions-status').textContent=questions.length?'질문을 선택하면 질문과 답변을 볼 수 있습니다.':'등록된 질문이 없습니다.';
+ }catch(e){$('questions-status').textContent=e.message;}
+ finally{questionBusy=false;$('questions-refresh').disabled=false;$('questions-more').disabled=false;$('questions-select').disabled=!questions.length;$('answer-text').readOnly=false;$('answer-submit').disabled=false;}
+}
+$('questions-select').addEventListener('change',()=>{
+ if(selectedQuestion && $('answer-text').value!==answerBaseline && !window.confirm('저장하지 않은 답변을 버리고 다른 질문을 열까요?')){$('questions-select').value=selectedQuestion.id;return;}
+ questionDetail(questions.find(q=>q.id===$('questions-select').value)||null);
+});
+$('questions-refresh').addEventListener('click',()=>loadQuestions(true));$('questions-more').addEventListener('click',()=>loadQuestions(false));
+async function postQuestion(url,body){const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await res.json();if(!res.ok)throw Error(res.status===401?'로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인해 주세요.':data.error || '저장하지 못했습니다.');return data;}
+$('question-form').addEventListener('submit',async event=>{
+ event.preventDefault();if($('question-submit').disabled)return;$('question-submit').disabled=true;$('question-text').readOnly=true;
+ try{await postQuestion(questionURL(),{question:$('question-text').value});$('question-text').value='';await loadQuestions(true);$('questions-status').textContent='질문을 등록했습니다.';}
+ catch(e){$('questions-status').textContent=e.message;}
+ finally{$('question-submit').disabled=false;$('question-text').readOnly=false;}
+});
+$('answer-form').addEventListener('submit',async event=>{
+ event.preventDefault();if(!selectedQuestion || $('answer-submit').disabled)return;
+ const current=selectedQuestion;const value=$('answer-text').value;$('answer-submit').disabled=true;$('answer-text').readOnly=true;$('questions-select').disabled=true;$('questions-refresh').disabled=true;$('questions-more').disabled=true;
+ try{const data=await postQuestion(questionURL()+'/'+encodeURIComponent(current.id)+'/answer',{answer:value,version:current.version});Object.assign(current,data.question);questionDetail(current);const item=[...$('questions-select').options].find(o=>o.value===current.id);if(item)item.textContent=(current.answer?'답변 완료 · ':'답변 대기 · ')+current.name+' · '+current.question.slice(0,50);$('questions-status').textContent='답변을 저장했습니다.';}
+ catch(e){$('questions-status').textContent=e.message;}
+ finally{$('answer-submit').disabled=false;$('answer-text').readOnly=false;$('questions-select').disabled=false;$('questions-refresh').disabled=false;$('questions-more').disabled=false;}
+});
+load();

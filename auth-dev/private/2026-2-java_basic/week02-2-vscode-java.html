@@ -154,17 +154,17 @@
   <li><strong>통합 터미널에서 열기</strong> 또는 <strong>Open in Integrated Terminal</strong> 선택</li>
 </ol>
 <p>그러면 VS Code 아래쪽 터미널이 열리고, 현재 위치가 바로 그 폴더가 됩니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>/*
-장제목: 1장 자바 시작하기
-작성일: 2024.01.01
-*/
-public class Hello {
-	//프로그램 실행 진입점
-	public static void main(String[] args) {
-		//콘솔에 출력하는 실행문
-		System.out.printf(&quot;Hello, Java%n&quot;);
-	} 
-}
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-cm">/*</span>
+<span class="syntax-cm">장제목: 1장 자바 시작하기</span>
+<span class="syntax-cm">작성일: 2024.01.01</span>
+<span class="syntax-cm">*/</span>
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">Hello</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">	</span><span class="syntax-c1">//프로그램 실행 진입점</span>
+<span class="syntax-w">	</span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">		</span><span class="syntax-c1">//콘솔에 출력하는 실행문</span>
+<span class="syntax-w">		</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"Hello, Java%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">	</span><span class="syntax-p">}</span><span class="syntax-w"> </span>
+<span class="syntax-p">}</span>
 </code></pre></div>
 <p>실행방법</p>
 <table>
@@ -187,14 +187,14 @@ Hello, Java</code></pre></div>
     </td>
   </tr>
 </table>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class Calculator {
-	public static void main(String[] args) {
-		int x = 1;						//변수 x를 선언하고 1을 저장
-		int y = 2;						//변수 y를 선언하고 2를 저장
-		int result = x + y;				//변수 result를 선언하고 x와 y를 더한 값을 저장
-		System.out.printf(&quot;%d%n&quot;, result);		//모니터에 출력하는 메소드 호출
-	}
-}</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">Calculator</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">	</span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">		</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w">						</span><span class="syntax-c1">//변수 x를 선언하고 1을 저장</span>
+<span class="syntax-w">		</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">;</span><span class="syntax-w">						</span><span class="syntax-c1">//변수 y를 선언하고 2를 저장</span>
+<span class="syntax-w">		</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">;</span><span class="syntax-w">				</span><span class="syntax-c1">//변수 result를 선언하고 x와 y를 더한 값을 저장</span>
+<span class="syntax-w">		</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span><span class="syntax-w">		</span><span class="syntax-c1">//모니터에 출력하는 메소드 호출</span>
+<span class="syntax-w">	</span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행방법</p>
 <table>
   <tr>

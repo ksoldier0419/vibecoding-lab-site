@@ -84,21 +84,21 @@
 </section>
 <h2 id="1-시작-예제-datatypeexample-java">1. 시작 예제: DataTypeExample.java</h2>
 <p>파일 이름은 <code>DataTypeExample.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class DataTypeExample {
-    public static void main(String[] args) {
-        int age = 20;
-        double height = 175.5;
-        char grade = &#x27;A&#x27;;
-        boolean isStudent = true;
-        String name = &quot;Kim&quot;;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">DataTypeExample</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">age</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">20</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">height</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mf">175.5</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">char</span><span class="syntax-w"> </span><span class="syntax-n">grade</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-sc">'A'</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">boolean</span><span class="syntax-w"> </span><span class="syntax-n">isStudent</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-kc">true</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-s">"Kim"</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;name: %s%n&quot;, name);
-        System.out.printf(&quot;age: %d%n&quot;, age);
-        System.out.printf(&quot;height: %.1f%n&quot;, height);
-        System.out.printf(&quot;grade: %c%n&quot;, grade);
-        System.out.printf(&quot;student: %b%n&quot;, isStudent);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"name: %s%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"age: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">age</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"height: %.1f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">height</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"grade: %c%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">grade</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"student: %b%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">isStudent</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>name: Kim
 age: 20
@@ -167,8 +167,8 @@ student: true</code></pre></div>
   </tbody>
 </table>
 <p>⚠️ 주의: <code>char</code>는 작은따옴표(<code>&#x27;</code>)를 사용하고, <code>String</code>은 큰따옴표(<code>&quot;</code>)를 사용합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>char grade = &#x27;A&#x27;;
-String name = &quot;Kim&quot;;</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kt">char</span><span class="syntax-w"> </span><span class="syntax-n">grade</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-sc">'A'</span><span class="syntax-p">;</span>
+<span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-s">"Kim"</span><span class="syntax-p">;</span></code></pre></div>
 <h2 id="4-printf-와-자료형">4. printf()와 자료형</h2>
 <p><code>printf()</code>에서는 출력할 값의 자료형에 맞는 자리표시자를 사용합니다.</p>
 <table>
@@ -217,59 +217,59 @@ String name = &quot;Kim&quot;;</code></pre></div>
 </table>
 <h2 id="5-자동-형-변환">5. 자동 형 변환</h2>
 <p>형 변환은 값의 자료형이 다른 자료형으로 바뀌는 것입니다. 작은 범위의 값을 더 큰 범위의 자료형에 넣을 때는 Java가 자동으로 바꾸어 주는 경우가 있습니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class AutoCasting {
-    public static void main(String[] args) {
-        int score = 90;
-        double scoreDouble = score;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">AutoCasting</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">scoreDouble</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;%.1f%n&quot;, scoreDouble);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%.1f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scoreDouble</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>90.0</code></pre></div>
 <p><code>int</code> 값 <code>90</code>이 <code>double</code> 변수에 저장되면서 <code>90.0</code>으로 바뀌었습니다.</p>
 <h2 id="6-강제-형-변환">6. 강제 형 변환</h2>
 <p>큰 범위의 값을 작은 범위의 자료형으로 바꿀 때는 직접 자료형을 적어야 합니다. 이때 일부 값이 사라질 수 있습니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class ManualCasting {
-    public static void main(String[] args) {
-        double average = 89.7;
-        int score = (int) average;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ManualCasting</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mf">89.7</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;%d%n&quot;, score);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>89</code></pre></div>
 <p><code>double</code> 값 <code>89.7</code>을 <code>int</code>로 바꾸면 소수점 아래가 사라집니다.</p>
 <p>⚠️ 주의: 강제 형 변환은 값이 달라질 수 있으므로 필요한 경우에만 사용합니다.</p>
 <h2 id="7-다른-예제-1-평균-점수-계산">7. 다른 예제 1: 평균 점수 계산</h2>
 <p>정수끼리 나누면 결과도 정수처럼 처리될 수 있습니다. 평균처럼 소수점 결과가 필요하면 <code>double</code>을 사용합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class AverageScore {
-    public static void main(String[] args) {
-        int korean = 80;
-        int english = 90;
-        int math = 85;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">AverageScore</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">korean</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">english</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">math</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">85</span><span class="syntax-p">;</span>
 
-        double average = (korean + english + math) / 3.0;
+<span class="syntax-w">        </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">korean</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">english</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">math</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-mf">3.0</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;average: %.1f%n&quot;, average);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"average: %.1f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>average: 85.0</code></pre></div>
 <h2 id="8-다른-예제-2-할인-가격-계산">8. 다른 예제 2: 할인 가격 계산</h2>
 <p>가격은 정수로 저장하고, 할인율은 실수로 저장할 수 있습니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class DiscountPrice {
-    public static void main(String[] args) {
-        int price = 12000;
-        double discountRate = 0.1;
-        int discount = (int) (price * discountRate);
-        int payment = price - discount;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">DiscountPrice</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">price</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">12000</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">discountRate</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mf">0.1</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">discount</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">price</span><span class="syntax-w"> </span><span class="syntax-o">*</span><span class="syntax-w"> </span><span class="syntax-n">discountRate</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">payment</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">price</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-w"> </span><span class="syntax-n">discount</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;discount: %d%n&quot;, discount);
-        System.out.printf(&quot;payment: %d%n&quot;, payment);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"discount: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">discount</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"payment: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">payment</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>discount: 1200
 payment: 10800</code></pre></div>

@@ -120,17 +120,17 @@
 </table>
 <p>정수끼리 나누면 소수 부분을 버린 정수 결과가 나옵니다. 실수 결과가 필요하면 계산할 때 한쪽 값을 실수로 만듭니다.</p>
 <p>파일 이름은 <code>ArithmeticExample.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class ArithmeticExample {
-    public static void main(String[] args) {
-        int x = 7;
-        int y = 2;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ArithmeticExample</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">7</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;합: %d%n&quot;, x + y);
-        System.out.printf(&quot;몫: %d%n&quot;, x / y);
-        System.out.printf(&quot;나머지: %d%n&quot;, x % y);
-        System.out.printf(&quot;실수 나눗셈: %.1f%n&quot;, (double) x / y);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"몫: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"나머지: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">%</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"실수 나눗셈: %.1f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">double</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>합: 9
 몫: 3
@@ -206,23 +206,23 @@
 <h2 id="3-if-조건을-만족할-때-실행하기">3. if: 조건을 만족할 때 실행하기</h2>
 <p><strong>조건문</strong>은 조건에 따라 실행할 코드를 선택하는 문장입니다. <code>if</code>의 괄호 안에는 참 또는 거짓이 되는 식을 적습니다. 참이면 중괄호 <code>{ }</code> 안의 코드를 실행합니다.</p>
 <p>파일 이름은 <code>PassCheck.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
 
-public class PassCheck {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">PassCheck</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
 
-        System.out.print(&quot;점수를 입력하세요: &quot;);
-        int score = scanner.nextInt();
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"점수를 입력하세요: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span>
 
-        if (score &gt;= 60) {
-            System.out.printf(&quot;합격입니다.%n&quot;);
-        }
-        System.out.printf(&quot;판정을 마쳤습니다.%n&quot;);
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합격입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"판정을 마쳤습니다.%n"</span><span class="syntax-p">);</span>
 
-        scanner.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>점수를 입력하세요: 75
 합격입니다.
@@ -231,11 +231,11 @@ public class PassCheck {
 <p>⚠️ 주의: <code>if (score &gt;= 60)</code> 바로 뒤에 세미콜론(<code>;</code>)을 붙이지 않습니다. 실행할 코드는 중괄호 안에 작성합니다.</p>
 <h2 id="4-if-else-두-경우로-나누기">4. if ~ else: 두 경우로 나누기</h2>
 <p><code>else</code>에는 조건이 거짓일 때 실행할 코드를 적습니다. 앞 예제의 <code>if</code> 부분을 다음 코드로 교체합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>if (score &gt;= 60) {
-    System.out.printf(&quot;합격입니다.%n&quot;);
-} else {
-    System.out.printf(&quot;불합격입니다.%n&quot;);
-}</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합격입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"불합격입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span></code></pre></div>
 <table>
   <thead><tr>
 <th>입력한 점수</th>
@@ -256,15 +256,15 @@ public class PassCheck {
 <h2 id="5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</h2>
 <p><code>else if</code>는 앞의 조건이 거짓일 때 다음 조건을 검사합니다. 하나의 연결된 조건문에서는 <strong>처음 참이 된 조건의 코드만</strong> 실행합니다.</p>
 <p>앞 예제의 조건문을 다음 코드로 교체합니다. 입력 점수는 0~100 사이라고 가정합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>if (score &gt;= 90) {
-    System.out.printf(&quot;A등급%n&quot;);
-} else if (score &gt;= 80) {
-    System.out.printf(&quot;B등급%n&quot;);
-} else if (score &gt;= 70) {
-    System.out.printf(&quot;C등급%n&quot;);
-} else {
-    System.out.printf(&quot;재학습이 필요합니다.%n&quot;);
-}</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"A등급%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"B등급%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">70</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"C등급%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"재학습이 필요합니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p><code>85</code>를 입력하면 첫 조건은 거짓이고 두 번째 조건은 참이므로 <code>B등급</code>을 출력합니다. 이때 <code>score &gt;= 70</code>은 더 검사하지 않습니다.</p>
 <p>⚠️ 주의: <code>score &gt;= 70</code>부터 검사하면 <code>95</code>도 그 조건에 먼저 해당합니다. 이 예제에서는 높은 점수부터 검사해야 합니다.</p>
 <h2 id="6-논리-연산자-조건-결합하기">6. 논리 연산자: 조건 결합하기</h2>
@@ -298,25 +298,25 @@ public class PassCheck {
   </tbody>
 </table>
 <p>파일 이름은 <code>ScoreRangeCheck.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
 
-public class ScoreRangeCheck {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ScoreRangeCheck</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
 
-        System.out.print(&quot;점수를 입력하세요: &quot;);
-        int score = scanner.nextInt();
-        boolean isValid = score &gt;= 0 &amp;&amp; score &lt;= 100;
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"점수를 입력하세요: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span>
+<span class="syntax-w">        </span><span class="syntax-kt">boolean</span><span class="syntax-w"> </span><span class="syntax-n">isValid</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-w"> </span><span class="syntax-o">&amp;&amp;</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&lt;=</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">;</span>
 
-        if (!isValid) {
-            System.out.printf(&quot;점수는 0~100 사이여야 합니다.%n&quot;);
-        } else {
-            System.out.printf(&quot;입력 가능한 점수입니다.%n&quot;);
-        }
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-o">!</span><span class="syntax-n">isValid</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수는 0~100 사이여야 합니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"입력 가능한 점수입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
 
-        scanner.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>점수를 입력하세요: 105
 점수는 0~100 사이여야 합니다.</code></pre></div>

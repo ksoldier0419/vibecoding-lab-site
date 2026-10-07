@@ -11,14 +11,15 @@
 <p class="muted">분반 목록은 등록된 수강 명단을 기준으로 표시합니다. CSV는 화면의 분반 선택과 관계없이 파일에 적힌 분반으로 등록합니다.</p>
 <section><h2>수강 학생 <span id="count"></span></h2>
 <label for="search">학번·이름 검색</label><input id="search" type="search" placeholder="학번 또는 이름">
-<div class="table-scroll"><table><thead><tr><th id="sort-number-heading" aria-sort="none"><button id="sort-number" class="sort-heading" type="button">학번 <span aria-hidden="true">↕</span></button></th><th id="sort-name-heading" aria-sort="ascending"><button id="sort-name" class="sort-heading" type="button">이름 <span aria-hidden="true">↑</span></button></th><th>분반</th><th>가입 상태</th><th id="sort-registered-heading" aria-sort="none"><button id="sort-registered" class="sort-heading" type="button">가입 완료 일시 (한국 시간) <span aria-hidden="true">↕</span></button></th><th>관리</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="table-scroll"><table><thead><tr><th id="sort-number-heading" aria-sort="none"><button id="sort-number" class="sort-heading" type="button">학번 <span aria-hidden="true">↕</span></button></th><th id="sort-name-heading" aria-sort="ascending"><button id="sort-name" class="sort-heading" type="button">이름 <span aria-hidden="true">↑</span></button></th><th>분반</th><th>신분</th><th>가입 상태</th><th>이메일</th><th id="sort-registered-heading" aria-sort="none"><button id="sort-registered" class="sort-heading" type="button">가입 완료 일시 (한국 시간) <span aria-hidden="true">↕</span></button></th><th>관리</th></tr></thead><tbody id="rows"></tbody></table></div>
 <p id="empty" hidden>등록된 수강생이 없습니다.</p></section>
 <div class="panels">
 <section><h2 id="editor-title">학생 직접 등록</h2>
 <p id="editor-status" role="status" aria-live="polite"></p>
 <form id="editor"><label for="number">학번</label><input id="number" name="studentNumber" required minlength="4" maxlength="20" pattern="[A-Za-z0-9\-]{4,20}" autocomplete="off">
 <label for="student-name">이름</label><input id="student-name" name="name" required maxlength="100" autocomplete="off">
-<label for="section">분반 (선택)</label><input id="section" name="section" maxlength="30" placeholder="예: 1, 2, 3">
+<label for="section">분반 (선택)</label><input id="section" name="section" maxlength="320" placeholder="예: 1,2">
+<p class="muted">직접 등록은 쉼표로 여러 분반을 입력할 수 있습니다(예: 1,2). 수정은 선택한 한 분반만 변경합니다. 추가 분반은 직접 등록을 이용하세요.</p>
 <p class="muted">학번·이름을 수정하면 이 학생의 다른 과목 명단과 가입 정보에도 반영됩니다. 분반은 선택한 수강 행에만 반영됩니다.</p>
 <div class="form-actions"><button type="submit">저장</button><button id="cancel" type="button" hidden>수정 취소</button></div></form></section>
 <section><h2>CSV 일괄 등록</h2>

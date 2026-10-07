@@ -87,14 +87,14 @@
 </section>
 <h2 id="1-시작-예제-calculator-java">1. 시작 예제: Calculator.java</h2>
 <p>파일 이름은 <code>Calculator.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class Calculator {
-    public static void main(String[] args) {
-        int x = 1;                  // 변수 x를 선언하고 1을 저장
-        int y = 2;                  // 변수 y를 선언하고 2를 저장
-        int result = x + y;         // 변수 result를 선언하고 x와 y를 더한 값을 저장
-        System.out.printf(&quot;%d%n&quot;, result); // 모니터에 출력하는 메소드 호출
-    }
-}</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">Calculator</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w">                  </span><span class="syntax-c1">// 변수 x를 선언하고 1을 저장</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">;</span><span class="syntax-w">                  </span><span class="syntax-c1">// 변수 y를 선언하고 2를 저장</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">x</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">y</span><span class="syntax-p">;</span><span class="syntax-w">         </span><span class="syntax-c1">// 변수 result를 선언하고 x와 y를 더한 값을 저장</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span><span class="syntax-w"> </span><span class="syntax-c1">// 모니터에 출력하는 메소드 호출</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>3</code></pre></div>
 <h2 id="2-코드-살펴보기">2. 코드 살펴보기</h2>
@@ -126,9 +126,9 @@
 <p>⚠️ 보안 참고: 이 교안에서는 출력할 때 <code>println()</code> 대신 <code>printf()</code>를 사용합니다. 포맷 문자열은 <code>&quot;%d%n&quot;</code>처럼 코드에 고정하고, 출력할 값은 뒤쪽 인자로 전달합니다.</p>
 <h2 id="3-변수의-기본-모양">3. 변수의 기본 모양</h2>
 <p>변수는 보통 다음 순서로 작성합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>자료형 변수이름 = 값;</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-n">자료형</span><span class="syntax-w"> </span><span class="syntax-n">변수이름</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">값</span><span class="syntax-p">;</span></code></pre></div>
 <p>예:</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>int score = 80;</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">;</span></code></pre></div>
 <table>
   <thead><tr>
 <th>부분</th>
@@ -151,30 +151,30 @@
 </table>
 <h2 id="4-변수-값-바꾸기">4. 변수 값 바꾸기</h2>
 <p>변수는 값을 다시 저장할 수 있습니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class Calculator {
-    public static void main(String[] args) {
-        int score = 80;
-        System.out.printf(&quot;%d%n&quot;, score);
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">Calculator</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">);</span>
 
-        score = 90;
-        System.out.printf(&quot;%d%n&quot;, score);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>80
 90</code></pre></div>
 <p>처음에는 <code>score</code>에 <code>80</code>이 저장됩니다. 그다음 <code>score = 90;</code>이 실행되면 <code>score</code>의 값이 <code>90</code>으로 바뀝니다.</p>
 <h2 id="5-상수-사용하기">5. 상수 사용하기</h2>
 <p>상수는 값을 바꾸지 않기로 정한 이름입니다. Java에서는 <code>final</code>을 붙여 상수를 만듭니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class Calculator {
-    public static void main(String[] args) {
-        final int BONUS = 10;
-        int score = 80;
-        int total = score + BONUS;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">Calculator</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kd">final</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">BONUS</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">10</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">BONUS</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;%d%n&quot;, total);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>90</code></pre></div>
 <table>
@@ -194,8 +194,8 @@
   </tbody>
 </table>
 <p>⚠️ 주의: <code>final</code>로 만든 상수는 나중에 값을 다시 바꿀 수 없습니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>final int BONUS = 10;
-BONUS = 20; // 오류</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">final</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">BONUS</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">10</span><span class="syntax-p">;</span>
+<span class="syntax-n">BONUS</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">20</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-o">//</span><span class="syntax-w"> </span><span class="syntax-n">오류</span></code></pre></div>
 <p>💡 참고: 언어마다 상수를 만드는 방법이 조금씩 다릅니다.</p>
 <table>
   <thead><tr>
@@ -267,15 +267,15 @@ BONUS = 20; // 오류</code></pre></div>
   </tbody>
 </table>
 <h2 id="7-다른-예제-1-물건-가격-계산">7. 다른 예제 1: 물건 가격 계산</h2>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class PriceCalculator {
-    public static void main(String[] args) {
-        int price = 1500;
-        int count = 3;
-        int total = price * count;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">PriceCalculator</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">price</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1500</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">3</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">price</span><span class="syntax-w"> </span><span class="syntax-o">*</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;%d%n&quot;, total);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>4500</code></pre></div>
 <p>확인할 것:</p>
@@ -285,15 +285,15 @@ BONUS = 20; // 오류</code></pre></div>
   <li><code>total</code>에는 가격과 개수를 곱한 값이 저장됩니다.</li>
 </ul>
 <h2 id="8-다른-예제-2-고정-배송비-더하기">8. 다른 예제 2: 고정 배송비 더하기</h2>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class DeliveryCalculator {
-    public static void main(String[] args) {
-        final int DELIVERY_FEE = 3000;
-        int productPrice = 12000;
-        int payment = productPrice + DELIVERY_FEE;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">DeliveryCalculator</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kd">final</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">DELIVERY_FEE</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">3000</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">productPrice</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">12000</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">payment</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">productPrice</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">DELIVERY_FEE</span><span class="syntax-p">;</span>
 
-        System.out.printf(&quot;%d%n&quot;, payment);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">payment</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>15000</code></pre></div>
 <p><code>DELIVERY_FEE</code>는 배송비입니다. 배송비처럼 프로그램 안에서 고정해서 사용할 값은 상수로 두면 의미가 분명해집니다.</p>

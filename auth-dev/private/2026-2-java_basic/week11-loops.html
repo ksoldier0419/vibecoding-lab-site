@@ -87,13 +87,13 @@
 <h2 id="1-for-정해진-횟수만큼-반복하기">1. for: 정해진 횟수만큼 반복하기</h2>
 <p><code>for</code>는 시작값, 반복 조건, 값의 변화를 한곳에 작성합니다. 먼저 1부터 5까지 출력해 봅니다.</p>
 <p>파일 이름은 <code>CountFor.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class CountFor {
-    public static void main(String[] args) {
-        for (int i = 1; i &lt;= 5; i++) {
-            System.out.printf(&quot;%d%n&quot;, i);
-        }
-    }
-}</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">CountFor</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;=</span><span class="syntax-w"> </span><span class="syntax-mi">5</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>1
 2
@@ -139,17 +139,17 @@
 <h2 id="2-반복하면서-합계-구하기">2. 반복하면서 합계 구하기</h2>
 <p><strong>누적</strong>은 기존 값에 새로운 값을 계속 더하는 것입니다. 합계를 저장할 변수는 반복문 밖에서 <code>0</code>으로 시작합니다.</p>
 <p>파일 이름은 <code>SumFor.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class SumFor {
-    public static void main(String[] args) {
-        int total = 0;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">SumFor</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
 
-        for (int i = 1; i &lt;= 5; i++) {
-            total += i;
-        }
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;=</span><span class="syntax-w"> </span><span class="syntax-mi">5</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
 
-        System.out.printf(&quot;합계: %d%n&quot;, total);
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합계: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p><code>total += i</code>는 여기서 <code>total = total + i</code>를 짧게 쓴 것입니다.</p>
 <table>
   <thead><tr>
@@ -191,37 +191,37 @@
 <h2 id="3-while-조건이-참인-동안-반복하기">3. while: 조건이 참인 동안 반복하기</h2>
 <p><code>while</code>은 반복을 시작하기 전에 조건을 검사합니다. 반복할 횟수보다 종료 조건이 중요한 경우에 사용할 수 있습니다.</p>
 <p>파일 이름은 <code>CountWhile.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class CountWhile {
-    public static void main(String[] args) {
-        int i = 1;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">CountWhile</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span>
 
-        while (i &lt;= 5) {
-            System.out.printf(&quot;%d%n&quot;, i);
-            i++;
-        }
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-k">while</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;=</span><span class="syntax-w"> </span><span class="syntax-mi">5</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 결과는 앞의 <code>CountFor</code>와 같이 1부터 5까지 한 줄씩 출력됩니다.</p>
 <p>⚠️ 주의: 이 예제에서 <code>i++</code>를 빼면 <code>i</code>가 계속 <code>1</code>이므로 반복이 끝나지 않습니다. 종료되지 않고 계속 실행되는 반복을 <strong>무한 반복</strong>이라고 합니다.</p>
 <h2 id="4-do-while-한-번-실행한-뒤-검사하기">4. do ~ while: 한 번 실행한 뒤 검사하기</h2>
 <p><code>do ~ while</code>은 중괄호 안의 코드를 먼저 실행하고 조건을 검사합니다. 따라서 최소 한 번은 실행합니다.</p>
 <p>다음 예제는 올바른 메뉴 번호를 입력할 때까지 다시 입력받습니다. 파일 이름은 <code>MenuRetry.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
 
-public class MenuRetry {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int menu;
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">MenuRetry</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">menu</span><span class="syntax-p">;</span>
 
-        do {
-            System.out.print(&quot;메뉴 번호를 입력하세요 (1~3): &quot;);
-            menu = scanner.nextInt();
-        } while (menu &lt; 1 || menu &gt; 3);
+<span class="syntax-w">        </span><span class="syntax-k">do</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"메뉴 번호를 입력하세요 (1~3): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">menu</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">while</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">menu</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-w"> </span><span class="syntax-o">||</span><span class="syntax-w"> </span><span class="syntax-n">menu</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-mi">3</span><span class="syntax-p">);</span>
 
-        System.out.printf(&quot;선택한 메뉴: %d%n&quot;, menu);
-        scanner.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"선택한 메뉴: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">menu</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>메뉴 번호를 입력하세요 (1~3): 5
 메뉴 번호를 입력하세요 (1~3): 2
@@ -231,27 +231,27 @@ public class MenuRetry {
 <h2 id="5-break-반복-끝내기">5. break: 반복 끝내기</h2>
 <p>앞 장에서는 <code>break</code>로 <code>switch</code>를 끝냈습니다. 반복문 안에서는 가장 가까운 반복문을 끝냅니다.</p>
 <p>다음 예제는 정수를 계속 입력받아 더하고, <code>0</code>이 입력되면 끝냅니다. 파일 이름은 <code>SumUntilZero.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>import java.util.Scanner;
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
 
-public class SumUntilZero {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int total = 0;
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">SumUntilZero</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
 
-        while (true) {
-            System.out.print(&quot;정수를 입력하세요 (0: 종료): &quot;);
-            int number = scanner.nextInt();
+<span class="syntax-w">        </span><span class="syntax-k">while</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kc">true</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"정수를 입력하세요 (0: 종료): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">number</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span>
 
-            if (number == 0) {
-                break;
-            }
-            total += number;
-        }
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">number</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">number</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
 
-        System.out.printf(&quot;합계: %d%n&quot;, total);
-        scanner.close();
-    }
-}</code></pre></div>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합계: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 화면:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>정수를 입력하세요 (0: 종료): 3
 정수를 입력하세요 (0: 종료): 4
@@ -261,16 +261,16 @@ public class SumUntilZero {
 <h2 id="6-continue-이번-반복의-나머지-건너뛰기">6. continue: 이번 반복의 나머지 건너뛰기</h2>
 <p><code>continue</code>는 반복 전체를 끝내지 않습니다. 이번 반복에서 남은 코드를 건너뛰고 다음 반복으로 진행합니다.</p>
 <p>파일 이름은 <code>EvenNumbers.java</code>로 저장합니다.</p>
-<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>public class EvenNumbers {
-    public static void main(String[] args) {
-        for (int i = 1; i &lt;= 5; i++) {
-            if (i % 2 != 0) {
-                continue;
-            }
-            System.out.printf(&quot;%d%n&quot;, i);
-        }
-    }
-}</code></pre></div>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">EvenNumbers</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;=</span><span class="syntax-w"> </span><span class="syntax-mi">5</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">%</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-w"> </span><span class="syntax-o">!=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-k">continue</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
 <p>예상 실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>2
 4</code></pre></div>
