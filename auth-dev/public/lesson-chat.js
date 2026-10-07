@@ -23,7 +23,7 @@
   get('chat-messages').scrollTop=get('chat-messages').scrollHeight;
  }
  async function api(body,suffix=''){const response=await fetch(url+suffix,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw Error(response.status===401?'로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인한 뒤 시도하세요.':data.error||'AI 대화를 처리하지 못했습니다.');return data;}
- async function load(){if(busy)return;busy=true;controls();status('AI 대화를 불러오는 중…');try{const data=await api();chat=data.chat;available=data.available;loaded=true;pending=null;render();status(available?'이 교안에 대해 질문하고 이어서 대화할 수 있습니다.':'AI 연결 설정이 필요합니다. 교수자·조교 질문은 아래에서 이용할 수 있습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}}
+ async function load(){if(busy)return;busy=true;controls();status('AI 대화를 불러오는 중…');try{const data=await api();chat=data.chat;available=data.available;loaded=true;pending=null;render();status(available?'':'AI 연결 설정이 필요합니다. 교수자·조교 질문은 아래에서 이용할 수 있습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}}
  get('chat-form').addEventListener('submit',async event=>{
   event.preventDefault();if(busy || !loaded || !available)return;const text=get('chat-text').value.trim();if(!text)return;
   if(!pending || pending.text!==text || pending.version!==chat.version)pending={text,version:chat.version,requestId:crypto.randomUUID()};
