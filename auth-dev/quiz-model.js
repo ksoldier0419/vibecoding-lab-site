@@ -12,7 +12,13 @@ function question(value,context){
 }
 function reply(value,state,context){
  if(!value || typeof value.message!=='string' || !value.message.trim() || value.message.length>6000 || !Array.isArray(value.proposals) || value.proposals.length>2)invalid('출제 응답 형식을 확인할 수 없습니다. 다시 요청해 주세요.');
- return {message:value.message,proposals:value.proposals.map(p=>{
+ const questions=value.questions===undefined?[]:value.questions;
+ if(!Array.isArray(questions) || questions.length>3 || (questions.length && value.proposals.length))invalid('세부 질문과 문제 후보는 나누어 제시해야 합니다.');
+ const clarifications=questions.map(q=>{
+  if(!q || typeof q.prompt!=='string' || !q.prompt.trim() || q.prompt.length>500 || !Array.isArray(q.options) || q.options.length<2 || q.options.length>5 || q.options.some(o=>typeof o!=='string' || !o.trim() || o.length>200) || new Set(q.options.map(o=>o.trim())).size!==q.options.length)invalid('세부 질문의 선택지를 확인할 수 없습니다. 다시 요청해 주세요.');
+  return {id:randomUUID(),prompt:q.prompt,options:q.options};
+ });
+ return {message:value.message,questions:clarifications,proposals:value.proposals.map(p=>{
   if(!['add','replace','retire'].includes(p.operation))invalid('지원하지 않는 문제 변경입니다.');
   const target=p.operation==='add'?null:state.items.find(q=>q.id===p.questionId && ['accepted','published'].includes(q.status));
   if(p.operation!=='add' && !target)invalid('변경 대상 문제의 고유번호를 확인해 주세요.');

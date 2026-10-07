@@ -19,13 +19,27 @@
  }
  async function loadStudio(){data=await api(base());sets=data.sets;set=sets.find(s=>s.id===set?.id)||sets[0]||null;$('set-select').replaceChildren(...sets.map(s=>option(s.id,(s.published?'공개됨':'초안')+' · '+s.id)));$('permissions').hidden=!data.professor;$('editors').replaceChildren();for(const editor of data.editors){const label=node('label'),check=node('input');check.type='checkbox';check.checked=editor.enabled;check.addEventListener('change',()=>{const enabled=check.checked;run(async()=>{try{await api(base()+'/permissions',{studentId:editor.id,enabled});message('출제 권한을 저장했습니다.');}catch(e){check.checked=!enabled;throw e;}});});label.append(check,document.createTextNode(editor.name));$('editors').append(label);}renderStudio();}
  function renderStudio(){
-  $('author-chat').replaceChildren();$('proposals').replaceChildren();$('accepted').replaceChildren();
-  if(!set){$('set-progress').textContent=data.canEdit?'목표 문제 수를 정하고 새 출제를 시작하세요.':'교수자가 출제 권한을 부여하면 문제를 만들 수 있습니다. 통계와 학생 의견은 검토할 수 있습니다.';return;}
+  $('author-chat').replaceChildren();$('author-questions').replaceChildren();$('proposals').replaceChildren();$('accepted').replaceChildren();
+  if(!set){$('set-progress').textContent=data.canEdit?'목표 문제 수를 정하고 새 문제 묶음을 만드세요.':'교수자가 출제 권한을 부여하면 문제를 만들 수 있습니다. 통계와 학생 의견은 검토할 수 있습니다.';return;}
   $('set-select').value=set.id;const accepted=set.state.items.filter(q=>q.status==='accepted'),published=set.state.items.filter(q=>q.status==='published'&&!accepted.some(p=>p.replaces===q.id));$('set-progress').textContent='목표 '+set.target+'개 · 채택 '+accepted.length+'개 · 공개 '+published.length+'개 · '+(set.sections===null?'전체 분반':set.sections.map(s=>s||'분반 미지정').join(', '));
   for(const m of set.state.messages)$('author-chat').append(node('div',m.content,'bubble '+m.role));$('author-chat').scrollTop=$('author-chat').scrollHeight;
+  renderClarifications();
   for(const p of set.state.proposals){const box=p.question?renderQuestion({...p.question,id:p.id}):node('article',undefined,'card');box.prepend(node('h3',p.operation==='add'?'추가 후보':p.operation==='replace'?'수정 후보 · 새 번호로 공개':'비공개 제안'));if(p.questionId)box.append(node('p','대상 번호: '+p.questionId,'question-id'));box.append(button(p.operation==='retire'?'이 문제 비공개 적용':'이 후보 채택',()=>apply('accept',p.id),true));$('proposals').append(box);}
   if(!set.state.proposals.length)$('proposals').append(node('p','출제 의도를 대화로 설명해 주세요.','muted'));
   for(const q of set.state.items){const detail=node('details');if(q.status==='retired')detail.className='retired';const summary=node('summary',(q.status==='accepted'?'채택':q.status==='published'?'공개':'이전 문제')+' · '+q.prompt);detail.append(summary,renderQuestion(q));if(q.replaces)detail.append(node('p','이전 문제: '+q.replaces,'question-id'));if(q.status==='accepted')detail.append(button('채택 취소',()=>apply('discard',q.id)));$('accepted').append(detail);}
+ }
+ function renderClarifications(){
+  const questions=set.state.questions||[];if(!questions.length)return;
+  const form=node('form');form.className='clarification-form';form.append(node('h3','세부 방향을 선택해 주세요'),node('p','질문마다 하나씩 선택하세요. 다른 방향을 원하면 아래 대화 입력란에 직접 적어도 됩니다.','muted'));
+  for(const q of questions){const group=node('fieldset'),legend=node('legend',q.prompt);group.append(legend);q.options.forEach((text,index)=>{const label=node('label',undefined,'clarification-choice'),radio=node('input');radio.type='radio';radio.name=q.id;radio.value=index;radio.required=true;label.append(radio,node('span',text));group.append(label);});form.append(group);}
+  const send=node('button','선택한 답 보내기');send.type='submit';send.className='primary';form.append(send);
+  form.addEventListener('submit',event=>{event.preventDefault();const values=new FormData(form),lines=questions.map(q=>{const value=values.get(q.id);if(value===null)return null;return q.prompt+': '+q.options[Number(value)];});if(lines.some(v=>v===null)){message('모든 세부 질문에 하나씩 선택해 주세요.');return;}const text='세부 출제 방향을 다음과 같이 선택했어.\n'+lines.join('\n')+'\n이 방향으로 문제 후보를 만들어줘.';run(()=>sendChat(text,false));});
+  $('author-questions').append(form);
+ }
+ async function sendChat(text,clearInput=true){
+  if(!set)throw Error('새 문제 묶음을 먼저 만들어 주세요.');
+  if(!pending||pending.text!==text||pending.version!==set.version)pending={text,version:set.version,requestId:crypto.randomUUID()};
+  message('Noti가 교안을 확인하며 출제하고 있어요…');const result=await api(base()+'/sets/'+set.id+'/chat',pending);updateSet(result.set);pending=null;if(clearInput)$('chat-text').value='';renderStudio();message(set.state.questions?.length?'세부 질문의 선택지를 고르고 선택한 답 보내기를 눌러 주세요.':'후보와 교안 근거를 확인한 뒤 채택해 주세요.');
  }
  function updateSet(value){set=value;const index=sets.findIndex(s=>s.id===value.id);if(index>=0)sets[index]=value;}
  async function apply(action,itemId){if(!set)throw Error('문제 묶음을 먼저 선택해 주세요.');const changed=await api(base()+'/sets/'+set.id+'/apply',{action,itemId,version:set.version,...(action==='target'?{target:Number($('target').value)}:{})});updateSet(changed.set);renderStudio();message(action==='publish'?'문제를 공개했습니다.':'변경을 적용했습니다.');}
@@ -58,7 +72,7 @@
  $('reload').addEventListener('click',()=>run(async()=>{await load();if(staff&&!$('statistics').hidden)await loadStats();}));
  $('set-select').addEventListener('change',()=>{set=sets.find(s=>s.id===$('set-select').value);pending=null;renderStudio();controls();});
  $('create-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const result=await api(base()+'/sets',{target:Number($('target').value)});set=result.set;sets.unshift(set);$('set-select').prepend(option(set.id,'초안 · '+set.id));renderStudio();message('출제 의도를 설명해 주세요.');});});
- $('chat-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{if(!set)throw Error('새 출제를 먼저 시작해 주세요.');const text=$('chat-text').value.trim();if(!pending||pending.text!==text||pending.version!==set.version)pending={text,version:set.version,requestId:crypto.randomUUID()};message('Noti가 교안을 확인하며 출제하고 있어요…');const result=await api(base()+'/sets/'+set.id+'/chat',pending);updateSet(result.set);pending=null;$('chat-text').value='';renderStudio();message('후보와 교안 근거를 확인한 뒤 채택해 주세요.');});});
+ $('chat-form').addEventListener('submit',event=>{event.preventDefault();run(()=>sendChat($('chat-text').value.trim()));});
  $('publish').addEventListener('click',()=>run(()=>apply('publish')));$('target-change').addEventListener('click',()=>run(()=>apply('target')));$('author-tab').addEventListener('click',()=>showTab(false));$('stats-tab').addEventListener('click',()=>run(async()=>{await loadStats();showTab(true);}));$('minimum').addEventListener('input',()=>{if(stats)renderStats();});$('comments-only').addEventListener('change',()=>{if(stats)renderStats();});
  run(load);
 })();

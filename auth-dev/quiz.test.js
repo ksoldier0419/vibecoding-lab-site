@@ -18,6 +18,14 @@ test('only grounded four-choice questions are accepted; proposals cannot target 
  assert.throws(()=>model.question({...sample(),sourceQuote:'교안에 없는 내용'},context),/근거/);
  assert.throws(()=>model.reply({message:'수정',proposals:[{operation:'replace',questionId:randomUUID(),question:sample()}]},{items:[]},context),/고유번호/);
 });
+test('clarification questions are bounded, use unique choices, and cannot accompany proposals',()=>{
+ const value={message:'세부 방향을 골라 주세요.',questions:[{prompt:'난이도는?',options:['기초 개념','코드 적용']}],proposals:[]};
+ const result=model.reply(value,{items:[]},context);assert.ok(model.uuid(result.questions[0].id));assert.deepEqual(result.questions[0].options,value.questions[0].options);
+ assert.throws(()=>model.reply({...value,questions:[{prompt:'난이도는?',options:['기초','기초']}]},{items:[]},context),/선택지/);
+ assert.throws(()=>model.reply({...value,questions:[{prompt:'난이도는?',options:['기초']}]},{items:[]},context),/선택지/);
+ assert.throws(()=>model.reply({...value,proposals:[{operation:'add',questionId:null,question:sample()}]},{items:[]},context),/나누어/);
+ assert.deepEqual(model.reply({message:'기존 응답',proposals:[]},{items:[]},context).questions,[]);
+});
 test('publishing requires target count; replacing creates a new ID and preserves old content',()=>{
  const state={items:[],messages:[],proposals:model.reply({message:'추천',proposals:[{operation:'add',questionId:null,question:sample()}]},{items:[]},context).proposals};
  let set={target:1,published:false,state};
@@ -49,7 +57,7 @@ test('routes enforce enrollment, explicit assistant grants, section ownership, n
   quizBegin:async(id,user,version,requestId)=>{const s=sets.get(id);if(s.version!==version||s.busyUntil)return null;s.busyUntil=true;s.requestId=requestId;return structuredClone(s);},quizFinish:async(id,version,requestId,state)=>{const s=sets.get(id);if(s.version!==version)return null;s.version++;s.state=state;s.busyUntil=null;return s;},quizCancel:async id=>{sets.get(id).busyUntil=null;},quizApply:async(id,version,change)=>{const s=sets.get(id);if(s.version!==version)return null;s.version++;s.state=change.state;s.published=s.published||!!change.publications.length;s.requestId=null;return s;},
   quizStudentQuestions:async()=>[...sets.values()].flatMap(s=>s.state.items.filter(q=>q.status==='published').map(q=>({id:q.id,content:q}))),quizOwnAnswers:async(course,lesson,user)=>[...responses.values()].filter(a=>a.user===user),
   quizAnswer:async(course,lesson,user,code,id,choice,requestId)=>{const old=responses.get(requestId);if(old)return old.user===user&&old.questionId===id&&old.choice===choice?old:null;const q=[...sets.values()].flatMap(s=>s.state.items).find(q=>q.id===id&&q.status==='published');if(!q)return null;const a={id:requestId,user,questionId:id,choice,correct:choice===q.answer,content:q};responses.set(requestId,a);return a;},quizFeedback:async(course,lesson,user,id,understood,comment)=>{const a=responses.get(id);if(a?.user!==user)return null;Object.assign(a,{understood,comment});return a;},quizStats:async()=>({questions:[],answers:[],eligible:0,limit:500}),quizReview:async()=>({})};
- const app=createApp({clientId:'test',secret:'x'.repeat(64),openRegistration:true,professorEmail:'professor@gmail.com',quizReply:async({state})=>{aiCalls++;return state.messages.length?{message:'후보를 확인해 주세요.',proposals:[{operation:'add',questionId:null,question:sample()}]}:{message:'개념과 난이도를 알려 주세요.',proposals:[]};}},{verifyIdToken:async()=>({getPayload:()=>({sub:who,email:who+'@gmail.com',email_verified:true,nonce,exp:Date.now()/1000+3600})})},repo);
+ const app=createApp({clientId:'test',secret:'x'.repeat(64),openRegistration:true,professorEmail:'professor@gmail.com',quizReply:async({state})=>{aiCalls++;return state.messages.length?{message:'후보를 확인해 주세요.',proposals:[{operation:'add',questionId:null,question:sample()}]}:{message:'세부 방향을 선택해 주세요.',questions:[{prompt:'난이도는?',options:['기초','응용']}],proposals:[]};}},{verifyIdToken:async()=>({getPayload:()=>({sub:who,email:who+'@gmail.com',email_verified:true,nonce,exp:Date.now()/1000+3600})})},repo);
  const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));t.after(()=>new Promise(r=>server.close(r)));
  async function login(user){who=user;const c=await request(server,'/api/auth/config');nonce=c.data.nonce;return(await request(server,'/api/auth/google',{cookie:c.cookie,body:{nonce,credential:'fake'}})).cookie;}
  const professor=await login('professor'),student=await login('student'),other=await login('other'),assistant=await login('assistant');const base='/api/teaching/'+folder+'/'+lesson+'/quiz',own='/api/study/'+folder+'/'+lesson+'/quiz';
@@ -57,7 +65,7 @@ test('routes enforce enrollment, explicit assistant grants, section ownership, n
  assert.equal((await request(server,base+'/sets',{cookie:assistant,body:{target:1}})).status,403);assert.equal((await request(server,base+'/permissions',{cookie:assistant,body:{studentId:'1',enabled:true}})).status,403);assert.equal((await request(server,base+'/permissions',{cookie:professor,body:{studentId:'1',enabled:true}})).status,200);
  let result=await request(server,base+'/sets',{cookie:professor,body:{target:1}});assert.equal(result.status,201);let set=result.data.set;
  assert.equal((await request(server,base+'/sets/'+set.id+'/chat',{cookie:assistant,body:{text:'출제',version:0,requestId:randomUUID()}})).status,404);
- const chatUrl=base+'/sets/'+set.id+'/chat';const payload={text:'변수 개념 확인',version:0,requestId:randomUUID()};result=await request(server,chatUrl,{cookie:professor,body:payload});assert.equal(result.status,200);assert.equal(result.data.set.state.proposals.length,0);
+ const chatUrl=base+'/sets/'+set.id+'/chat';const payload={text:'변수 개념 확인',version:0,requestId:randomUUID()};result=await request(server,chatUrl,{cookie:professor,body:payload});assert.equal(result.status,200);assert.equal(result.data.set.state.proposals.length,0);assert.equal(result.data.set.state.questions.length,1);assert.deepEqual(result.data.set.state.questions[0].options,['기초','응용']);
  assert.equal((await request(server,chatUrl,{cookie:professor,body:payload})).status,200);assert.equal(aiCalls,1);
  assert.equal((await request(server,chatUrl,{cookie:professor,body:{...payload,requestId:randomUUID()}})).status,409);
  assert.equal((await request(server,chatUrl,{cookie:professor,body:{...payload,version:1},origin:'https://evil.example'})).status,403);

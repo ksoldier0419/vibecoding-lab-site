@@ -38,7 +38,7 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
   const context=lessonContext(req.course,req.params.lesson),set=await repository.quizBegin(old.id,req.session.user.id,b.version,b.requestId);if(!set)conflict();
   try{
    const value=model.reply(await respond({context,state:set.state,target:set.target,text:b.text.trim()}),set.state,context);
-   const state={...set.state,proposals:value.proposals,messages:[...set.state.messages,{role:'user',content:b.text.trim()},{role:'assistant',content:value.message}]};
+   const state={...set.state,questions:value.questions,proposals:value.proposals,messages:[...set.state.messages,{role:'user',content:b.text.trim()},{role:'assistant',content:value.message}]};
    const saved=await repository.quizFinish(set.id,set.version,b.requestId,state);if(!saved)conflict();res.json({set:clean(saved)});
   }catch(e){await repository.quizCancel(set.id,b.requestId).catch(()=>{});throw e;}
  }));
