@@ -31,3 +31,26 @@ test('distinct blanks in a shared code are retained despite similar prompts and 
  assert.equal(compareCandidates([{id:'one',question:first},{id:'two',question:second}],[]).length,2);
  assert.equal(compareCandidates([{id:'one',question:first},{id:'two',question:first}],[]).length,1);
 });
+
+test('explicit single blank uses a required code schema and overrides clarification defaults',async()=>{
+ const {blankRequest,requestSchema,createQuizResponder}=require('./quiz-ai');
+ const text='교안에 있는 코드중 빈칸 1개를 만들고 각 빈칸을 4지선다형으로 출제해줘';
+ assert.deepEqual(blankRequest(text),{count:1});
+ assert.deepEqual(blankRequest('교안 코드로 빈칸 한 개 출제해줘'),{count:1});
+ assert.deepEqual(blankRequest('계속 만들어줘',{messages:[{role:'user',content:text}]}),{count:1});
+ assert.equal(blankRequest('일반 객관식으로 변경해줘',{messages:[{role:'user',content:text}]}),null);
+ const dynamic=requestSchema({count:1});
+ assert.equal(dynamic.properties.questions.maxItems,0);
+ assert.equal(dynamic.properties.proposals.minItems,1);
+ assert.equal(dynamic.properties.proposals.maxItems,1);
+ assert.equal(dynamic.properties.proposals.items.properties.question.properties.code.type,'object');
+ assert.deepEqual(dynamic.properties.proposals.items.properties.question.properties.code.properties.blankNumber.enum,[1]);
+ assert(schema.properties.proposals.items.properties.question.anyOf);
+ let body;
+ const responder=value=>createQuizResponder({apiKey:'fake',fetcher:async(url,options)=>{body=JSON.parse(options.body);return {ok:true,json:async()=>({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify(value)}]}]})};}});
+ const valid={message:'빈칸 후보',questions:[],proposals:[{operation:'add',questionId:null,question:sample()}]};
+ const result=await responder(valid)({context,state:{messages:[],items:[]},text});
+ assert.equal(result.proposals.length,1);assert(body.instructions.includes('교안 안의 코드 블록에서 적절한 예시를 직접 선택'));
+ await assert.rejects(()=>responder({...valid,proposals:[{...valid.proposals[0],question:{...sample(),code:null}}]})({context,state:{messages:[],items:[]},text}),/빈칸 형식/);
+ await assert.rejects(()=>responder({...valid,proposals:[{...valid.proposals[0],question:{...sample(),code:{...sample().code,source:'① ②'}}}]})({context,state:{messages:[],items:[]},text}),/빈칸 수/);
+});
