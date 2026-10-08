@@ -42,19 +42,21 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
   const old=await getSet(req);if(old.requestId===b.requestId && !old.busyUntil)return res.json({set:clean(old)});
   if(old.state.messages.length>=100)model.invalid('출제 대화 한도에 도달했습니다. 새 묶음을 만들어 주세요.');
   const context=lessonContext(req.course,req.params.lesson),set=await repository.quizBegin(old.id,req.session.user.id,b.version,b.requestId);if(!set)conflict();
+  let phase='existing';
   try{
    const existing=(await repository.quizSets(req.course.id,req.params.lesson)).filter(s=>sectionAllowed(s,req.sections) && s.id!==set.id).flatMap(s=>s.state.items.filter(q=>['accepted','published'].includes(q.status)));
    const text=b.text.trim() || (set.state.messages.length?'앞서 정한 출제 방향을 유지하고 기존 문제와 겹치지 않는 새로운 후보를 두 개 추천해줘.':'교안을 바탕으로 출제 방향 선택 질문을 제시해줘.');
-   const value=model.reply(await respond({context,state:set.state,existing,text}),set.state,context);
+   phase='generation';const response=await respond({context,state:set.state,existing,text});
+   phase='validation';const value=model.reply(response,set.state,context);
    const originalResponse=structuredClone(value);
    if(b.parentId){const all=[...existing,...set.state.items];if(!model.uuid(b.parentId)||!all.some(q=>q.id===b.parentId))model.invalid('연결 원문항을 확인해 주세요.');for(const p of value.proposals)p.sourceParentId=b.parentId;}
    const proposed=value.proposals.length;
    value.proposals=compareCandidates(value.proposals,[...existing,...set.state.items.filter(q=>['accepted','published'].includes(q.status))]);
    if(value.proposals.length<proposed)value.message+='\n기존 문제와 문구가 매우 유사한 후보 '+(proposed-value.proposals.length)+'개는 제외했습니다. 입력 없이 확인을 눌러 다른 후보를 요청할 수 있습니다.';
-   const provenance={at:new Date().toISOString(),actor:req.session.user.id,model:config.quizReply?'test-responder':config.openAIModel||'gpt-4.1-mini',promptVersion:'quiz-author-v4-required-blanks',contextHash:model.hash(context),request:text,response:originalResponse,excluded:originalResponse.proposals.filter(p=>!value.proposals.some(v=>v.id===p.id)).map(p=>p.id)};
+   const provenance={at:new Date().toISOString(),actor:req.session.user.id,model:config.quizReply?'test-responder':config.openAIModel||'gpt-4.1-mini',promptVersion:'quiz-author-v5-exact-evidence',contextHash:model.hash(context),request:text,response:originalResponse,excluded:originalResponse.proposals.filter(p=>!value.proposals.some(v=>v.id===p.id)).map(p=>p.id)};
    const state={...set.state,sources:{...set.state.sources,[model.hash(context)]:context},history:[...(set.state.history||[]),provenance],questions:value.questions,proposals:value.proposals,messages:[...set.state.messages,{role:'user',content:text},{role:'assistant',content:value.message}]};
-   const saved=await repository.quizFinish(set.id,set.version,b.requestId,state);if(!saved)conflict();res.json({set:clean(saved)});
-  }catch(e){await repository.quizCancel(set.id,b.requestId).catch(()=>{});throw e;}
+   phase='saving';const saved=await repository.quizFinish(set.id,set.version,b.requestId,state);if(!saved)conflict();res.json({set:clean(saved)});
+  }catch(e){await repository.quizCancel(set.id,b.requestId).catch(()=>{});if(!e.public){const labels={existing:'기존 문제 조회',generation:'AI 응답 처리',validation:'출제 형식 검증',saving:'생성 후보 저장'};throw Object.assign(Error((labels[phase]||'출제 처리')+' 단계에서 실패했습니다. 입력을 유지하고 다시 시도해 주세요.'),{public:true});}throw e;}
  }));
  app.post(studio+'/sets/:set/apply',localPost,...review,edit,wrap(async(req,res)=>{
   const b=body(req,['action','itemId','version','target','purpose','parentId','delayDays']);version(b.version);const set=await getSet(req);if(set.version!==b.version)conflict();

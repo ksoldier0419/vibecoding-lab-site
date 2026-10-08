@@ -54,3 +54,26 @@ test('explicit single blank uses a required code schema and overrides clarificat
  await assert.rejects(()=>responder({...valid,proposals:[{...valid.proposals[0],question:{...sample(),code:null}}]})({context,state:{messages:[],items:[]},text}),/빈칸 형식/);
  await assert.rejects(()=>responder({...valid,proposals:[{...valid.proposals[0],question:{...sample(),code:{...sample().code,source:'① ②'}}}]})({context,state:{messages:[],items:[]},text}),/빈칸 수/);
 });
+
+test('response schema constrains titles and quotes to literal lesson evidence for ordinary and blank questions',()=>{
+ const {requestSchema,evidenceOptions}=require('./quiz-ai');
+ const lesson=['# Java 시작','## 변수 선언','int x = 1; // 값을 저장한다','변수 이름 앞에는 자료형을 쓴다.'].join(String.fromCharCode(10));
+ const evidence=evidenceOptions(lesson);
+ assert.deepEqual(evidence.titles,['Java 시작','변수 선언']);
+ assert(evidence.quotes.includes('int x = 1; // 값을 저장한다'));
+ for(const blank of [null,{count:1}]){
+  const schema=requestSchema(blank,lesson);
+  const p=schema.properties.proposals.items.properties.question;
+  const q=blank?p:p.anyOf[0];
+  assert.deepEqual(q.properties.sourceTitle.enum,evidence.titles);
+  assert.deepEqual(q.properties.sourceQuote.enum,evidence.quotes);
+  const candidate={...sample(),sourceTitle:evidence.titles[1],sourceQuote:evidence.quotes[0]};
+  assert.doesNotThrow(()=>model.question(candidate,lesson));
+ }
+});
+test('AI network and malformed JSON errors have safe public explanations',async()=>{
+ const {createQuizResponder}=require('./quiz-ai');
+ const args={context,state:{messages:[],items:[]},text:'일반 문제 생성'};
+ await assert.rejects(()=>createQuizResponder({apiKey:'fake',fetcher:async()=>{throw Error('secret internal detail');}})(args),e=>e.public && e.message.includes('서버 연결') && !e.message.includes('secret'));
+ await assert.rejects(()=>createQuizResponder({apiKey:'fake',fetcher:async()=>({ok:true,json:async()=>({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'invalid JSON'}]}]})})})(args),e=>e.public && e.message.includes('JSON'));
+});
