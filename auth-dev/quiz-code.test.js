@@ -65,8 +65,8 @@ test('response schema constrains titles and quotes to literal lesson evidence fo
   const schema=requestSchema(blank,lesson);
   const p=schema.properties.proposals.items.properties.question;
   const q=blank?p:p.anyOf[0];
-  assert.deepEqual(q.properties.sourceTitle.enum,evidence.titles);
-  assert.deepEqual(q.properties.sourceQuote.enum,evidence.quotes);
+  assert.deepEqual(q.properties.sourceTitle.enum,evidence.titles.map((_,i)=>i));
+  assert.deepEqual(q.properties.sourceQuote.enum,evidence.quotes.map((_,i)=>i));
   const candidate={...sample(),sourceTitle:evidence.titles[1],sourceQuote:evidence.quotes[0]};
   assert.doesNotThrow(()=>model.question(candidate,lesson));
  }
@@ -76,4 +76,25 @@ test('AI network and malformed JSON errors have safe public explanations',async(
  const args={context,state:{messages:[],items:[]},text:'일반 문제 생성'};
  await assert.rejects(()=>createQuizResponder({apiKey:'fake',fetcher:async()=>{throw Error('secret internal detail');}})(args),e=>e.public && e.message.includes('서버 연결') && !e.message.includes('secret'));
  await assert.rejects(()=>createQuizResponder({apiKey:'fake',fetcher:async()=>({ok:true,json:async()=>({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'invalid JSON'}]}]})})})(args),e=>e.public && e.message.includes('JSON'));
+});
+
+test('quoted source evidence uses numeric schema values and is restored exactly',()=>{
+ const {requestSchema,restoreEvidence,evidenceOptions}=require('./quiz-ai');
+ const lesson=['# Java','## Hello','System.out.println("Hello, Java");'].join(String.fromCharCode(10));
+ const schema=requestSchema({count:1},lesson);
+ const q=schema.properties.proposals.items.properties.question;
+ assert.equal(q.properties.sourceQuote.type,'integer');assert.deepEqual(q.properties.sourceQuote.enum,[0]);
+ const value={proposals:[{question:{...sample(),sourceTitle:1,sourceQuote:0}}]};
+ restoreEvidence(value,lesson);
+ assert.equal(value.proposals[0].question.sourceQuote,'System.out.println("Hello, Java");');
+ assert.equal(value.proposals[0].question.sourceTitle,'Hello');
+ assert.doesNotThrow(()=>model.question(value.proposals[0].question,lesson));
+ assert.throws(()=>restoreEvidence({proposals:[{question:{sourceQuote:20}}]},lesson),/근거 번호/);
+});
+test('upstream failures identify schema, authentication, quota and service errors without echoing raw errors',async()=>{
+ const {createQuizResponder}=require('./quiz-ai');
+ for(const [status,code,expected] of [[400,'invalid_json_schema','응답 형식'],[401,'invalid_api_key','키 인증'],[429,'insufficient_quota','잔액'],[429,'rate_limit_exceeded','요청 한도'],[503,'server_error','서비스 오류']]){
+  const respond=createQuizResponder({apiKey:'fake',fetcher:async()=>({ok:false,status,json:async()=>({error:{code,message:'secret must not be displayed'}})})});
+  await assert.rejects(()=>respond({context,state:{items:[],messages:[]},text:'일반 문제'}),e=>e.public && e.message.includes(expected) && !e.message.includes('secret'));
+ }
 });
