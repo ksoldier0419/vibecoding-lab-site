@@ -9,11 +9,11 @@ async function loadCourses() {
   if(!response.ok)throw new Error(data.error);
   document.getElementById('admin').hidden=data.role!=='professor';
   document.getElementById('java-instructor').hidden=!['professor','assistant'].includes(data.role);
-  if(data.role==='professor')document.getElementById('study-link').href='/teaching.html';
+  if(['professor','assistant'].includes(data.role))document.getElementById('study-link').href='/teaching.html';
   if(['professor','assistant'].includes(data.role))document.getElementById('questions-link').href='/teaching.html?panel=questions';
   for(const c of data.courses){
    const li=document.createElement('li'),card=document.createElement(c.url?'a':'div'),title=document.createElement('strong'),detail=document.createElement('small');
-   if(c.url)card.href=c.url;else card.className='course-pending';
+   if(c.url)card.href=c.studyUrl || c.url;else card.className='course-pending';
    title.textContent=c.title;
    detail.textContent='과목코드 '+c.id+(c.sections.length?' · '+c.sections.map(s=>s+'분반').join(', '):'')+(c.url?' · 강의자료 열기':' · 강의자료 준비 중');
    card.append(title,detail);li.append(card);
