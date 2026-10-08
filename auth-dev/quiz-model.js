@@ -9,10 +9,22 @@ function question(value,context){
  if(value.choices.some(c=>/(?:[①②③④]|[1-4]번).*(?:보기|모두|둘|함께)|위의 모든|이상의 모든/.test(c)))invalid('보기 순서에 의존하는 표현을 바꿔 주세요.');
  const normalize=s=>s.replace(/\s+/g,' ').trim();
  if(!normalize(context).includes(normalize(value.sourceQuote)) || !context.includes(value.sourceTitle))invalid('문제 근거가 현재 교안에 없습니다. 다시 생성해 주세요.');
- return Object.fromEntries(['prompt','choices','answer','choiceExplanations','concept','intent','explanation','sourceTitle','sourceQuote'].map(k=>[k,value[k]]));
+ let code;
+ if(value.code!==undefined && value.code!==null){
+  const c=value.code;
+  if(!c || typeof c.language!=='string' || !['java','python','javascript','typescript','c','cpp','csharp','json','text'].includes(c.language) || typeof c.source!=='string' || !c.source.trim() || c.source.length>12000 || typeof c.snippet!=='string' || !c.snippet.trim() || c.snippet.length>2000 || !Number.isInteger(c.blankNumber) || c.blankNumber<1 || c.blankNumber>20)invalid('빈칸 코드의 언어·원문·번호·해당 줄을 확인해 주세요.');
+  const marker=String.fromCodePoint(0x2460+c.blankNumber-1);
+  if(!c.source.includes(marker) || !c.snippet.includes(marker) || !c.source.includes(c.snippet))invalid('전체 코드와 해당 줄에 같은 빈칸 번호가 필요합니다.');
+  code={language:c.language,source:c.source,snippet:c.snippet,blankNumber:c.blankNumber};
+ }
+ return {...(code?{code}:{}),...Object.fromEntries(['prompt','choices','answer','choiceExplanations','concept','intent','explanation','sourceTitle','sourceQuote'].map(k=>[k,value[k]]))};
 }
 function reply(value,state,context){
- if(!value || typeof value.message!=='string' || !value.message.trim() || value.message.length>6000 || !Array.isArray(value.proposals) || value.proposals.length>2)invalid('출제 응답 형식을 확인할 수 없습니다. 다시 요청해 주세요.');
+ if(!value || typeof value.message!=='string' || !value.message.trim() || value.message.length>6000 || !Array.isArray(value.proposals) || value.proposals.length>5)invalid('출제 응답 형식을 확인할 수 없습니다. 다시 요청해 주세요.');
+ if(value.proposals.length>2){
+  const codes=value.proposals.map(p=>p.question?.code);
+  if(codes.some(c=>!c) || codes.some(c=>c.source!==codes[0].source || c.language!==codes[0].language) || new Set(codes.map(c=>c.blankNumber)).size!==codes.length)invalid('후보 3~5개는 같은 코드의 서로 다른 빈칸 문제로 구성해 주세요.');
+ }
  const questions=value.questions===undefined?[]:value.questions;
  if(!Array.isArray(questions) || questions.length>3 || (questions.length && value.proposals.length))invalid('세부 질문과 문제 후보는 나누어 제시해야 합니다.');
  const clarifications=questions.map(q=>{
@@ -62,5 +74,5 @@ function apply(set,action,itemId,context,targetCount){
  if(state.items.length>150)invalid('문제 묶음의 변경 한도에 도달했습니다. 새 묶음을 만들어 주세요.');
  return {state,publications,retired,target:action==='target'?targetCount:set.target};
 }
-function studentQuestion(row){return {id:row.id,prompt:row.content.prompt,choices:row.content.choices,concept:row.content.concept,answered:!!row.answered};}
+function studentQuestion(row){return {id:row.id,prompt:row.content.prompt,choices:row.content.choices,concept:row.content.concept,...(row.content.code?{code:row.content.code}:{}),answered:!!row.answered};}
 module.exports={uuid,hash,question,reply,apply,studentQuestion,invalid};

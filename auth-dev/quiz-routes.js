@@ -51,7 +51,7 @@ function quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfes
    const proposed=value.proposals.length;
    value.proposals=compareCandidates(value.proposals,[...existing,...set.state.items.filter(q=>['accepted','published'].includes(q.status))]);
    if(value.proposals.length<proposed)value.message+='\n기존 문제와 문구가 매우 유사한 후보 '+(proposed-value.proposals.length)+'개는 제외했습니다. 입력 없이 확인을 눌러 다른 후보를 요청할 수 있습니다.';
-   const provenance={at:new Date().toISOString(),actor:req.session.user.id,model:config.quizReply?'test-responder':config.openAIModel||'gpt-4.1-mini',promptVersion:'quiz-author-v2',contextHash:model.hash(context),request:text,response:originalResponse,excluded:originalResponse.proposals.filter(p=>!value.proposals.some(v=>v.id===p.id)).map(p=>p.id)};
+   const provenance={at:new Date().toISOString(),actor:req.session.user.id,model:config.quizReply?'test-responder':config.openAIModel||'gpt-4.1-mini',promptVersion:'quiz-author-v3-code-blanks',contextHash:model.hash(context),request:text,response:originalResponse,excluded:originalResponse.proposals.filter(p=>!value.proposals.some(v=>v.id===p.id)).map(p=>p.id)};
    const state={...set.state,sources:{...set.state.sources,[model.hash(context)]:context},history:[...(set.state.history||[]),provenance],questions:value.questions,proposals:value.proposals,messages:[...set.state.messages,{role:'user',content:text},{role:'assistant',content:value.message}]};
    const saved=await repository.quizFinish(set.id,set.version,b.requestId,state);if(!saved)conflict();res.json({set:clean(saved)});
   }catch(e){await repository.quizCancel(set.id,b.requestId).catch(()=>{});throw e;}
