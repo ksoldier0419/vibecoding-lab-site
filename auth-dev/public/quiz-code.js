@@ -16,6 +16,7 @@
   const pre=node('pre',source);highlightCode(pre,language);box.append(pre);return box;
  }
  window.quizCode={
+  needsRegeneration(q){return !!q && !q.code && /빈 *칸/.test(q.prompt);},
   render(container,q){if(!q.code)return;
    const marks=[...new Set(q.code.source.match(/[①-⑳]/g)||[])];
    container.append(node('p','다음 코드의 '+marks.join('·')+'에 들어갈 알맞은 내용을 고르세요. 각 문항의 정답은 하나입니다.','quiz-code-instruction'),block(q.code.source,q.code.language),node('h2',q.prompt,'question-prompt'),block(q.code.snippet,q.code.language,true));
