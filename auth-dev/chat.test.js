@@ -54,3 +54,36 @@ test('lesson code requests get a polite redirect without calling AI; explanation
  let calls=0;const respond=createResponder({apiKey:'test',fetcher:async()=>{calls++;return {ok:true,json:async()=>({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'설명\n```java\npublic class Hello {}\n```'}]}]})};}});
  assert.match(await respond({context:'교안',history:[],text:'코드를 출력해줘'}),/코드 이미지/);assert.equal(calls,0);const explained=await respond({context:'교안',history:[],text:'반복문의 원리가 뭐야?'});assert.equal(calls,1);assert.equal(explained.includes('public class'),false);assert.equal(protectCode('단순 설명'),'단순 설명');
 });
+
+test('staff chat works without student registration; assistant scopes and owner isolation apply to read, send and reset',async t=>{
+ let who,nonce,enabled=true,scopes=[{courseId:'903131',section:'01'}];const chats=new Map(),key=(u,c,l)=>[u,c,l].join('/');
+ const get=(u,c,l)=>chats.get(key(u,c,l))||{messages:[],version:0};let calls=0;
+ const repository={recordLogin:async()=>({}),isTeachingAssistant:async id=>id==='helper'&&enabled,assistantScopes:async()=>scopes,
+  registration:async()=>({registered:false,courses:[]}),getProfile:async()=>null,
+  getChat:async(u,c,l)=>get(u,c,l),
+  beginChat:async(u,c,l,v,r)=>{const old=get(u,c,l);if(old.version!==v)return null;return {...old,requestId:r};},
+  finishChat:async(u,c,l,v,r,messages)=>{const chat={messages,version:v+1};chats.set(key(u,c,l),chat);return chat;},
+  cancelChat:async()=>{},resetChat:async(u,c,l,v)=>{if(get(u,c,l).version!==v)return null;const chat={messages:[],version:v+1};chats.set(key(u,c,l),chat);return chat;}
+ };
+ const server=createApp({clientId:'test',secret:'x'.repeat(64),openRegistration:true,professorEmail:'professor@gmail.com',chatReply:async({context,history})=>{calls++;assert.ok(context.includes('연산자'));assert.equal(history.length,0);return '본인 교안 답변';}},{verifyIdToken:async()=>({getPayload:()=>({sub:who,email:who+'@gmail.com',email_verified:true,nonce,exp:Date.now()/1000+3600})})},repository).listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));t.after(()=>new Promise(r=>server.close(r)));
+ async function login(id){who=id;const c=await request(server,'/api/auth/config');nonce=c.data.nonce;return(await request(server,'/api/auth/google',{cookie:c.cookie,body:{credential:'test',nonce}})).cookie;}
+ const professor=await login('professor'),helper=await login('helper'),student=await login('student');
+ const url='/api/teaching/2026-2-java_basic/week08-operators-conditions.html/chat';
+ const body={text:'연산자를 설명해 주세요',version:0,requestId:'12345678-1234-4123-8123-123456789abc'};
+ assert.equal((await request(server,url)).status,401);
+ for(const [suffix,payload] of [['',undefined],['',body],['/reset',{version:0}]])assert.equal((await request(server,url+suffix,{cookie:student,body:payload})).status,403);
+ assert.equal((await request(server,url.replace('/teaching/','/study/'),{cookie:professor})).status,403);
+ assert.equal((await request(server,url,{cookie:professor,body,origin:'https://evil.example'})).status,403);
+ assert.equal((await request(server,url,{cookie:professor,body:{...body,messages:[]}})).status,400);
+ assert.equal((await request(server,url,{cookie:professor,body})).status,200);
+ assert.equal((await request(server,url,{cookie:helper})).data.chat.messages.length,0);
+ assert.equal((await request(server,url,{cookie:helper,body})).status,200);
+ assert.equal(calls,2);
+ assert.equal((await request(server,url+'/reset',{cookie:helper,body:{version:1}})).status,200);
+ assert.equal((await request(server,url,{cookie:professor})).data.chat.messages.length,2);
+ scopes=[];
+ for(const [suffix,payload] of [['',undefined],['',body],['/reset',{version:2}]])assert.equal((await request(server,url+suffix,{cookie:helper,body:payload})).status,403);
+ assert.equal((await request(server,url,{cookie:professor})).status,200);
+ assert.equal((await request(server,'/api/teaching/unknown/unknown.html/chat',{cookie:professor})).status,404);
+ enabled=false;assert.equal((await request(server,url,{cookie:helper})).status,403);
+});

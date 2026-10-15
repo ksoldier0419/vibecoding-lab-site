@@ -1,6 +1,7 @@
 (()=>{
  const get=id=>document.getElementById(id),params=new URLSearchParams(location.search);
- const url='/api/study/'+encodeURIComponent(params.get('course'))+'/'+encodeURIComponent(params.get('lesson'))+'/chat';
+ const staffView=location.pathname==='/teaching.html';
+ const url=(staffView?'/api/teaching/':'/api/study/')+encodeURIComponent(params.get('course'))+'/'+encodeURIComponent(params.get('lesson'))+'/chat';
  let chat={messages:[],version:0},loaded=false,available=false,busy=false,pending=null;
  let activityTimer,replying=false,suggestionDismissedAt=0;
  function chatActivity(){clearTimeout(activityTimer);window.setNotiChatActive(true);if(!replying)activityTimer=setTimeout(()=>window.setNotiChatActive(false),2500);}
@@ -31,11 +32,11 @@
   if(!chat.messages.length && !waiting){const empty=document.createElement('p');empty.className='chat-empty';empty.textContent='궁금한 내용을 물어보세요.\n선택한 교안을 함께 살펴볼게요.';get('chat-messages').append(empty);}
   for(const message of chat.messages)get('chat-messages').append(messageBubble(message));
   if(waiting){get('chat-messages').append(messageBubble({role:'user',content:waiting}));const reply=messageBubble({role:'assistant',content:'답변을 생각하고 있어요…'});reply.classList.add('chat-waiting');get('chat-messages').append(reply);}
-  const rounds=chat.messages.filter(m=>m.role==='user').length;get('chat-suggestion').hidden=rounds<5 || rounds<suggestionDismissedAt+5;
+  const rounds=chat.messages.filter(m=>m.role==='user').length;get('chat-suggestion').hidden=staffView || rounds<5 || rounds<suggestionDismissedAt+5;
   get('chat-messages').scrollTop=get('chat-messages').scrollHeight;
  }
  async function api(body,suffix=''){const response=await fetch(url+suffix,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw Error(response.status===401?'로그인이 만료되었습니다. 로그인 새 창에서 다시 로그인한 뒤 시도하세요.':data.error||'AI 대화를 처리하지 못했습니다.');return data;}
- async function load(){if(busy)return;busy=true;controls();status('AI 대화를 불러오는 중…');try{const data=await api();chat=data.chat;available=data.available;loaded=true;pending=null;render();status(available?'':'AI 연결 설정이 필요합니다. 교수자·조교 질문은 메모·질의응답 영역에서 이용할 수 있습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}}
+ async function load(){if(busy)return;busy=true;controls();status('AI 대화를 불러오는 중…');try{const data=await api();chat=data.chat;available=data.available;loaded=true;pending=null;render();status(available?'':'AI 연결 설정이 필요합니다. 관리자에게 문의해 주세요.');}catch(e){status(e.message);}finally{busy=false;controls();}}
  get('chat-form').addEventListener('submit',async event=>{
   event.preventDefault();if(busy || !loaded || !available)return;const text=get('chat-text').value.trim();if(!text)return;
   if(!pending || pending.text!==text || pending.version!==chat.version)pending={text,version:chat.version,requestId:crypto.randomUUID()};
@@ -46,7 +47,7 @@
  get('chat-text').addEventListener('input',()=>{resizeInput();chatActivity();});
  get('chat-text').addEventListener('keydown',event=>{if(event.key==='Enter' && !event.shiftKey && !event.isComposing && event.keyCode!==229){event.preventDefault();if(!busy && available)get('chat-form').requestSubmit();}});
  get('chat-reload').addEventListener('click',load);
- get('chat-reset').addEventListener('click',async()=>{if(busy || !loaded || !confirm('이 교안의 기존 AI 대화 기록을 지우고 새 대화를 시작할까요? 교수자에게 등록한 질문은 유지됩니다.'))return;busy=true;controls();try{chat=(await api({version:chat.version},'/reset')).chat;pending=null;suggestionDismissedAt=0;render();status('새 대화를 시작했습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}});
+ get('chat-reset').addEventListener('click',async()=>{if(busy || !loaded || !confirm(staffView?'이 교안의 본인 AI 대화 기록을 지우고 새 대화를 시작할까요?':'이 교안의 기존 AI 대화 기록을 지우고 새 대화를 시작할까요? 교수자에게 등록한 질문은 유지됩니다.'))return;busy=true;controls();try{chat=(await api({version:chat.version},'/reset')).chat;pending=null;suggestionDismissedAt=0;render();status('새 대화를 시작했습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}});
  get('chat-keep').addEventListener('click',()=>{suggestionDismissedAt=chat.messages.filter(m=>m.role==='user').length;get('chat-suggestion').hidden=true;});
  get('chat-forward').addEventListener('click',()=>{
   const target=get('question-text');if(target.value.trim() && !confirm('작성 중인 담당자 질문을 AI 대화 일부로 바꿀까요?'))return;

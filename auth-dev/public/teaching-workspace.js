@@ -24,10 +24,12 @@ async function load(){
   questionsReady=!staffView || course.reviewAllowed;
   $('question-form').hidden=staffView;$('question-text').disabled=!questionsReady;$('question-submit').disabled=!questionsReady;$('questions-refresh').disabled=!questionsReady;
   if(questionsReady)await loadQuestions(true);else $('questions-status').textContent='관리자가 담당 과목·분반을 지정하면 질문을 열람하고 답변할 수 있습니다.';
-  showPanel(!staffView && params.get('panel')==='questions');
-  if(staffView){$('noti-launcher').hidden=true;$('student-review').hidden=false;if(course.reviewAllowed)await reviewList(true);else{$('review-status').textContent='관리자가 담당 과목·분반을 지정하면 학생 메모를 열람할 수 있습니다.';$('review-refresh').disabled=true;}}
-  else {
+  showPanel(params.get('panel')==='questions' && (!staffView || course.reviewAllowed));
+  if(staffView){$('noti-launcher').hidden=!course.reviewAllowed;$('student-review').hidden=false;if(course.reviewAllowed)await reviewList(true);else{$('review-status').textContent='관리자가 담당 과목·분반을 지정하면 학생 메모를 열람할 수 있습니다.';$('review-refresh').disabled=true;}}
+  if(!staffView || course.reviewAllowed){
    const chatScript=document.createElement('script');chatScript.src='/auth-assets/lesson-chat.js';chatScript.onerror=()=>{$('chat-status').textContent='AI 채팅을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(chatScript);
+  }
+  if(!staffView){
    $('student-editor').hidden=false;$('lesson-note').dataset.noteUrl='/api/study/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id)+'/note';
    const script=document.createElement('script');script.src='/auth-assets/instructor.js';script.onerror=()=>{$('note-status').textContent='메모 기능을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(script);
   }
@@ -42,7 +44,7 @@ $('workspace-frame').addEventListener('load',()=>{
   if(toc){toc.classList.add('workspace-toc');const style=doc.createElement('link');style.rel='stylesheet';style.href=document.querySelector('link[href*="teaching-workspace.css"]').href;doc.head.append(style);toc.prepend($('workspace-selectors'));}
   const header=doc.querySelector('.site-header');if(header){header.classList.add('workspace-lesson-header');const actions=doc.createElement('div');actions.className='workspace-title-actions';header.append(actions);actions.append($('tools-toggle'));$('tools-toggle').hidden=false;}
   const noteBox=doc.querySelector('.instructor-notes');if(noteBox)noteBox.previousElementSibling?.remove();
-  if(!staffView)connectSelectionQuestion(doc);
+  if(!staffView || course.reviewAllowed)connectSelectionQuestion(doc);
   frame.contentDocument.addEventListener('click',event=>{
    const link=event.target.closest('a');if(!link)return;
    const target=new URL(link.href),current=new URL(frame.contentWindow.location.href);
