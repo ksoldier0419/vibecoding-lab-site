@@ -2,15 +2,16 @@
 (()=>{
  function node(tag,text){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;}
  function inline(parent,text){
-  const pattern=/`([^`\n]+)`|\*\*([^*\n]+)\*\*|__([^_\n]+)__|\*([^*\n]+)\*|_([^_\n]+)_|\[([^\]\n]+)\]\(([^\s)]+)\)/g;
+  const pattern=/`(?<code>[^`\n]+)`|\*\*\*(?<both>[^*\n]+)\*\*\*|\*\*(?<bold>[^*\n]+)\*\*|__(?<boldAlt>[^_\n]+)__|\*(?<italic>[^*\n]+)\*|_(?<italicAlt>[^_\n]+)_|\[(?<label>[^\]\n]+)\]\((?<url>[^\s)]+)\)/g;
   let offset=0;
   for(const m of text.matchAll(pattern)){
-   parent.append(document.createTextNode(text.slice(offset,m.index)));let part;
-   if(m[1]!==undefined)part=node('code',m[1]);
-   else if(m[2]!==undefined || m[3]!==undefined){part=node('strong');inline(part,m[2]??m[3]);}
-   else if(m[4]!==undefined || m[5]!==undefined){part=node('em');inline(part,m[4]??m[5]);}
+   parent.append(document.createTextNode(text.slice(offset,m.index)));let part;const g=m.groups;
+   if(g.code!==undefined)part=node('code',g.code);
+   else if(g.both!==undefined){part=node('strong');const em=node('em',g.both);part.append(em);}
+   else if(g.bold!==undefined || g.boldAlt!==undefined){part=node('strong');inline(part,g.bold??g.boldAlt);}
+   else if(g.italic!==undefined || g.italicAlt!==undefined){part=node('em');inline(part,g.italic??g.italicAlt);}
    else {
-    try{const url=new URL(m[7]);if(!['https:','http:'].includes(url.protocol))throw Error();part=node('a',m[6]);part.href=url.href;part.target='_blank';part.rel='noopener noreferrer';}
+    try{const url=new URL(g.url);if(!['https:','http:'].includes(url.protocol))throw Error();part=node('a',g.label);part.href=url.href;part.target='_blank';part.rel='noopener noreferrer';}
     catch{part=document.createTextNode(m[0]);}
    }
    parent.append(part);offset=m.index+m[0].length;
@@ -61,5 +62,14 @@
    parent.append(paragraph);
   }
  }
- window.ChatMarkdown={render(parent,text,highlight){blocks(parent,text.replace(/\r\n?/g,'\n').split('\n'),highlight);}};
+ function highlightCode(block,language){
+  if(!['','java','python','py','javascript','js','typescript','ts','c','cpp','c++','csharp','cs','json'].includes(language))return;
+  const python=['python','py'].includes(language),source=block.textContent;
+  const tokens=python?/(#[^\n]*|"""[\s\S]*?"""|\x27{3}[\s\S]*?\x27{3}|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*\b)/g:/(\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*\b)/g;
+  const keywords=new Set(('public private protected static final class interface extends implements import package new return if else for while do switch case break continue try catch finally throw throws void int long double float boolean char byte short String var let const function async await true false null def from as in is not and or None True False print self pass with lambda yield except raise').split(' '));
+  const nodes=[];let offset=0;
+  for(const match of source.matchAll(tokens)){nodes.push(document.createTextNode(source.slice(offset,match.index)));const value=match[0];let kind=/^(\/\/|\/\*|#)/.test(value)?'comment':/^["'`]/.test(value)?'string':/^\d/.test(value)?'number':keywords.has(value)?'keyword':'';if(kind){const span=document.createElement('span');span.className='chat-token-'+kind;span.textContent=value;nodes.push(span);}else nodes.push(document.createTextNode(value));offset=match.index+value.length;}
+  nodes.push(document.createTextNode(source.slice(offset)));block.replaceChildren(...nodes);
+ }
+ window.ChatMarkdown={highlightCode,render(parent,text,highlight){blocks(parent,text.replace(/\r\n?/g,'\n').split('\n'),highlight);}};
 })();

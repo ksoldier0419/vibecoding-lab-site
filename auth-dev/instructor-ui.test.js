@@ -5,7 +5,7 @@ const vm=require('node:vm');
 function ui() {
  const elements=Object.fromEntries(['lesson-note','note-status','save-note','reload-note'].map(id=>[id,{value:'',disabled:false,events:{},addEventListener(type,fn){this.events[type]=fn;}}]));
  const requests=[],timers=new Map(),events={};let next=0;
- const context={document:{querySelectorAll:()=>[],getElementById:id=>elements[id]},location:{pathname:'/instructor/java/week11-operators-conditions.html'},window:{addEventListener:(name,fn)=>events[name]=fn},confirm:()=>true,
+ const context={document:{querySelectorAll:()=>[],getElementById:id=>elements[id],createElement:()=>({}),head:{append(){}}},location:{pathname:'/instructor/java/week11-operators-conditions.html'},window:{addEventListener:(name,fn)=>events[name]=fn},confirm:()=>true,
   fetch:(url,options)=>new Promise(resolve=>requests.push({url,options,resolve})),setTimeout:fn=>{timers.set(++next,fn);return next;},clearTimeout:id=>timers.delete(id),Date,JSON,encodeURIComponent};
  vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'public/instructor.js'),'utf8'),context);
  return {elements,requests,timers,events};

@@ -1,4 +1,4 @@
-﻿const {test}=require('node:test');const assert=require('node:assert/strict');const vm=require('node:vm');const fs=require('node:fs');const path=require('node:path');
+const {test}=require('node:test');const assert=require('node:assert/strict');const vm=require('node:vm');const fs=require('node:fs');const path=require('node:path');
 function render(text){
  class Element{constructor(tag,text=''){this.tag=tag;this.text=text;this.children=[];}append(...children){this.children.push(...children);}set textContent(text){this.text=text;this.children=[];}get textContent(){return this.text+this.children.map(n=>n.textContent).join('');}set innerHTML(_){assert.fail('Raw HTML must not be used');}}
  const document={createElement:tag=>new Element(tag),createTextNode:text=>new Element('#text',text)},window={};
@@ -14,4 +14,8 @@ test('chat Markdown renders headings, emphasis, inline/fenced code, nested lists
 test('chat Markdown keeps HTML as text, rejects executable links and tolerates unfinished code fences',()=>{
  const r=render('<img src=x onerror=alert(1)>\n\n[bad](javascript:alert(1))\n\n[docs](https://example.com)\n\n```python\nprint("hello")');
  assert.equal(r.all('img').length,0);assert.ok(r.root.textContent.includes('<img'));assert.equal(r.all('a').length,1);assert.equal(r.all('a')[0].href,'https://example.com/');assert.equal(r.all('a')[0].rel,'noopener noreferrer');assert.equal(r.all('code')[0].textContent,'print("hello")');
+});
+
+test('combined bold and italic Markdown renders both styles',()=>{
+ const r=render('***Important***');assert.equal(r.all('strong').length,1);assert.equal(r.all('em').length,1);assert.equal(r.all('strong')[0].textContent,'Important');
 });

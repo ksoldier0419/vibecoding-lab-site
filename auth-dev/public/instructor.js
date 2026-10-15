@@ -11,6 +11,17 @@ if(input) {
  const url=input.dataset?.noteUrl || (parts[2]==='courses'?'/api/instructor/courses/'+encodeURIComponent(parts[3])+'/'+encodeURIComponent(lesson)+'/note':'/api/instructor/java/'+encodeURIComponent(lesson)+'/note');
  let version=0,saved='',busy=false,timer,conflict=false,loaded=false;
  const dirty=()=>loaded && input.value!==saved;
+ let noteEditor;
+ function installEditor(){
+  let host=window;
+  try{if(!host.NoteEditor && window.parent!==window && window.parent.NoteEditor)host=window.parent;}catch{}
+  if(host.NoteEditor){noteEditor=host.NoteEditor.attach(input);return;}
+  function script(src,done){const element=document.createElement('script');element.src=src;element.onload=done;element.onerror=()=>{status.textContent='Markdown 편집기를 불러오지 못했습니다. 새로고침해 주세요.';};document.head.append(element);}
+  const editor=()=>script('/auth-assets/note-editor.js?v=20261015',()=>{noteEditor=window.NoteEditor.attach(input);});
+  if(window.ChatMarkdown)editor();else script('/auth-assets/chat-markdown.js?v=20261015-note-editor',editor);
+ }
+ installEditor();
+
  async function result(response) {
   const data=await response.json();
   if(!response.ok) throw Object.assign(new Error(data.error || '요청을 처리하지 못했습니다.'),{status:response.status});
@@ -19,14 +30,14 @@ if(input) {
  async function load() {
   if(busy) return;
   if(dirty() && !confirm('저장하지 않은 내용이 있습니다. 다시 불러오면 현재 입력이 바뀝니다. 계속할까요?')) return;
-  clearTimeout(timer);busy=true;input.disabled=true;saveButton.disabled=true;reload.disabled=true;
+  clearTimeout(timer);busy=true;input.disabled=true;saveButton.disabled=true;reload.disabled=true;noteEditor?.refresh();
   status.textContent='메모를 불러오고 있습니다.';
   try {
    const note=await result(await fetch(url,{cache:'no-store'}));
    version=note.version;saved=note.text;input.value=saved;loaded=true;conflict=false;
    status.textContent='입력 후 1초 뒤 자동 저장됩니다. 체크 항목은 ☐ / ☑로 적을 수 있습니다.';
   } catch(error) {status.textContent=error.message;}
-  finally {busy=false;input.disabled=!loaded;saveButton.disabled=!loaded || conflict;reload.disabled=false;}
+  finally {busy=false;input.disabled=!loaded;saveButton.disabled=!loaded || conflict;reload.disabled=false;noteEditor?.refresh();}
  }
  async function save() {
   clearTimeout(timer);
