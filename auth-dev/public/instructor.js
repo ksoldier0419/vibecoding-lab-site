@@ -45,6 +45,14 @@ if(input) {
   }
  }
  input.addEventListener('input',()=>{clearTimeout(timer);status.textContent=conflict?'다른 창과 충돌했습니다. 내용을 복사한 뒤 다시 불러와 주세요.':'저장하지 않은 변경 사항이 있습니다.';if(!conflict)timer=setTimeout(save,1000);});
+ window.appendLessonNote=function(text){
+  if(!loaded || input.disabled)return {ok:false,message:'메모를 불러온 뒤 다시 추가해 주세요.'};
+  if(conflict)return {ok:false,message:'메모가 다른 창과 충돌했습니다. 기존 내용을 보존하고 메모 충돌을 해결한 뒤 다시 추가해 주세요.'};
+  const next=input.value+(input.value.trim()?'\n\n':'')+text;
+  if(next.length>input.maxLength)return {ok:false,message:'메모의 최대 길이를 초과합니다. 선택 범위를 줄여 주세요.'};
+  input.value=next;input.dispatchEvent(new Event('input',{bubbles:true}));
+  return {ok:true};
+ };
  saveButton.addEventListener('click',save);reload.addEventListener('click',load);
  window.addEventListener('beforeunload',event=>{if(dirty()){event.preventDefault();event.returnValue='';}});
  load();

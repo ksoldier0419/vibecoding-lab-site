@@ -66,3 +66,15 @@ body:has(.noti-chat-window.noti-full:not([hidden])) #noti-launcher{display:none}
 
 /* Temporarily pause instructor/assistant Q&A entry points; keep stored records. */
 #staff-questions,#chat-forward,#chat-suggestion{display:none!important}
+.chat-message.assistant .chat-bubble{white-space:normal;width:100%;max-width:900px;line-height:1.75;padding:1rem 1.1rem}
+.chat-bubble p{margin:0 0 .75rem}.chat-bubble p:last-child{margin-bottom:0}
+.chat-bubble h1,.chat-bubble h2,.chat-bubble h3,.chat-bubble h4,.chat-bubble h5,.chat-bubble h6{color:#203658;border:0;padding:0;margin:1.1rem 0 .55rem;line-height:1.4;font-weight:700}
+.chat-bubble h1{font-size:1.3rem}.chat-bubble h2{font-size:1.15rem}.chat-bubble h3,.chat-bubble h4,.chat-bubble h5,.chat-bubble h6{font-size:1rem}.chat-bubble>:first-child{margin-top:0}
+.chat-bubble ul,.chat-bubble ol{margin:.4rem 0 .9rem;padding-left:1.5rem}.chat-bubble li{margin:.35rem 0}.chat-bubble li>p{margin:.2rem 0}
+.chat-bubble :not(pre)>code{background:#eaf0f8;color:#284e80;border-radius:5px;padding:.12rem .3rem;font-size:.9em;white-space:break-spaces;overflow-wrap:anywhere}
+.chat-bubble blockquote{margin:.7rem 0;padding:.3rem .8rem;border-left:3px solid #89a8d4;background:#f3f7fc;color:#526078}.chat-bubble a{color:#285da8;text-decoration:underline}.chat-bubble hr{border:0;border-top:1px solid #dce4ef;margin:1rem 0}
+.chat-code-block{min-width:0;max-width:100%;margin:.8rem 0;border-radius:10px;overflow:hidden;background:#20242c}.chat-code-language{padding:.4rem .75rem;background:#2d3440;color:#c6d1df;font:.75rem/1.5 monospace}
+.noti-chat-content .chat-code-block .chat-code{margin:0;border-radius:0;padding:.8rem;max-width:100%;box-sizing:border-box;white-space:pre;overflow:auto;overflow-wrap:normal;background:#20242c;color:#e6edf3}.chat-code code{padding:0;background:transparent;color:inherit;font:inherit}
+.chat-table-scroll{max-width:100%;overflow-x:auto;margin:.8rem 0}.chat-bubble table{width:100%;border-collapse:collapse;margin:0;font-size:.9rem}.chat-bubble th,.chat-bubble td{padding:.5rem .7rem;border:1px solid #dce4ef;text-align:left}.chat-bubble th{background:#eef3fa;font-weight:600}.chat-bubble tr:nth-child(even) td{background:#f8fafc}
+#chat-selection-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;padding:.45rem .6rem;background:#edf3fc;border-radius:8px;margin:.4rem 0;font-size:.85rem}#chat-selection-actions[hidden]{display:none}#chat-selection-actions span{color:#526078;margin-right:auto}
+@media(max-width:600px){.chat-message.assistant .chat-bubble{padding:.75rem;font-size:.9rem}.chat-bubble th,.chat-bubble td{padding:.4rem}.chat-bubble .chat-code{font-size:.78rem}}

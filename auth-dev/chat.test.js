@@ -87,3 +87,11 @@ test('staff chat works without student registration; assistant scopes and owner 
  assert.equal((await request(server,'/api/teaching/unknown/unknown.html/chat',{cookie:professor})).status,404);
  enabled=false;assert.equal((await request(server,url,{cookie:helper})).status,403);
 });
+
+test('staff AI responses use Markdown and retain fenced code while student code restrictions remain',async()=>{
+ const {createResponder}=require('./lesson-ai');let calls=0;
+ const markdown='## 자료형\n\n**정수**는 `int`입니다.\n\n```java\nint age = 20;\n```';
+ const fetcher=async(url,options)=>{calls++;const body=JSON.parse(options.body);assert.match(body.instructions,/Markdown/);assert.match(body.instructions,/교수자·조교/);assert.ok(!body.instructions.includes('코드 블록, 완성된 프로그램'));return {ok:true,json:async()=>({status:'completed',output:[{type:'message',content:[{type:'output_text',text:markdown}]}]})};};
+ const reply=createResponder({apiKey:'test',fetcher,allowCode:true});
+ assert.equal(await reply({context:'교안',history:[],text:'코드를 보여줘'}),markdown);assert.equal(calls,1);
+});

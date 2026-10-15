@@ -8,7 +8,7 @@
  get('ai-chat').hidden=false;
  function status(text){get('chat-status').textContent=text;}
  function controls(){get('chat-text').disabled=!loaded || !available;get('chat-text').readOnly=busy;get('chat-send').disabled=!loaded || !available || busy;get('chat-reset').disabled=!loaded || !chat.messages.length || busy;get('chat-reload').disabled=busy;get('chat-forward').disabled=!loaded || !chat.messages.length || busy;}
- function plainLine(line){return line.replace(/^\s{0,3}#{1,6}\s+/,'').replace(/^\s*[-*+]\s+/,'• ').replace(/^>\s?/,'').replace(/\*\*([^*\n]+)\*\*/g,'$1').replace(/__([^_\n]+)__/g,'$1').replace(/`([^`\n]+)`/g,'$1').replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,'$1 ($2)');}
+
  function highlightCode(block,language){
   if(!['','java','python','py','javascript','js','typescript','ts','c','cpp','c++','csharp','cs','json'].includes(language))return;
   const python=['python','py'].includes(language),source=block.textContent;
@@ -21,9 +21,7 @@
  function messageBubble(message){
   const item=document.createElement('article'),label=document.createElement('span'),bubble=document.createElement('div');item.className='chat-message '+message.role;label.className='chat-speaker';label.textContent=message.role==='user'?'나':'Noti';bubble.className='chat-bubble';
   if(message.role==='user'){bubble.textContent=message.content;}else{
-   let code=false,lines=[],language='';
-   function flush(){if(!lines.length)return;const block=document.createElement(code?'pre':'div');block.className=code?'chat-code':'chat-prose';block.textContent=lines.join('\n');if(code)highlightCode(block,language);bubble.append(block);lines=[];}
-   for(const line of message.content.split('\n')){if(/^\s*```/.test(line)){flush();code=!code;language=code?line.trim().slice(3).trim().toLowerCase():'';}else lines.push(code?line:plainLine(line));}flush();
+   window.ChatMarkdown.render(bubble,message.content,highlightCode);
   }
   item.append(label,bubble);return item;
  }
@@ -46,6 +44,40 @@
  function resizeInput(){const input=get('chat-text');input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px';}
  get('chat-text').addEventListener('input',()=>{resizeInput();chatActivity();});
  get('chat-text').addEventListener('keydown',event=>{if(event.key==='Enter' && !event.shiftKey && !event.isComposing && event.keyCode!==229){event.preventDefault();if(!busy && available)get('chat-form').requestSubmit();}});
+ const selectionTools=document.createElement('div');selectionTools.id='chat-selection-actions';selectionTools.hidden=true;selectionTools.setAttribute('role','group');selectionTools.setAttribute('aria-label','선택한 채팅 내용 사용');
+ const selectionLabel=document.createElement('span');selectionLabel.textContent='선택한 내용';
+ const followButton=document.createElement('button');followButton.type='button';followButton.id='chat-selection-question';followButton.textContent='추가 질문';
+ const noteButton=document.createElement('button');noteButton.type='button';noteButton.id='chat-selection-note';noteButton.textContent='메모에 추가';
+ selectionTools.append(selectionLabel,followButton,noteButton);get('chat-messages').after(selectionTools);
+ let excerpt='';
+ function captureSelection(){
+  const selection=document.getSelection();if(!selection || selection.isCollapsed)return false;
+  const range=selection.getRangeAt(0),container=get('chat-messages');
+  const element=n=>n.nodeType===Node.ELEMENT_NODE?n:n.parentElement;
+  if(!container.contains(range.startContainer) || !container.contains(range.endContainer) || !element(range.startContainer)?.closest('.chat-bubble') || !element(range.endContainer)?.closest('.chat-bubble'))return false;
+  const text=selection.toString().trim();if(!text)return false;excerpt=text;selectionTools.hidden=false;selectionLabel.textContent='선택한 내용 '+text.length+'자';return true;
+ }
+ document.addEventListener('selectionchange',()=>{if(!captureSelection() && !selectionTools.contains(document.activeElement))selectionTools.hidden=true;});
+ selectionTools.addEventListener('pointerdown',event=>{if(event.target.closest('button'))event.preventDefault();});
+ get('chat-messages').addEventListener('contextmenu',event=>{if(captureSelection())event.preventDefault();});
+ followButton.addEventListener('click',()=>{
+  const input=get('chat-text');if(input.disabled || input.readOnly){status('AI 연결 또는 답변이 끝난 뒤 다시 추가해 주세요.');return;}
+  const addition='[선택한 채팅 내용]\n'+excerpt+'\n\n이 부분을 더 자세히 설명해 주세요.';
+  const combined=(input.value.trim()?input.value+'\n\n':'')+addition;
+  if(combined.length>input.maxLength){status('선택한 내용과 질문이 너무 깁니다. 선택 범위를 줄여 주세요.');return;}
+  input.value=combined;resizeInput();input.focus();selectionTools.hidden=true;status('질문 초안에 추가했습니다. 내용을 수정한 뒤 보내기를 누르세요.');
+ });
+ noteButton.addEventListener('click',()=>{
+  let noteWindow=window;
+  if(staffView){try{noteWindow=get('workspace-frame').contentWindow;}catch{status('수업 메모를 불러온 뒤 다시 추가해 주세요.');return;}}
+  if(typeof noteWindow?.appendLessonNote!=='function'){status('메모를 불러온 뒤 다시 추가해 주세요.');return;}
+  const result=noteWindow.appendLessonNote('[Noti 대화에서 선택한 내용]\n'+excerpt);
+  if(!result.ok){status(result.message);return;}
+  if(staffView){const details=noteWindow.document.querySelector('.instructor-notes');if(details)details.open=true;}
+  else{window.openLessonNotes();}
+  selectionTools.hidden=true;status('기존 메모 뒤에 추가했습니다. 메모 영역에서 저장 상태를 확인해 주세요.');
+ });
+
  get('chat-reload').addEventListener('click',load);
  get('chat-reset').addEventListener('click',async()=>{if(busy || !loaded || !confirm(staffView?'이 교안의 본인 AI 대화 기록을 지우고 새 대화를 시작할까요?':'이 교안의 기존 AI 대화 기록을 지우고 새 대화를 시작할까요? 교수자에게 등록한 질문은 유지됩니다.'))return;busy=true;controls();try{chat=(await api({version:chat.version},'/reset')).chat;pending=null;suggestionDismissedAt=0;render();status('새 대화를 시작했습니다.');}catch(e){status(e.message);}finally{busy=false;controls();}});
  get('chat-keep').addEventListener('click',()=>{suggestionDismissedAt=chat.messages.filter(m=>m.role==='user').length;get('chat-suggestion').hidden=true;});

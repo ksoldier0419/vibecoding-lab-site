@@ -1,6 +1,6 @@
 const {lessonContext,createResponder}=require('./lesson-ai');
-function chatRoutes(app,repository,{own,localPost,config,url='/api/study/:course/:lesson/chat'}) {
- const respond=config.chatReply || createResponder({apiKey:config.openAIKey,model:config.openAIModel});
+function chatRoutes(app,repository,{own,localPost,config,url='/api/study/:course/:lesson/chat',allowCode=false}) {
+ const respond=config.chatReply || createResponder({apiKey:config.openAIKey,model:config.openAIModel,allowCode});
  const available=!!(config.chatReply || config.openAIKey);
  const publicChat=chat=>({messages:chat.messages,version:chat.version});
  function fail(res,error){res.status(503).json({error:error?.public?error.message:'AI 채팅을 처리하지 못했습니다. 입력은 유지됩니다. 잠시 후 다시 시도해 주세요.'});}

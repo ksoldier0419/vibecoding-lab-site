@@ -27,7 +27,7 @@ async function load(){
   showPanel(params.get('panel')==='questions' && (!staffView || course.reviewAllowed));
   if(staffView){$('noti-launcher').hidden=!course.reviewAllowed;$('student-review').hidden=false;if(course.reviewAllowed)await reviewList(true);else{$('review-status').textContent='관리자가 담당 과목·분반을 지정하면 학생 메모를 열람할 수 있습니다.';$('review-refresh').disabled=true;}}
   if(!staffView || course.reviewAllowed){
-   const chatScript=document.createElement('script');chatScript.src='/auth-assets/lesson-chat.js';chatScript.onerror=()=>{$('chat-status').textContent='AI 채팅을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(chatScript);
+   const chatScript=document.createElement('script');chatScript.src='/auth-assets/lesson-chat.js?v=20261015-chat-tools';chatScript.onerror=()=>{$('chat-status').textContent='AI 채팅을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(chatScript);
   }
   if(!staffView){
    $('student-editor').hidden=false;$('lesson-note').dataset.noteUrl='/api/study/'+encodeURIComponent(course.id)+'/'+encodeURIComponent(lesson.id)+'/note';
@@ -167,6 +167,7 @@ function endNotiDrag(event){if(notiDrag?.id===event.pointerId){if(notiDrag.moved
 handle.addEventListener('pointerup',endNotiDrag);handle.addEventListener('pointercancel',endNotiDrag);handle.addEventListener('lostpointercapture',endNotiDrag);
 }
 function setTools(open){$('workspace-tools').hidden=!open;document.querySelector('.workspace-layout').classList.toggle('tools-collapsed',!open);$('tools-toggle').setAttribute('aria-expanded',String(open));$('tools-toggle').textContent=open?'학습 메모 접기':'학습 메모 열기';}
+window.openLessonNotes=function(){setTools(true);$('student-editor').open=true;};
 window.openStaffQuestions=function(){return false;};
 $('tools-toggle').addEventListener('click',()=>setTools($('workspace-tools').hidden));
 let normalNoti=null;
