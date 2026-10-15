@@ -100,3 +100,5 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .instructor-notes label[hidden],#student-editor label[hidden]{display:none!important}
 
 .note-markdown-view strong{color:#b42318}
+
+.note-markdown-toc{margin:0;padding:.75rem 1rem;border-bottom:1px solid #dce5f1;background:#f5f8fc}.note-markdown-toc[hidden]{display:none!important}.note-markdown-toc summary{font-weight:600;font-size:.9rem;cursor:pointer;color:#2459a6}.note-markdown-toc nav{max-height:240px;overflow:auto;margin-top:.5rem}.note-markdown-toc ol{margin:0;padding-left:1.4rem}.note-markdown-toc li{padding:.2rem 0;line-height:1.5;font-size:.85rem}.note-markdown-toc a{color:#2459a6;text-decoration:none;overflow-wrap:anywhere}.note-markdown-toc a:hover{text-decoration:underline}.note-markdown-toc a:focus-visible{outline:2px solid #305ca5;outline-offset:2px}.note-markdown-toc small{color:#64748b;font-size:.75rem}.note-markdown-view h1,.note-markdown-view h2,.note-markdown-view h3,.note-markdown-view h4,.note-markdown-view h5,.note-markdown-view h6{scroll-margin-top:1rem}

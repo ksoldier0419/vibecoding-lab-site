@@ -17,7 +17,7 @@ if(input) {
   try{if(!host.NoteEditor && window.parent!==window && window.parent.NoteEditor)host=window.parent;}catch{}
   if(host.NoteEditor){noteEditor=host.NoteEditor.attach(input);return;}
   function script(src,done){const element=document.createElement('script');element.src=src;element.onload=done;element.onerror=()=>{status.textContent='Markdown 편집기를 불러오지 못했습니다. 새로고침해 주세요.';};document.head.append(element);}
-  const editor=()=>script('/auth-assets/note-editor.js?v=20261015',()=>{noteEditor=window.NoteEditor.attach(input);});
+  const editor=()=>script('/auth-assets/note-editor.js?v=20261015-note-toc',()=>{noteEditor=window.NoteEditor.attach(input);});
   if(window.ChatMarkdown)editor();else script('/auth-assets/chat-markdown.js?v=20261015-note-format-resize',editor);
  }
  installEditor();

@@ -10,21 +10,35 @@
   toggle.type=bold.type=italic.type='button';toggle.className='note-edit-toggle';bold.className='note-bold';italic.className='note-italic';bold.title='Ctrl+B';italic.title='Ctrl+I';
   toolbar.append(toggle,bold,italic);
   const viewer=node('div');viewer.className='note-markdown-view';viewer.tabIndex=0;viewer.setAttribute('role','button');viewer.setAttribute('aria-label','내 메모 편집하기');
+  const toc=node('details');toc.className='note-markdown-toc';toc.open=true;toc.hidden=true;
+  const tocTitle=node('summary','목차'),nav=node('nav');nav.setAttribute('aria-label','메모 목차');toc.append(tocTitle,nav);
   const hint=node('p','Ctrl+B 굵게 · Ctrl+I 기울임 · Enter 목록 계속 · Tab 들여쓰기 · Esc 보기');hint.className='note-editor-hint';
   const message=node('p');message.className='note-editor-message';message.setAttribute('role','status');
-  input.before(wrap);wrap.append(toolbar,viewer,input,hint,message);
+  input.before(wrap);wrap.append(toolbar,toc,viewer,input,hint,message);
   const label=doc.querySelector('label[for="'+input.id+'"]');let editing=false;
   const markdown=()=>view.ChatMarkdown || window.ChatMarkdown;
+  function updateTOC(){
+   const headings=[...viewer.querySelectorAll('h1,h2,h3,h4,h5,h6')];nav.replaceChildren();toc.hidden=editing || !headings.length;tocTitle.textContent='목차 ('+headings.length+')';
+   if(!headings.length)return;
+   const base=Math.min(...headings.map(h=>Number(h.tagName[1]))),list=node('ol');
+   headings.forEach((heading,index)=>{
+    heading.id='note-'+input.id+'-heading-'+(index+1);heading.tabIndex=-1;
+    const item=node('li'),link=node('a',heading.textContent.trim()||'제목 '+(index+1));item.style.marginInlineStart=(Number(heading.tagName[1])-base)*.8+'rem';link.href='#'+heading.id;
+    const next=heading.nextElementSibling;if(next?.tagName==='P' && /^등록일:/.test(next.textContent.trim()))link.append(node('small',' · '+next.textContent.trim()));
+    link.addEventListener('click',event=>{event.preventDefault();heading.scrollIntoView({behavior:'smooth',block:'start'});heading.focus({preventScroll:true});});item.append(link);list.append(item);
+   });nav.append(list);
+  }
   function render(){
    viewer.replaceChildren();
    if(input.disabled){viewer.textContent='메모를 불러온 뒤 편집할 수 있습니다.';}
    else if(!input.value.trim()){viewer.textContent='클릭하여 Markdown 메모를 작성하세요.';viewer.classList.add('note-empty');}
    else{viewer.classList.remove('note-empty');markdown().render(viewer,input.value,markdown().highlightCode);}
+   updateTOC();
   }
   function refresh(){toggle.disabled=bold.disabled=italic.disabled=input.disabled;viewer.setAttribute('aria-disabled',String(input.disabled));if(!editing)render();}
   function mode(next){
    if(next && input.disabled)return;
-   editing=next;input.hidden=!editing;viewer.hidden=editing;bold.hidden=italic.hidden=hint.hidden=!editing;if(label)label.hidden=!editing;toggle.textContent=editing?'보기':'편집';message.textContent='';
+   editing=next;if(editing)toc.hidden=true;input.hidden=!editing;viewer.hidden=editing;bold.hidden=italic.hidden=hint.hidden=!editing;if(label)label.hidden=!editing;toggle.textContent=editing?'보기':'편집';message.textContent='';
    if(editing)input.focus();else{render();viewer.focus();}
   }
   function replace(start,end,text,selectStart,selectEnd=selectStart){
