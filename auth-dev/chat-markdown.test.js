@@ -19,3 +19,17 @@ test('chat Markdown keeps HTML as text, rejects executable links and tolerates u
 test('combined bold and italic Markdown renders both styles',()=>{
  const r=render('***Important***');assert.equal(r.all('strong').length,1);assert.equal(r.all('em').length,1);assert.equal(r.all('strong')[0].textContent,'Important');
 });
+
+test('chat selections preserve heading, emphasis and code fences including blank code lines',()=>{
+ const window={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'public/chat-markdown.js'),'utf8'),{window,URL});
+ function text(value){return {nodeType:3,nodeValue:value,get textContent(){return this.nodeValue;}};}
+ function el(tag,children=[],className=''){
+  const n={nodeType:tag==='#fragment'?11:1,tagName:tag,childNodes:children,classList:{contains:c=>className.split(' ').includes(c)},get children(){return this.childNodes.filter(c=>c.nodeType===1);},get textContent(){return this.childNodes.map(c=>c.textContent).join('');},closest(selector){if(selector==='pre'&&this.tagName==='PRE'||selector.startsWith('.')&&this.classList.contains(selector.slice(1)))return this;return this.parentElement?.closest(selector)||null;},querySelector(selector){for(const c of this.children){if(selector==='pre'&&c.tagName==='PRE'||selector.startsWith('.')&&c.classList.contains(selector.slice(1)))return c;const nested=c.querySelector(selector);if(nested)return nested;}return null;}};
+  for(const c of children)c.parentElement=n;return n;
+ }
+ const code='int x = 1;\n\nString name = "Kim";',pre=el('PRE',[el('CODE',[text(code)])]),box=el('DIV',[el('DIV',[text('java')],'chat-code-language'),pre],'chat-code-block');
+ const fragment=el('#fragment',[el('H2',[text('Types')]),el('P',[el('STRONG',[text('Integer')]),text(' value')]),box]),bubble=el('DIV',[],'chat-bubble');
+ const result=window.ChatMarkdown.selectionMarkdown({commonAncestorContainer:bubble,cloneContents:()=>fragment});assert.ok(result.includes('## Types'));assert.ok(result.includes('**Integer**'));assert.ok(result.includes('```java\n'+code+'\n```'));
+ const partial=window.ChatMarkdown.selectionMarkdown({commonAncestorContainer:pre.children[0],toString:()=>code});assert.equal(partial,'```java\n'+code+'\n```');
+ const strong=el('STRONG',[text('value')]);strong.parentElement=bubble;assert.equal(window.ChatMarkdown.selectionMarkdown({commonAncestorContainer:strong,cloneContents:()=>el('#fragment',[text('value')])}),'**value**');
+});

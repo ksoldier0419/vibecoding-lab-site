@@ -71,5 +71,52 @@
   for(const match of source.matchAll(tokens)){nodes.push(document.createTextNode(source.slice(offset,match.index)));const value=match[0];let kind=/^(\/\/|\/\*|#)/.test(value)?'comment':/^["'`]/.test(value)?'string':/^\d/.test(value)?'number':keywords.has(value)?'keyword':'';if(kind){const span=document.createElement('span');span.className='chat-token-'+kind;span.textContent=value;nodes.push(span);}else nodes.push(document.createTextNode(value));offset=match.index+value.length;}
   nodes.push(document.createTextNode(source.slice(offset)));block.replaceChildren(...nodes);
  }
- window.ChatMarkdown={highlightCode,render(parent,text,highlight){blocks(parent,text.replace(/\r\n?/g,'\n').split('\n'),highlight);}};
+ function selectionMarkdown(range){
+  const element=n=>n.nodeType===1?n:n.parentElement,common=element(range.commonAncestorContainer);
+  function fence(text,language=''){
+   const runs=text.match(/`+/g)||[],ticks='`'.repeat(Math.max(3,...runs.map(s=>s.length+1)));
+   return ticks+language+'\n'+text.replace(/\n$/,'')+'\n'+ticks;
+  }
+  function language(pre){const value=pre.closest('.chat-code-block')?.querySelector('.chat-code-language')?.textContent.trim()||'';return /^[\w+#.-]+$/.test(value)?value:'';}
+  const pre=common?.closest('pre');if(pre)return fence(range.toString(),language(pre));
+  const children=n=>[...n.childNodes].map(serialize).join('');
+  function serialize(n){
+   if(n.nodeType===3)return n.nodeValue;
+   if(n.nodeType!==1)return children(n);
+   const tag=n.tagName,text=children(n);
+   if(tag==='PRE')return '\n\n'+fence(n.textContent,language(n))+'\n\n';
+   if(n.classList.contains('chat-code-language'))return '';
+   if(tag==='CODE')return n.textContent.includes('`')||n.textContent.includes('\n')?'\n\n'+fence(n.textContent)+'\n\n':'`'+n.textContent+'`';
+   if(tag==='STRONG'||tag==='B')return '**'+text+'**';
+   if(tag==='EM'||tag==='I')return '*'+text+'*';
+   if(tag==='BR')return '\n';
+   if(/^H[1-6]$/.test(tag))return '\n\n'+'#'.repeat(Number(tag[1]))+' '+text.trim()+'\n\n';
+   if(tag==='A'){try{const url=new URL(n.href);if(['http:','https:'].includes(url.protocol))return '['+text+']('+url.href+')';}catch{}return text;}
+   if(tag==='BLOCKQUOTE')return '\n\n'+text.trim().split('\n').map(line=>'> '+line).join('\n')+'\n\n';
+   if(tag==='UL'||tag==='OL'){
+    let number=Number(n.getAttribute('start'))||1;
+    return '\n\n'+[...n.children].filter(c=>c.tagName==='LI').map(li=>{
+     const content=children(li).trim(),lines=(li.querySelector('pre')?content:content.replace(/\n{2,}/g,'\n')).split('\n'),prefix=tag==='OL'?(number++)+'. ':'- ';
+     return prefix+lines[0]+lines.slice(1).map(line=>'\n  '+line).join('');
+    }).join('\n')+'\n\n';
+   }
+   if(tag==='TABLE'){
+    const rows=[...n.querySelectorAll('tr')].map(tr=>[...tr.children].filter(c=>['TH','TD'].includes(c.tagName)).map(c=>children(c).trim().replace(/\|/g,'\\|').replace(/\n/g,' ')));
+    if(!rows.length)return text;
+    const line=row=>'| '+row.join(' | ')+' |';return '\n\n'+[line(rows[0]),line(rows[0].map(()=>'---')),...rows.slice(1).map(line)].join('\n')+'\n\n';
+   }
+   if(['P','DIV','SECTION','ARTICLE'].includes(tag))return '\n\n'+text.trim()+'\n\n';
+   return text;
+  }
+  let text=serialize(range.cloneContents()).trim();
+  for(let n=common;n&&!n.classList?.contains('chat-bubble');n=n.parentElement){
+   if(n.tagName==='CODE')text=text.includes('`')?fence(text):'`'+text+'`';
+   else if(['STRONG','B'].includes(n.tagName))text='**'+text+'**';
+   else if(['EM','I'].includes(n.tagName))text='*'+text+'*';
+   else if(/^H[1-6]$/.test(n.tagName))text='#'.repeat(Number(n.tagName[1]))+' '+text;
+   else if(n.tagName==='LI')text='- '+text.split('\n').join('\n  ');
+  }
+  return text.trim();
+ }
+ window.ChatMarkdown={selectionMarkdown,highlightCode,render(parent,text,highlight){blocks(parent,text.replace(/\r\n?/g,'\n').split('\n'),highlight);}};
 })();

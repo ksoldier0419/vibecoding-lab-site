@@ -27,7 +27,7 @@ async function load(){
   showPanel(params.get('panel')==='questions' && (!staffView || course.reviewAllowed));
   if(staffView){$('noti-launcher').hidden=!course.reviewAllowed;$('student-review').hidden=false;if(course.reviewAllowed)await reviewList(true);else{$('review-status').textContent='관리자가 담당 과목·분반을 지정하면 학생 메모를 열람할 수 있습니다.';$('review-refresh').disabled=true;}}
   if(!staffView || course.reviewAllowed){
-   const chatScript=document.createElement('script');chatScript.src='/auth-assets/lesson-chat.js?v=20261015-personal-notes';chatScript.onerror=()=>{$('chat-status').textContent='AI 채팅을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(chatScript);
+   const chatScript=document.createElement('script');chatScript.src='/auth-assets/lesson-chat.js?v=20261015-note-format-resize';chatScript.onerror=()=>{$('chat-status').textContent='AI 채팅을 불러오지 못했습니다. 페이지를 다시 열어 주세요.';};document.body.append(chatScript);
   }
   if(!staffView || course.reviewAllowed){
    $('student-editor').hidden=false;
