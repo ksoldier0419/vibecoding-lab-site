@@ -12,8 +12,10 @@ function createRepository(url) {
   }
   const assistants=require('./assistant-db').createAssistantRepository(sql);
   const quiz=require('./quiz-db').createQuizRepository(sql,assistants.setupAssistantRoles);
+  const staffLearning=require('./instructor-db').createInstructorRepository(sql,'staff_learning_notes');
   return {
     ...assistants,
+    getStaffLearningNote:staffLearning.getInstructorNote,saveStaffLearningNote:staffLearning.saveInstructorNote,
     ...require('./assistant-scopes-db').createScopeRepository(sql,assistants.setupAssistantRoles),
     ...require('./student-notes-db').createStudentNoteRepository(sql),
     ...require('./questions-db').createQuestionRepository(sql),

@@ -68,13 +68,10 @@
   input.value=combined;resizeInput();input.focus();selectionTools.hidden=true;status('질문 초안에 추가했습니다. 내용을 수정한 뒤 보내기를 누르세요.');
  });
  noteButton.addEventListener('click',()=>{
-  let noteWindow=window;
-  if(staffView){try{noteWindow=get('workspace-frame').contentWindow;}catch{status('수업 메모를 불러온 뒤 다시 추가해 주세요.');return;}}
-  if(typeof noteWindow?.appendLessonNote!=='function'){status('메모를 불러온 뒤 다시 추가해 주세요.');return;}
-  const result=noteWindow.appendLessonNote('[Noti 대화에서 선택한 내용]\n'+excerpt);
+  if(typeof window.appendLessonNote!=='function'){status('내 학습 메모를 불러온 뒤 다시 추가해 주세요.');return;}
+  const result=window.appendLessonNote('[Noti 대화에서 선택한 내용]\n'+excerpt);
   if(!result.ok){status(result.message);return;}
-  if(staffView){const details=noteWindow.document.querySelector('.instructor-notes');if(details)details.open=true;}
-  else{window.openLessonNotes();}
+  window.openLessonNotes();
   selectionTools.hidden=true;status('기존 메모 뒤에 추가했습니다. 메모 영역에서 저장 상태를 확인해 주세요.');
  });
 

@@ -59,3 +59,27 @@ test('students edit only their enrolled notes; staff read only authorized course
  assert.equal((await request(server,review,{cookie:helper})).status,403);
  assert.equal((await request(server,own,{cookie:one,body:{text:'',version:1}})).status,200);
 });
+
+test('staff personal learning notes need no student enrollment, remain owner-only and separate from class notes',async t=>{
+ let who,nonce,scopes=[{courseId:'903131',section:'01'}];const notes=new Map(),key=(u,c,l)=>[u,c,l].join('/');
+ const repository={recordLogin:async()=>({}),isTeachingAssistant:async id=>id==='helper',assistantScopes:async()=>scopes,registration:async()=>({registered:false,courses:[]}),getProfile:async()=>null,
+  getStaffLearningNote:async(u,c,l)=>notes.get(key(u,c,l))||{text:'',version:0},saveStaffLearningNote:async(u,c,l,v)=>{const old=notes.get(key(u,c,l))||{version:0};if(old.version!==v.version)return null;const next={text:v.text,version:v.version+1};notes.set(key(u,c,l),next);return next;},
+  getInstructorNote:async()=>({text:'Existing class preparation',version:0})};
+ const server=createApp({clientId:'test',secret:'x'.repeat(64),professorEmail:'professor@gmail.com',openRegistration:true},{verifyIdToken:async()=>({getPayload:()=>({sub:who,email:who+'@gmail.com',email_verified:true,nonce,exp:Date.now()/1000+3600})})},repository).listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));t.after(()=>new Promise(r=>server.close(r)));
+ async function login(id){who=id;const c=await request(server,'/api/auth/config');nonce=c.data.nonce;return(await request(server,'/api/auth/google',{cookie:c.cookie,body:{credential:'test',nonce}})).cookie;}
+ const professor=await login('professor'),helper=await login('helper'),student=await login('student'),url='/api/teaching/2026-2-java_basic/week06-data-types.html/note';
+ assert.equal((await request(server,url)).status,401);assert.equal((await request(server,url,{cookie:student})).status,403);
+ assert.equal((await request(server,url.replace('/teaching/','/study/'),{cookie:professor})).status,403);
+ assert.equal((await request(server,url,{cookie:professor,body:{text:'Personal learning',version:0}})).status,200);
+ assert.equal((await request(server,url,{cookie:helper})).data.note.text,'');
+ assert.equal((await request(server,url,{cookie:helper,body:{text:'Helper learning',version:0}})).status,200);
+ assert.equal((await request(server,url,{cookie:professor})).data.note.text,'Personal learning');
+ assert.equal((await request(server,'/api/instructor/courses/2026-2-java_basic/week06-data-types.html/note',{cookie:professor})).data.note.text,'Existing class preparation');
+ assert.equal((await request(server,url,{cookie:professor,body:{text:'Forged owner',version:1,studentId:'helper'}})).status,400);
+ assert.equal((await request(server,url,{cookie:professor,body:{text:'Stale edit',version:0}})).status,409);
+ assert.equal((await request(server,url,{cookie:professor,body:{text:'x'.repeat(20001),version:1}})).status,400);
+ assert.equal((await request(server,url,{cookie:professor,body:{text:'Wrong origin',version:1},origin:'https://evil.example'})).status,403);
+ const catalog=(await request(server,'/api/teaching/catalog?view=staff',{cookie:professor})).data.courses,other=catalog.find(c=>c.id==='2026-2-python_adv');
+ assert.equal((await request(server,'/api/teaching/'+other.id+'/'+other.lessons[0].id+'/note',{cookie:helper})).status,403);
+ scopes=[];assert.equal((await request(server,url,{cookie:helper})).status,403);assert.equal((await request(server,url,{cookie:helper,body:{text:'No scope',version:1}})).status,403);
+});

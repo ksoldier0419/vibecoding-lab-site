@@ -28,3 +28,13 @@ test('updates use owner and expected version; stale writes return conflict',asyn
  assert.deepEqual(update.params,['owner','java','one','메모',3]);
  assert.match(update.query,/google_id=\$1 AND course=\$2 AND lesson=\$3 AND version=\$5/);
 });
+
+test('staff learning notes use their own table and keep owner/version parameter checks',async()=>{
+ const calls=[],repo=createInstructorRepository({query:async(query,params)=>{calls.push({query,params});return [];}},'staff_learning_notes');
+ await repo.getInstructorNote('professor','course','lesson');await repo.saveInstructorNote('professor','course','lesson',{text:'Personal learning',version:2});
+ assert.match(calls[0].query,/CREATE TABLE IF NOT EXISTS staff_learning_notes/);
+ assert.match(calls[1].query,/FROM staff_learning_notes WHERE google_id=\$1/);assert.deepEqual(calls[1].params,['professor','course','lesson']);
+ assert.match(calls.at(-1).query,/UPDATE staff_learning_notes/);assert.match(calls.at(-1).query,/version=\$5/);assert.deepEqual(calls.at(-1).params,['professor','course','lesson','Personal learning',2]);
+ assert.ok(calls.every(c=>!c.query.includes('student_lesson_notes')&&!c.query.includes('instructor_lesson_notes')));
+ assert.throws(()=>createInstructorRepository({},'untrusted_table'),/Invalid note table/);
+});

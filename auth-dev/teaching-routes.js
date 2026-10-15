@@ -35,18 +35,22 @@ function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach,
  }
  const own=[signedIn,lesson,enrolled];
  require('./chat-routes').chatRoutes(app,repository,{own,localPost,config});
- app.get('/api/study/:course/:lesson/note',...own,async(req,res)=>{
-  try {res.json({note:await repository.getStudentNote(req.session.user.id,req.course.id,req.params.lesson)});}catch{fail(res);}
+ function personalNotes(prefix,guards,staffNote=false){
+ const getNote=staffNote?'getStaffLearningNote':'getStudentNote',saveNote=staffNote?'saveStaffLearningNote':'saveStudentNote';
+ app.get(prefix+'/:course/:lesson/note',...guards,async(req,res)=>{
+  try {res.json({note:await repository[getNote](req.session.user.id,req.course.id,req.params.lesson)});}catch{fail(res);}
  });
- app.post('/api/study/:course/:lesson/note',localPost,...own,async(req,res)=>{
+ app.post(prefix+'/:course/:lesson/note',localPost,...guards,async(req,res)=>{
   const value=req.body;
   if(!value || Object.keys(value).some(k=>!['text','version'].includes(k)) || typeof value.text!=='string' || value.text.length>20000 || !Number.isSafeInteger(value.version) || value.version<0)return res.status(400).json({error:'메모는 20,000자 이내로 작성해 주세요.'});
   try {
-   const note=await repository.saveStudentNote(req.session.user.id,req.course.id,req.params.lesson,value);
+   const note=await repository[saveNote](req.session.user.id,req.course.id,req.params.lesson,value);
    if(!note)return res.status(409).json({error:'다른 창에서 메모가 변경되었습니다. 입력 내용을 복사하고 다시 불러와 합쳐 주세요.'});
    res.json({note});
   }catch{fail(res);}
  });
+ }
+ personalNotes('/api/study',own);
  async function reviewScope(req,res,next) {
   try {
    if(isProfessor(req.session.user)){req.sections=null;return next();}
@@ -56,6 +60,7 @@ function teachingRoutes(app,repository,{signedIn,localPost,isProfessor,canTeach,
   }catch{fail(res);}
  }
  const review=[signedIn,staff,lesson,reviewScope];
+ personalNotes('/api/teaching',review,true);
  require('./chat-routes').chatRoutes(app,repository,{own:review,localPost,config,url:'/api/teaching/:course/:lesson/chat',allowCode:true});
  require('./quiz-routes').quizRoutes(app,repository,{own,review,signedIn,staff,localPost,isProfessor,config});
  for(const [prefix,guards,student] of [['/api/study',own,true],['/api/teaching',review,false]]) {

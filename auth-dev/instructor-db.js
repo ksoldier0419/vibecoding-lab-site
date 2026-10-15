@@ -1,5 +1,5 @@
 function createInstructorRepository(sql,table='instructor_lesson_notes') {
- if(!['instructor_lesson_notes','student_lesson_notes'].includes(table))throw new Error('Invalid note table.');
+ if(!['instructor_lesson_notes','student_lesson_notes','staff_learning_notes'].includes(table))throw new Error('Invalid note table.');
  let ready;
  function setupInstructorNotes() {
   if(!ready) ready=sql.query(`CREATE TABLE IF NOT EXISTS ${table} (
