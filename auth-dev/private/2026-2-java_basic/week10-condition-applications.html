@@ -60,6 +60,9 @@
           <li>
             <details class="toc-section" open>
               <summary><a href="#5-switch-메뉴-번호로-선택하기">5. switch: 메뉴 번호로 선택하기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#5-1-default가-없으면-어떻게-될까">5.1 default가 없으면 어떻게 될까?</a></li>
+              </ol>
             </details>
           </li>
           <li>
@@ -507,6 +510,56 @@ B등급</code></pre></div>
   </tbody>
 </table>
 </div>
+<h3 id="5-1-default가-없으면-어떻게-될까">5.1 default가 없으면 어떻게 될까?</h3>
+<p>위처럼 정수를 비교하는 <code>switch</code>문에서는 <code>default</code>를 생략할 수 있습니다. 하지만 일치하는 <code>case</code>가 없으면 <code>switch</code> 안의 코드를 하나도 실행하지 않고 다음 문장으로 넘어갑니다. 오류가 발생하거나 입력을 다시 받는 것은 아닙니다.</p>
+<p>파일 이름은 <code>MenuWithoutDefault.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">MenuWithoutDefault</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">menu</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">9</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"메뉴 선택 시작%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-k">switch</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">menu</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">:</span>
+<span class="syntax-w">                </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"물을 선택했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">                </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">:</span>
+<span class="syntax-w">                </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"주스를 선택했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">                </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"메뉴 선택 끝%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>메뉴 선택 시작
+메뉴 선택 끝</code></pre></div>
+<p><code>menu</code>가 <code>9</code>이므로 어떤 메뉴 안내도 출력되지 않습니다. <code>switch</code> 다음의 <code>메뉴 선택 끝</code>은 그대로 출력됩니다. 사용자는 선택이 처리되었는지 알기 어려울 수 있습니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>조건</th>
+<th>실행 결과</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>menu = 1</code></td>
+<td>시작 → 물 선택 안내 → 끝</td>
+</tr>
+    <tr>
+<td><code>menu = 9</code>, <code>default</code> 없음</td>
+<td>시작 → 끝. 잘못된 메뉴 안내가 없음</td>
+</tr>
+    <tr>
+<td><code>menu = 9</code>, 아래 <code>default</code> 추가</td>
+<td>시작 → 없는 메뉴 안내 → 끝</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>잘못된 선택을 알려 주려면 마지막 <code>case</code>의 <code>break;</code> 다음, <code>switch</code>의 닫는 중괄호 앞에 다음 내용을 추가합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-k">default</span><span class="syntax-p">:</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"없는 메뉴입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-k">break</span><span class="syntax-p">;</span></code></pre></div>
+<p>📌 <code>default</code>는 일치하는 <code>case</code>가 없을 때의 처리를 담당합니다. 모든 분기에 <code>break</code>가 있는 위 예제에서 <code>default</code> 생략은 <strong>아무 분기도 실행하지 않는 상황</strong>, <code>break</code> 생략은 <strong>선택된 분기에서 뒤쪽 코드까지 이어지는 상황</strong>입니다.</p>
 <h2 id="6-연습-입장료-계산">6. 연습: 입장료 계산</h2>
 <ul>
   <li>파일 이름은 <code>AdmissionFee.java</code>로 저장합니다.</li>
@@ -784,7 +837,7 @@ a ^ b = 6
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 10:21</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 10:23</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
   </ul>
 </section>
