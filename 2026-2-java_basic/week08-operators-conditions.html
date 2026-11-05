@@ -36,14 +36,14 @@
           <li>
             <details class="toc-section" open>
               <summary><a href="#4-if-else-두-경우로-나누기">4. if ~ else: 두 경우로 나누기</a></summary>
-              <ol class="toc-section-list">
-              <li><a href="#4-1-언어별-if-else-if-elif-비교">4.1 언어별 if·else if·elif 비교</a></li>
-              </ol>
             </details>
           </li>
           <li>
             <details class="toc-section" open>
               <summary><a href="#5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#5-1-언어별-if-else-if-elif-비교">5.1 언어별 if·else if·elif 비교</a></li>
+              </ol>
             </details>
           </li>
           <li>
@@ -220,7 +220,13 @@
 </table>
 </div>
 <p>두 중괄호 영역 중 하나만 실행합니다.</p>
-<h3 id="4-1-언어별-if-else-if-elif-비교">4.1 언어별 if·else if·elif 비교</h3>
+<h2 id="5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</h2>
+<p><code>else if</code>는 앞의 조건이 거짓일 때 다음 조건을 검사합니다. 하나의 연결된 조건문에서는 <strong>처음 참이 된 조건의 코드만</strong> 실행합니다.</p>
+<p>앞 예제의 조건문을 다음 코드로 교체합니다. 입력 점수는 0~100 사이라고 가정합니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-5-1_operators_conditions-b905ead9ec85.png" alt="java 코드 예제"></p>
+<p><code>85</code>를 입력하면 첫 조건은 거짓이고 두 번째 조건은 참이므로 <code>B등급</code>을 출력합니다. 이때 <code>score &gt;= 70</code>은 더 검사하지 않습니다.</p>
+<p>⚠️ 주의: <code>score &gt;= 70</code>부터 검사하면 <code>95</code>도 그 조건에 먼저 해당합니다. 이 예제에서는 높은 점수부터 검사해야 합니다.</p>
+<h3 id="5-1-언어별-if-else-if-elif-비교">5.1 언어별 if·else if·elif 비교</h3>
 <p>첫 조건을 검사하고, 거짓이면 다음 조건을 검사하는 역할은 같습니다. Java·JavaScript·C는 <code>else if</code>를 두 단어로, Python은 <code>elif</code>를 한 단어로 씁니다.</p>
 <div class="course-table-scroll">
 <table>
@@ -278,12 +284,6 @@
 <p class="code-image-wrap"><img class="code-image" src="./images/code-5-1_operators_conditions-09f2eabebb73.png" alt="python 코드 예제"></p>
 <p>두 예제 모두 <code>score</code>가 <code>85</code>이면 <code>B</code>를 출력합니다.</p>
 <p>📌 Java에서 <code>elif</code>를 쓰거나, Python에서 <code>else if</code>를 쓰면 문법 오류가 납니다. Python의 콜론과 들여쓰기도 함께 확인합니다.</p>
-<h2 id="5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</h2>
-<p><code>else if</code>는 앞의 조건이 거짓일 때 다음 조건을 검사합니다. 하나의 연결된 조건문에서는 <strong>처음 참이 된 조건의 코드만</strong> 실행합니다.</p>
-<p>앞 예제의 조건문을 다음 코드로 교체합니다. 입력 점수는 0~100 사이라고 가정합니다.</p>
-<p class="code-image-wrap"><img class="code-image" src="./images/code-5-1_operators_conditions-b905ead9ec85.png" alt="java 코드 예제"></p>
-<p><code>85</code>를 입력하면 첫 조건은 거짓이고 두 번째 조건은 참이므로 <code>B등급</code>을 출력합니다. 이때 <code>score &gt;= 70</code>은 더 검사하지 않습니다.</p>
-<p>⚠️ 주의: <code>score &gt;= 70</code>부터 검사하면 <code>95</code>도 그 조건에 먼저 해당합니다. 이 예제에서는 높은 점수부터 검사해야 합니다.</p>
 <h2 id="6-논리-연산자-조건-결합하기">6. 논리 연산자: 조건 결합하기</h2>
 <p>논리 연산자는 조건 여러 개를 결합하거나 참과 거짓을 뒤집습니다.</p>
 <div class="course-table-scroll">
@@ -337,7 +337,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/5-1_operators_conditions.md</span><small>최종 수정일: 2026-11-05 12:18</small></li>
+    <li><span>teaching/materials/java/5-1_operators_conditions.md</span><small>최종 수정일: 2026-11-05 12:23</small></li>
   </ul>
 </section>
       </article>
