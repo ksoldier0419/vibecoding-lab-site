@@ -53,6 +53,7 @@
               <summary><a href="#4-중첩-조건문과-문자열-비교">4. 중첩 조건문과 문자열 비교</a></summary>
               <ol class="toc-section-list">
               <li><a href="#4-1-문자열-비교-equals-와">4.1 문자열 비교: equals()와 ==</a></li>
+              <li><a href="#4-2-java-python-javascript-표현-비교">4.2 Java·Python·JavaScript 표현 비교</a></li>
               </ol>
             </details>
           </li>
@@ -360,6 +361,72 @@ B등급</code></pre></div>
 <span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"회원입니다.%n"</span><span class="syntax-p">);</span>
 <span class="syntax-p">}</span></code></pre></div>
 <p>변수 이름이 <code>number</code>여도 <code>String</code> 타입이면 <code>number.equals(&quot;Y&quot;)</code>로 비교합니다. 비교 방법은 변수 이름이 아니라 <strong>자료형과 비교 목적</strong>에 따라 결정합니다.</p>
+<h3 id="4-2-java-python-javascript-표현-비교">4.2 Java·Python·JavaScript 표현 비교</h3>
+<p>같은 표현처럼 보여도 언어와 자료형에 따라 결과가 달라질 수 있습니다. 아래 문자열 비교에서 <code>a</code>, <code>b</code>는 문자열이며, JavaScript의 나눗셈 예는 일반 숫자형 <code>Number</code> 기준입니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>비교할 내용</th>
+<th>Java</th>
+<th>Python</th>
+<th>JavaScript</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>문자열 내용 비교</td>
+<td><code>a.equals(b)</code></td>
+<td><code>a == b</code></td>
+<td><code>a === b</code></td>
+</tr>
+    <tr>
+<td>같은 객체를 가리키는지 비교</td>
+<td>객체에서 <code>a == b</code></td>
+<td><code>a is b</code></td>
+<td>객체에서 <code>a === b</code></td>
+</tr>
+    <tr>
+<td>정수 값끼리 나누기</td>
+<td><code>5 / 2</code> → <code>2</code></td>
+<td><code>5 / 2</code> → <code>2.5</code></td>
+<td><code>5 / 2</code> → <code>2.5</code></td>
+</tr>
+    <tr>
+<td>양수의 나머지</td>
+<td><code>5 % 2</code> → <code>1</code></td>
+<td><code>5 % 2</code> → <code>1</code></td>
+<td><code>5 % 2</code> → <code>1</code></td>
+</tr>
+    <tr>
+<td>음수의 나머지</td>
+<td><code>-5 % 2</code> → <code>-1</code></td>
+<td><code>-5 % 2</code> → <code>1</code></td>
+<td><code>-5 % 2</code> → <code>-1</code></td>
+</tr>
+    <tr>
+<td>문자와 문자열</td>
+<td><code>&#x27;Y&#x27;</code>는 <code>char</code>, <code>&quot;Y&quot;</code>는 <code>String</code></td>
+<td>둘 다 문자열</td>
+<td>둘 다 문자열</td>
+</tr>
+    <tr>
+<td>조건식에 숫자 사용</td>
+<td><code>if (1)</code>은 오류</td>
+<td><code>if 1:</code> 가능</td>
+<td><code>if (1)</code> 가능</td>
+</tr>
+    <tr>
+<td>문자열을 숫자로 변환</td>
+<td><code>Integer.parseInt(&quot;123&quot;)</code></td>
+<td><code>int(&quot;123&quot;)</code></td>
+<td><code>Number(&quot;123&quot;)</code></td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>💡 참고: Java의 조건식은 참·거짓을 나타내는 <code>boolean</code> 값이어야 합니다. Python과 JavaScript는 숫자 <code>0</code>을 거짓으로, 0이 아닌 숫자를 참으로 판단할 수 있습니다.</p>
+<p><strong>나머지 연산자 <code>%</code>는 음수에서 차이가 납니다.</strong> Java와 JavaScript는 결과가 0이 아니면 왼쪽 수의 부호를 따릅니다. Python은 결과가 0이 아니면 오른쪽 수의 부호를 따릅니다. 예를 들어 <code>-5 % 2</code>의 결과는 Java·JavaScript에서 <code>-1</code>, Python에서 <code>1</code>입니다.</p>
+<p>📌 Java에서 음수를 포함한 홀수를 검사하려면 <code>number % 2 != 0</code>을 사용합니다. <code>number % 2 == 1</code>만 검사하면 음수인 홀수를 놓칩니다.</p>
+<p>참고: <a href="https://docs.oracle.com/javase/specs/jls/se22/html/jls-15.html#jls-15.17.3">Java 나머지 연산</a>, <a href="https://docs.python.org/3/reference/expressions.html#binary-arithmetic-operations">Python 이항 산술 연산</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder">JavaScript 나머지 연산</a></p>
 <h2 id="5-switch-메뉴-번호로-선택하기">5. switch: 메뉴 번호로 선택하기</h2>
 <p><code>switch</code>는 하나의 값을 정해진 여러 값과 비교할 때 사용합니다. 여기서는 정수 메뉴 번호를 비교합니다.</p>
 <div class="course-table-scroll">
@@ -717,7 +784,7 @@ a ^ b = 6
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 10:21</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
   </ul>
 </section>
