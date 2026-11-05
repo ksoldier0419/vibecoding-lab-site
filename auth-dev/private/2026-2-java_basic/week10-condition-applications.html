@@ -216,7 +216,8 @@ B등급</code></pre></div>
 <th>Java</th>
 <th>Python</th>
 <th>JavaScript(JS)</th>
-<th>NumPy 참·거짓 배열</th>
+<th>NumPy 비트 연산자&lt;br&gt;참·거짓 배열에 적용</th>
+<th>NumPy 논리 함수</th>
 </tr></thead>
   <tbody>
     <tr>
@@ -224,26 +225,57 @@ B등급</code></pre></div>
 <td><code>a &amp;&amp; b</code></td>
 <td><code>a and b</code></td>
 <td><code>a &amp;&amp; b</code></td>
-<td><code>a &amp; b</code> 또는 <code>np.logical_and(a, b)</code></td>
+<td><code>a &amp; b</code></td>
+<td><code>np.logical_and(a, b)</code></td>
 </tr>
     <tr>
 <td>OR: 하나 이상 참</td>
 <td><code>a || b</code></td>
 <td><code>a or b</code></td>
 <td><code>a || b</code></td>
-<td><code>a | b</code> 또는 <code>np.logical_or(a, b)</code></td>
+<td><code>a | b</code></td>
+<td><code>np.logical_or(a, b)</code></td>
 </tr>
     <tr>
 <td>NOT: 참·거짓 뒤집기</td>
 <td><code>!a</code></td>
 <td><code>not a</code></td>
 <td><code>!a</code></td>
-<td><code>~a</code> 또는 <code>np.logical_not(a)</code></td>
+<td><code>~a</code></td>
+<td><code>np.logical_not(a)</code></td>
 </tr>
   </tbody>
 </table>
 </div>
-<p>💡 참고: <strong>NumPy</strong>는 Python에서 배열 계산을 돕는 라이브러리입니다. <code>import numpy as np</code>로 불러오면 <code>np</code>라는 짧은 이름으로 사용합니다. 위의 <code>&amp;</code>, <code>|</code>, <code>~</code>는 참·거짓 배열에 적용하는 표현입니다. 정수에 사용하면 비트 연산이 됩니다.</p>
+<p>💡 참고: <strong>NumPy</strong>는 Python에서 배열 계산을 돕는 라이브러리입니다. <code>import numpy as np</code>로 불러오면 <code>np</code>라는 짧은 이름으로 사용합니다.</p>
+<p>⚠️ NumPy의 <strong>비트 연산자</strong>와 <strong>논리 함수</strong>는 서로 다른 연산입니다. 위처럼 참·거짓 배열에 적용하면 결과가 같지만, 정수 배열에서는 아래처럼 달라집니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>입력 원소</th>
+<th>비트 AND <code>a &amp; b</code></th>
+<th>논리 AND <code>np.logical_and(a, b)</code></th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>True</code>, <code>True</code></td>
+<td><code>True</code></td>
+<td><code>True</code></td>
+</tr>
+    <tr>
+<td><code>5</code>, <code>3</code></td>
+<td><code>1</code> — 각 비트를 AND 계산</td>
+<td><code>True</code> — 두 수 모두 0이 아니므로 참</td>
+</tr>
+    <tr>
+<td><code>0</code>, <code>2</code></td>
+<td><code>0</code></td>
+<td><code>False</code> — 0은 거짓</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>📌 <code>&amp;</code>, <code>|</code>, <code>~</code>는 정수 배열에서 각 원소의 비트를 계산합니다. <code>np.logical_and()</code>, <code>np.logical_or()</code>, <code>np.logical_not()</code>는 정수 입력도 0이면 거짓, 0이 아니면 참으로 판단하여 참·거짓 결과를 만듭니다.</p>
 <h3 id="3-1-예-점수가-0-100-범위인지-확인하기">3.1 예: 점수가 0~100 범위인지 확인하기</h3>
 <p>Java·Python·JavaScript의 <code>score</code>는 점수 하나입니다. NumPy의 <code>scores</code>는 여러 점수를 담은 배열이며, 각 점수에 대한 참·거짓 배열을 결과로 만듭니다.</p>
 <div class="course-table-scroll">
@@ -912,7 +944,7 @@ a ^ b = 6
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:26</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:31</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
   </ul>
 </section>
