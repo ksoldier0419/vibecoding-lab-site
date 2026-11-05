@@ -66,6 +66,11 @@
           <li>
             <details class="toc-section" open>
               <summary><a href="#7-python-match-case와-java-패턴-매칭">7. Python match·case와 Java 패턴 매칭</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#7-1-python-match-case">7.1 Python match·case</a></li>
+              <li><a href="#7-2-java-패턴-switch">7.2 Java 패턴 switch</a></li>
+              <li><a href="#7-3-python과-java-비교">7.3 Python과 Java 비교</a></li>
+              </ol>
             </details>
           </li>
           <li>
@@ -622,7 +627,42 @@
   <li>하나의 입력에 결과가 중복 출력되지 않습니다.</li>
 </ul>
 <h2 id="7-python-match-case와-java-패턴-매칭">7. Python match·case와 Java 패턴 매칭</h2>
-<p><strong>패턴 매칭</strong>은 값이나 자료의 모양이 정해진 조건에 맞는지 검사하고, 필요한 값을 변수로 꺼내는 방법입니다. Python은 3.10부터 <code>match ~ case</code>를 지원합니다. Java도 21부터 <code>switch</code>의 패턴 매칭을 정식 지원합니다. 아래 Java 예제는 앞의 기본 <code>switch</code>와 달리 <strong>JDK 21 이상</strong>이 필요합니다.</p>
+<p><strong>패턴 매칭</strong>은 값이나 자료의 모양이 정해진 조건에 맞는지 검사하고, 필요한 값을 변수로 꺼내는 방법입니다.</p>
+<h3 id="7-1-python-match-case">7.1 Python match·case</h3>
+<p>Python은 3.10부터 <code>match ~ case</code>를 지원합니다. 기본 <code>switch</code>처럼 값을 선택할 수 있지만, 처음부터 패턴 매칭 문법으로 도입되었습니다. 단순 값 비교도 여러 패턴 중 하나입니다.</p>
+<p>⚠️ <strong><code>case x:</code>는 기존 변수 <code>x</code>와 비교하는 것이 아니라, 검사하는 값을 <code>x</code>에 받는 패턴입니다.</strong> 이를 <strong>캡처 패턴</strong>이라고 합니다. 이름을 대문자로 쓴 <code>case T:</code>도 참을 뜻하지 않습니다. 참을 검사하려면 <code>case True:</code>를 사용합니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>사용 단계</th>
+<th>Python 예</th>
+<th>하는 일</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>단순 값 비교</td>
+<td><code>case 1:</code></td>
+<td>값이 1인지 확인</td>
+</tr>
+    <tr>
+<td>자료형 검사</td>
+<td><code>case str(text):</code></td>
+<td>문자열인지 확인하고 <code>text</code>로 받음</td>
+</tr>
+    <tr>
+<td>구조 검사</td>
+<td><code>case [&quot;move&quot;, x, y]:</code></td>
+<td>리스트 구조를 확인하고 값을 꺼냄</td>
+</tr>
+    <tr>
+<td>값 받기</td>
+<td><code>case x:</code></td>
+<td>값을 변수 <code>x</code>에 받음. 기존 <code>x</code>의 값과 비교하지 않음</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>캡처 패턴은 추가 조건이 없으면 모든 값을 받습니다. 뒤에 다른 분기를 두면 도달할 수 없는 분기로 판단되어 문법 오류가 나므로 마지막에 둡니다. 값을 저장할 필요가 없으면 <code>case _:</code>를 사용합니다.</p>
 <p><strong>Python: 메뉴 값으로 선택하기</strong></p>
 <p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-823d82f76a8b.png" alt="python 코드 예제"></p>
 <p>실행 결과는 <code>주스</code>입니다. <code>case _:</code>는 앞의 패턴이 모두 맞지 않을 때 실행합니다. 첫 번째로 일치하는 분기만 실행하므로 <code>break</code>가 필요 없습니다.</p>
@@ -630,13 +670,16 @@
 <p>리스트는 여러 값을 순서대로 담는 자료입니다. 다음은 이동 명령과 두 좌표를 담은 리스트를 검사하는 예입니다.</p>
 <p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-755db7da2245.png" alt="python 코드 예제"></p>
 <p>실행 결과는 <code>x=10, y=20로 이동</code>입니다. <code>case [&quot;move&quot;, x, y]:</code>는 원소가 세 개인지, 첫 값이 <code>&quot;move&quot;</code>인지 확인한 뒤 나머지 두 값을 <code>x</code>, <code>y</code>에 저장합니다.</p>
-<p><strong>Java: 자료형을 검사하고 값 꺼내기</strong></p>
+<h3 id="7-2-java-패턴-switch">7.2 Java 패턴 switch</h3>
+<p>Java는 21부터 <code>switch</code>의 패턴 매칭을 정식 지원합니다. 아래 예제는 <strong>JDK 21 이상</strong>이 필요합니다.</p>
+<p><strong>자료형을 검사하고 값 꺼내기</strong></p>
 <p><code>Object</code>는 문자열이나 정수 객체 등 여러 종류의 객체를 가리킬 수 있는 자료형입니다. <code>Integer</code>는 정수 <code>int</code>를 객체로 다루는 자료형입니다.</p>
 <p>파일 이름은 <code>PatternSwitch.java</code>로 저장합니다.</p>
 <p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-8f74a9529880.png" alt="java 코드 예제"></p>
 <p>예상 실행 결과:</p>
 <p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-7fc965b7a860.png" alt="text 코드 예제"></p>
 <p><code>case String text</code>는 문자열 객체인지 검사하고, 맞으면 그 값을 <code>text</code>로 사용합니다. <code>value</code>를 <code>10</code>으로 바꾸면 정수 객체로 저장되어 <code>정수: 10</code>을 출력합니다. <code>-&gt;</code> 방식은 뒤쪽 분기로 이어지지 않으므로 <code>break</code>가 필요 없습니다.</p>
+<h3 id="7-3-python과-java-비교">7.3 Python과 Java 비교</h3>
 <div class="course-table-scroll">
 <table>
   <thead><tr>
@@ -679,7 +722,6 @@
 </table>
 </div>
 <p>💡 참고: <strong>레코드(record)</strong>는 관련 데이터를 묶는 Java의 자료형입니다. Java 21의 레코드 패턴으로 내부 값도 꺼낼 수 있지만, 위 예제에서는 자료형 검사까지만 다룹니다. Python 리스트 패턴이 Java 리스트에 그대로 대응하는 것은 아닙니다.</p>
-<p>⚠️ Python의 <code>case T:</code>는 참을 뜻하지 않습니다. 값을 변수 <code>T</code>에 받는 패턴입니다. 참을 검사하려면 <code>case True:</code>를 사용합니다.</p>
 <p>📌 5.1의 <code>default</code> 생략 예제는 정수를 선택하는 기본 <code>switch</code>문입니다. 여기의 Java 패턴 <code>switch</code>는 모든 경우를 처리해야 한다는 차이가 있습니다. 단순 범위 판단에는 앞에서 배운 <code>if ~ else if</code>를 사용합니다.</p>
 <p>참고: <a href="https://peps.python.org/pep-0636/">Python 패턴 매칭 예제</a>, <a href="https://docs.oracle.com/en/java/javase/21/language/pattern-matching-switch.html">Java 21 패턴 switch</a>, <a href="https://docs.oracle.com/en/java/javase/21/language/record-patterns.html">Java 레코드 패턴</a></p>
 
@@ -893,7 +935,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:56</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 13:02</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 12:56</small></li>
   </ul>
 </section>
