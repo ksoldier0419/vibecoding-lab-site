@@ -216,8 +216,6 @@ B등급</code></pre></div>
 <th>Java</th>
 <th>Python</th>
 <th>JavaScript(JS)</th>
-<th>NumPy 비트 연산자&lt;br&gt;참·거짓 배열에 적용</th>
-<th>NumPy 논리 함수</th>
 </tr></thead>
   <tbody>
     <tr>
@@ -225,22 +223,43 @@ B등급</code></pre></div>
 <td><code>a &amp;&amp; b</code></td>
 <td><code>a and b</code></td>
 <td><code>a &amp;&amp; b</code></td>
-<td><code>a &amp; b</code></td>
-<td><code>np.logical_and(a, b)</code></td>
 </tr>
     <tr>
 <td>OR: 하나 이상 참</td>
 <td><code>a || b</code></td>
 <td><code>a or b</code></td>
 <td><code>a || b</code></td>
-<td><code>a | b</code></td>
-<td><code>np.logical_or(a, b)</code></td>
 </tr>
     <tr>
 <td>NOT: 참·거짓 뒤집기</td>
 <td><code>!a</code></td>
 <td><code>not a</code></td>
 <td><code>!a</code></td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p><strong>NumPy: 참·거짓 배열의 조건 결합</strong></p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>판단</th>
+<th>비트 연산자</th>
+<th>논리 함수</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>AND</td>
+<td><code>a &amp; b</code></td>
+<td><code>np.logical_and(a, b)</code></td>
+</tr>
+    <tr>
+<td>OR</td>
+<td><code>a | b</code></td>
+<td><code>np.logical_or(a, b)</code></td>
+</tr>
+    <tr>
+<td>NOT</td>
 <td><code>~a</code></td>
 <td><code>np.logical_not(a)</code></td>
 </tr>
@@ -944,7 +963,7 @@ a ^ b = 6
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:31</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:35</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
   </ul>
 </section>
