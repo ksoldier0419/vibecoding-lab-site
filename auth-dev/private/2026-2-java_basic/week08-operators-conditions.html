@@ -45,6 +45,9 @@
           <li>
             <details class="toc-section" open>
               <summary><a href="#4-if-else-두-경우로-나누기">4. if ~ else: 두 경우로 나누기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#4-1-언어별-if-else-if-elif-비교">4.1 언어별 if·else if·elif 비교</a></li>
+              </ol>
             </details>
           </li>
           <li>
@@ -261,6 +264,75 @@
 </table>
 </div>
 <p>두 중괄호 영역 중 하나만 실행합니다.</p>
+<h3 id="4-1-언어별-if-else-if-elif-비교">4.1 언어별 if·else if·elif 비교</h3>
+<p>첫 조건을 검사하고, 거짓이면 다음 조건을 검사하는 역할은 같습니다. Java·JavaScript·C는 <code>else if</code>를 두 단어로, Python은 <code>elif</code>를 한 단어로 씁니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>역할</th>
+<th>Java</th>
+<th>Python</th>
+<th>JavaScript</th>
+<th>C</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>첫 조건</td>
+<td><code>if (조건) { ... }</code></td>
+<td><code>if 조건:</code></td>
+<td><code>if (조건) { ... }</code></td>
+<td><code>if (조건) { ... }</code></td>
+</tr>
+    <tr>
+<td>추가 조건</td>
+<td><code>else if (조건) { ... }</code></td>
+<td><code>elif 조건:</code></td>
+<td><code>else if (조건) { ... }</code></td>
+<td><code>else if (조건) { ... }</code></td>
+</tr>
+    <tr>
+<td>모두 거짓일 때</td>
+<td><code>else { ... }</code></td>
+<td><code>else:</code></td>
+<td><code>else { ... }</code></td>
+<td><code>else { ... }</code></td>
+</tr>
+    <tr>
+<td>조건을 감싸는 괄호</td>
+<td>필수</td>
+<td>생략 가능</td>
+<td>필수</td>
+<td>필수</td>
+</tr>
+    <tr>
+<td>실행 범위 표시</td>
+<td>중괄호 <code>{ }</code></td>
+<td>콜론 <code>:</code>과 들여쓰기</td>
+<td>중괄호 <code>{ }</code></td>
+<td>중괄호 <code>{ }</code></td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>Java·JavaScript·C도 실행문이 하나이면 중괄호를 생략할 수 있습니다. 이 교안에서는 실행 범위를 분명하게 보이도록 중괄호를 사용합니다.</p>
+<p>같은 점수 판정을 두 언어로 비교해 봅니다. 아래 코드는 <code>score</code>에 점수가 저장되어 있다고 가정합니다.</p>
+<p>Java:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"A"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"B"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-s">"C"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>Python:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-k">if</span> <span class="syntax-n">score</span> <span class="syntax-o">&gt;=</span> <span class="syntax-mi">90</span><span class="syntax-p">:</span>
+    <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"A"</span><span class="syntax-p">)</span>
+<span class="syntax-k">elif</span> <span class="syntax-n">score</span> <span class="syntax-o">&gt;=</span> <span class="syntax-mi">80</span><span class="syntax-p">:</span>
+    <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"B"</span><span class="syntax-p">)</span>
+<span class="syntax-k">else</span><span class="syntax-p">:</span>
+    <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"C"</span><span class="syntax-p">)</span></code></pre></div>
+<p>두 예제 모두 <code>score</code>가 <code>85</code>이면 <code>B</code>를 출력합니다.</p>
+<p>📌 Java에서 <code>elif</code>를 쓰거나, Python에서 <code>else if</code>를 쓰면 문법 오류가 납니다. Python의 콜론과 들여쓰기도 함께 확인합니다.</p>
 <h2 id="5-else-if-여러-경우로-나누기">5. else if: 여러 경우로 나누기</h2>
 <p><code>else if</code>는 앞의 조건이 거짓일 때 다음 조건을 검사합니다. 하나의 연결된 조건문에서는 <strong>처음 참이 된 조건의 코드만</strong> 실행합니다.</p>
 <p>앞 예제의 조건문을 다음 코드로 교체합니다. 입력 점수는 0~100 사이라고 가정합니다.</p>
@@ -348,7 +420,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/5-1_operators_conditions.md</span><small>최종 수정일: 2026-10-06 18:15</small></li>
+    <li><span>teaching/materials/java/5-1_operators_conditions.md</span><small>최종 수정일: 2026-11-05 12:18</small></li>
   </ul>
 </section>
       </article>
