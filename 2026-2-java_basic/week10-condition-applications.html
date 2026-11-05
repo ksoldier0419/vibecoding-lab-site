@@ -45,6 +45,7 @@
               <ol class="toc-section-list">
               <li><a href="#4-1-문자열-비교-equals-와">4.1 문자열 비교: equals()와 ==</a></li>
               <li><a href="#4-2-java-python-javascript-표현-비교">4.2 Java·Python·JavaScript 표현 비교</a></li>
+              <li><a href="#4-3-언어별-나머지-연산과-mod-비교">4.3 언어별 나머지 연산과 mod 비교</a></li>
               </ol>
             </details>
           </li>
@@ -333,6 +334,67 @@
 <p><strong>나머지 연산자 <code>%</code>는 음수에서 차이가 납니다.</strong> Java와 JavaScript는 결과가 0이 아니면 왼쪽 수의 부호를 따릅니다. Python은 결과가 0이 아니면 오른쪽 수의 부호를 따릅니다. 예를 들어 <code>-5 % 2</code>의 결과는 Java·JavaScript에서 <code>-1</code>, Python에서 <code>1</code>입니다.</p>
 <p>📌 Java에서 음수를 포함한 홀수를 검사하려면 <code>number % 2 != 0</code>을 사용합니다. <code>number % 2 == 1</code>만 검사하면 음수인 홀수를 놓칩니다.</p>
 <p>참고: <a href="https://docs.oracle.com/javase/specs/jls/se22/html/jls-15.html#jls-15.17.3">Java 나머지 연산</a>, <a href="https://docs.python.org/3/reference/expressions.html#binary-arithmetic-operations">Python 이항 산술 연산</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder">JavaScript 나머지 연산</a></p>
+<h3 id="4-3-언어별-나머지-연산과-mod-비교">4.3 언어별 나머지 연산과 mod 비교</h3>
+<p>아래 표는 <strong>정수와 양수인 나누는 수 <code>b</code></strong>를 기준으로 비교합니다. C는 C99 이후, JavaScript는 일반 숫자형 <code>Number</code>를 기준으로 합니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>비교</th>
+<th>C</th>
+<th>Java</th>
+<th>Python</th>
+<th>JavaScript</th>
+<th>NumPy</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>나머지 연산</td>
+<td><code>a % b</code></td>
+<td><code>a % b</code></td>
+<td><code>a % b</code></td>
+<td><code>a % b</code></td>
+<td><code>a % b</code> — 배열에도 적용</td>
+</tr>
+    <tr>
+<td>mod 함수</td>
+<td>표준 정수 mod 함수 없음</td>
+<td><code>Math.floorMod(a, b)</code></td>
+<td><code>%</code> 사용</td>
+<td>내장 mod 함수 없음</td>
+<td><code>np.mod(a, b)</code></td>
+</tr>
+    <tr>
+<td><code>5 % 2</code></td>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>1</code></td>
+</tr>
+    <tr>
+<td><code>-5 % 2</code></td>
+<td><code>-1</code></td>
+<td><code>-1</code></td>
+<td><code>1</code></td>
+<td><code>-1</code></td>
+<td><code>1</code></td>
+</tr>
+    <tr>
+<td>음수 입력에서도 0 이상으로 만들기</td>
+<td>나머지가 음수이면 <code>b</code>를 더함</td>
+<td><code>Math.floorMod(a, b)</code></td>
+<td><code>a % b</code></td>
+<td><code>((a % b) + b) % b</code></td>
+<td><code>np.mod(a, b)</code></td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>Java의 <code>Math.floorMod(-5, 2)</code>는 <code>1</code>입니다. <code>Math</code>는 별도 <code>import</code> 없이 사용할 수 있습니다. NumPy는 <code>import numpy as np</code>로 불러오며, 배열이면 각 원소의 나머지를 계산합니다.</p>
+<p>C에서 나머지를 0 이상으로 만드는 방법은 다음과 같습니다.</p>
+<p class="code-image-wrap"><img class="code-image" src="./images/code-6-1_condition_applications-058fd27deb18.png" alt="c 코드 예제"></p>
+<p>📌 C·Java·JavaScript의 <code>%</code>는 결과가 0이 아니면 왼쪽 수의 부호를 따릅니다. Python·NumPy의 <code>%</code>와 Java의 <code>Math.floorMod()</code>는 결과가 0이 아니면 오른쪽 수의 부호를 따릅니다. 따라서 <strong>0 이상의 결과를 얻는다는 설명은 <code>b &gt; 0</code>일 때</strong> 적용합니다.</p>
+<p>참고: <a href="https://www.gnu.org/software/c-intro-and-ref/manual/html_node/Division-and-Remainder.html">C 정수 나눗셈과 나머지</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Math.html#floorMod(int,int">Java Math.floorMod</a>), <a href="https://numpy.org/doc/stable/reference/generated/numpy.mod.html">NumPy mod</a></p>
 <h2 id="5-switch-메뉴-번호로-선택하기">5. switch: 메뉴 번호로 선택하기</h2>
 <p><code>switch</code>는 하나의 값을 정해진 여러 값과 비교할 때 사용합니다. 여기서는 정수 메뉴 번호를 비교합니다.</p>
 <div class="course-table-scroll">
@@ -669,7 +731,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 10:23</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 10:31</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
   </ul>
 </section>
