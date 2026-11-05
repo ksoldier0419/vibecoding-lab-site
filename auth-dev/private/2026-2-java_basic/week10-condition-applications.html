@@ -63,7 +63,8 @@
               <summary><a href="#5-switch-메뉴-번호로-선택하기">5. switch: 메뉴 번호로 선택하기</a></summary>
               <ol class="toc-section-list">
               <li><a href="#5-1-default가-없으면-어떻게-될까">5.1 default가 없으면 어떻게 될까?</a></li>
-              <li><a href="#5-2-python-match-case와-java-패턴-매칭">5.2 Python match·case와 Java 패턴 매칭</a></li>
+              <li><a href="#5-2-python-match-case로-음료-메뉴-구현하기">5.2 Python match·case로 음료 메뉴 구현하기</a></li>
+              <li><a href="#5-3-python-match-case와-java-패턴-매칭">5.3 Python match·case와 Java 패턴 매칭</a></li>
               </ol>
             </details>
           </li>
@@ -687,7 +688,63 @@ B등급</code></pre></div>
 <span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"없는 메뉴입니다.%n"</span><span class="syntax-p">);</span>
 <span class="syntax-w">    </span><span class="syntax-k">break</span><span class="syntax-p">;</span></code></pre></div>
 <p>📌 <code>default</code>는 일치하는 <code>case</code>가 없을 때의 처리를 담당합니다. 모든 분기에 <code>break</code>가 있는 위 예제에서 <code>default</code> 생략은 <strong>아무 분기도 실행하지 않는 상황</strong>, <code>break</code> 생략은 <strong>선택된 분기에서 뒤쪽 코드까지 이어지는 상황</strong>입니다.</p>
-<h3 id="5-2-python-match-case와-java-패턴-매칭">5.2 Python match·case와 Java 패턴 매칭</h3>
+<h3 id="5-2-python-match-case로-음료-메뉴-구현하기">5.2 Python match·case로 음료 메뉴 구현하기</h3>
+<p>앞의 <code>DrinkMenu.java</code>를 Python의 <code>match ~ case</code>로 구현해 봅니다. Python 3.10 이상이 필요하며, Java 예제처럼 정수를 입력한다고 가정합니다. 파일 이름은 <code>drink_menu.py</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"1. 물  2. 주스  3. 차"</span><span class="syntax-p">)</span>
+<span class="syntax-n">menu</span> <span class="syntax-o">=</span> <span class="syntax-nb">int</span><span class="syntax-p">(</span><span class="syntax-nb">input</span><span class="syntax-p">(</span><span class="syntax-s2">"메뉴 번호를 입력하세요: "</span><span class="syntax-p">))</span>
+
+<span class="syntax-k">match</span> <span class="syntax-n">menu</span><span class="syntax-p">:</span>
+    <span class="syntax-k">case</span> <span class="syntax-mi">1</span><span class="syntax-p">:</span>
+        <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"물을 선택했습니다."</span><span class="syntax-p">)</span>
+    <span class="syntax-k">case</span> <span class="syntax-mi">2</span><span class="syntax-p">:</span>
+        <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"주스를 선택했습니다."</span><span class="syntax-p">)</span>
+    <span class="syntax-k">case</span> <span class="syntax-mi">3</span><span class="syntax-p">:</span>
+        <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"차를 선택했습니다."</span><span class="syntax-p">)</span>
+    <span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-k">_</span><span class="syntax-p">:</span>
+        <span class="syntax-nb">print</span><span class="syntax-p">(</span><span class="syntax-s2">"없는 메뉴입니다."</span><span class="syntax-p">)</span></code></pre></div>
+<p>예상 실행 화면:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>1. 물  2. 주스  3. 차
+메뉴 번호를 입력하세요: 2
+주스를 선택했습니다.</code></pre></div>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>Java 예제</th>
+<th>Python 예제</th>
+<th>역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>scanner.nextInt()</code></td>
+<td><code>int(input(...))</code></td>
+<td>입력을 정수로 읽기. Python은 문자열을 입력받아 정수로 변환</td>
+</tr>
+    <tr>
+<td><code>switch (menu)</code></td>
+<td><code>match menu:</code></td>
+<td>메뉴 값으로 분기 선택</td>
+</tr>
+    <tr>
+<td><code>case 1:</code></td>
+<td><code>case 1:</code></td>
+<td>값이 1일 때 실행</td>
+</tr>
+    <tr>
+<td><code>default:</code></td>
+<td><code>case _:</code></td>
+<td>일치하는 메뉴가 없을 때 실행</td>
+</tr>
+    <tr>
+<td><code>break;</code></td>
+<td>필요 없음</td>
+<td>Python은 처음 일치한 분기 하나만 실행</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p><code>9</code>를 입력하면 <code>없는 메뉴입니다.</code>를 출력합니다. <code>case _:</code>를 생략하면 일치하는 메뉴가 없을 때 아무 분기도 실행하지 않고 다음 코드로 넘어갑니다.</p>
+<p>📌 이 예제는 패턴 매칭을 단순한 값 비교에 사용하는 경우입니다. 다음 절에서는 자료의 구조와 자료형을 검사하는 방법으로 확장합니다.</p>
+<h3 id="5-3-python-match-case와-java-패턴-매칭">5.3 Python match·case와 Java 패턴 매칭</h3>
 <p><strong>패턴 매칭</strong>은 값이나 자료의 모양이 정해진 조건에 맞는지 검사하고, 필요한 값을 변수로 꺼내는 방법입니다. Python은 3.10부터 <code>match ~ case</code>를 지원합니다. Java도 21부터 <code>switch</code>의 패턴 매칭을 정식 지원합니다. 아래 Java 예제는 앞의 기본 <code>switch</code>와 달리 <strong>JDK 21 이상</strong>이 필요합니다.</p>
 <p><strong>Python: 메뉴 값으로 선택하기</strong></p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-n">menu</span> <span class="syntax-o">=</span> <span class="syntax-mi">2</span>
@@ -1056,7 +1113,7 @@ a ^ b = 6
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:37</small></li>
+    <li><span>teaching/materials/java/6-1_condition_applications.md</span><small>최종 수정일: 2026-11-05 12:51</small></li>
 <li><span>teaching/materials/java/6-2_bitwise_operators.md</span><small>최종 수정일: 2026-11-05 10:16</small></li>
   </ul>
 </section>
