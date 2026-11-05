@@ -73,6 +73,7 @@
 <p>실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>Hello, Java</code></pre></div>
 <h2 id="2-코드-살펴보기">2. 코드 살펴보기</h2>
+<div class="course-table-scroll">
 <table>
   <thead><tr>
 <th>코드</th>
@@ -101,6 +102,7 @@
 </tr>
   </tbody>
 </table>
+</div>
 <p>💡 참고: Java에서는 <code>public class Hello</code>처럼 공개 클래스 이름을 <code>Hello</code>로 만들면 파일 이름도 <code>Hello.java</code>로 맞추는 것이 기본 규칙입니다.</p>
 <p>⚠️ 보안 참고: 이 교안에서는 출력할 때 <code>println()</code> 대신 <code>printf()</code>를 사용합니다. 값이 들어가는 출력문은 포맷 문자열을 고정하고, 변수 값은 <code>%s</code>, <code>%d</code> 같은 자리표시자에 넣는 습관을 들입니다.</p>
 <h2 id="3-출력문-바꾸기">3. 출력문 바꾸기</h2>
@@ -115,6 +117,7 @@
 <h2 id="4-여러-줄-출력하기">4. 여러 줄 출력하기</h2>
 <p><code>System.out.printf()</code>에서 <code>%n</code>을 사용하면 줄을 바꾸어 출력할 수 있습니다.</p>
 <p>💡 참고: <code>printf()</code>에서는 <code>\n</code> 대신 <code>%n</code>을 줄바꿈으로 사용할 수 있습니다.</p>
+<div class="course-table-scroll">
 <table>
   <thead><tr>
 <th>표현</th>
@@ -131,6 +134,7 @@
 </tr>
   </tbody>
 </table>
+</div>
 <p>Windows, macOS, Linux는 줄바꿈을 처리하는 방식이 조금 다를 수 있습니다. 그래서 <code>printf()</code>를 사용할 때는 <code>%n</code>을 쓰는 편이 Java 코드에 더 잘 맞습니다.</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">Hello</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
 <span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
