@@ -278,29 +278,72 @@
 <p>📌 이번 문제는 배열의 점수 전체를 대상으로 하는 <strong>모분산·모표준편차</strong>를 구합니다. 편차 제곱의 합을 원소 개수 <code>n</code>으로 나눕니다. 일부 자료로 전체의 분산을 추정할 때 쓰는 <code>n - 1</code> 기준의 표본분산과 구분합니다.</p>
 <p><strong>분산과 표준편차의 계산식</strong></p>
 <p>점수의 개수를 <strong>n</strong>, 각 점수를 <strong>xᵢ</strong>, 평균을 <strong>μ(뮤)</strong>라고 하면 다음과 같습니다. <code>n</code>은 1 이상입니다.</p>
-<div class="course-table-scroll">
-<table>
-  <thead><tr>
-<th>구할 값</th>
-<th>수식</th>
-</tr></thead>
+<table style="display: block; max-width: 100%; overflow-x: auto;">
+  <thead><tr><th scope="col">구할 값</th><th scope="col">수식</th></tr></thead>
   <tbody>
     <tr>
-<td>평균 μ</td>
-<td>μ = (x₁ + x₂ + ⋯ + xₙ) / n</td>
-</tr>
+      <th scope="row" style="white-space: nowrap;">평균 μ</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="평균은 모든 점수의 합을 개수 n으로 나눈 값">
+          <mi>μ</mi><mo>=</mo>
+          <mfrac>
+            <mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub></mrow>
+            <mi>n</mi>
+          </mfrac>
+        </math>
+      </td>
+    </tr>
     <tr>
-<td>모분산 σ²</td>
-<td>σ² = [(x₁ − μ)² + (x₂ − μ)² + ⋯ + (xₙ − μ)²] / n</td>
-</tr>
+      <th scope="row" style="white-space: nowrap;">모분산 σ²</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="모분산은 각 점수와 평균의 차이를 제곱해 모두 더한 뒤 개수 n으로 나눈 값">
+          <msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo>
+          <mfrac>
+            <mrow>
+              <msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo>
+              <msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>⋯</mo><mo>+</mo>
+              <msup><mrow><mo>(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup>
+            </mrow>
+            <mi>n</mi>
+          </mfrac>
+        </math>
+      </td>
+    </tr>
     <tr>
-<td>모표준편차 σ</td>
-<td>σ = √(σ²)</td>
-</tr>
+      <th scope="row" style="white-space: nowrap;">합 기호로 쓴 모분산</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="모분산은 i가 1부터 n까지인 편차 제곱의 합을 n으로 나눈 값">
+          <msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo>
+          <mfrac>
+            <mrow>
+              <munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+              <msup><mrow><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup>
+            </mrow>
+            <mi>n</mi>
+          </mfrac>
+        </math>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" style="white-space: nowrap;">모표준편차 σ</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="모표준편차는 모분산의 제곱근">
+          <mi>σ</mi><mo>=</mo><msqrt><msup><mi>σ</mi><mn>2</mn></msup></msqrt><mo>=</mo>
+          <msqrt>
+            <mfrac>
+              <mrow>
+                <munderover><mo movablelimits="false">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+                <msup><mrow><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup>
+              </mrow>
+              <mi>n</mi>
+            </mfrac>
+          </msqrt>
+        </math>
+      </td>
+    </tr>
   </tbody>
 </table>
-</div>
-<p><strong>σ²(시그마 제곱)</strong>은 분산, <strong>σ(시그마)</strong>는 표준편차입니다. <code>²</code>는 제곱, <code>√</code>는 제곱근을 뜻합니다. <strong>∑(합 기호)</strong>를 쓰면 분산 식을 <strong>σ² = (1 / n) × ∑(xᵢ − μ)²</strong>로 줄여 쓸 수 있습니다. <code>i = 1</code>부터 <code>n</code>까지의 편차 제곱을 모두 더한다는 뜻입니다.</p>
+<p><strong>σ²(시그마 제곱)</strong>은 분산, <strong>σ(시그마)</strong>는 표준편차입니다. <code>²</code>는 제곱, <code>√</code>는 제곱근을 뜻합니다. <strong>∑(합 기호)</strong>는 <code>i = 1</code>부터 <code>n</code>까지의 편차 제곱을 모두 더한다는 뜻입니다. 위의 두 모분산 식은 같은 계산을 나타냅니다.</p>
 <p>수식은 첫 점수를 <code>x₁</code>로 나타내지만 Java 배열의 첫 인덱스는 0입니다. <code>x₁</code>은 <code>scores[0]</code>, <code>x₂</code>는 <code>scores[1]</code>에 해당합니다.</p>
 <p>파일 이름은 <code>ScoreSpread.java</code>로 저장합니다. 3.1과 같은 배열 <code>{80, 95, 60, 0, 70}</code>을 사용합니다.</p>
 <ol>
@@ -352,12 +395,57 @@
 </table>
 </div>
 <p>위 점수를 수식에 대입하면 다음과 같습니다.</p>
-<ul>
-  <li>평균: <strong>μ = (80 + 95 + 60 + 0 + 70) / 5 = 61</strong></li>
-  <li>분산: <strong>σ² = [(80 − 61)² + (95 − 61)² + (60 − 61)² + (0 − 61)² + (70 − 61)²] / 5</strong></li>
-  <li>편차 제곱의 합을 계산하면 <strong>σ² = (361 + 1156 + 1 + 3721 + 81) / 5 = 5320 / 5 = 1064</strong></li>
-  <li>표준편차: <strong>σ = √1064 ≈ 32.62</strong></li>
-</ul>
+<table style="display: block; max-width: 100%; overflow-x: auto;">
+  <thead><tr><th scope="col">계산 단계</th><th scope="col">점수를 대입한 수식</th></tr></thead>
+  <tbody>
+    <tr>
+      <th scope="row" style="white-space: nowrap;">평균</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="평균은 80, 95, 60, 0, 70의 합을 5로 나눈 61">
+          <mi>μ</mi><mo>=</mo>
+          <mfrac><mrow><mn>80</mn><mo>+</mo><mn>95</mn><mo>+</mo><mn>60</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>70</mn></mrow><mn>5</mn></mfrac>
+          <mo>=</mo><mn>61</mn>
+        </math>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" style="white-space: nowrap;">분산 식에 대입</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="분산은 각 점수에서 61을 뺀 값의 제곱을 더해 5로 나눈 값">
+          <msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo>
+          <mfrac>
+            <mrow>
+              <msup><mrow><mo>(</mo><mn>80</mn><mo>−</mo><mn>61</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo>
+              <msup><mrow><mo>(</mo><mn>95</mn><mo>−</mo><mn>61</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo>
+              <msup><mrow><mo>(</mo><mn>60</mn><mo>−</mo><mn>61</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo>
+              <msup><mrow><mo>(</mo><mn>0</mn><mo>−</mo><mn>61</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo>
+              <msup><mrow><mo>(</mo><mn>70</mn><mo>−</mo><mn>61</mn><mo>)</mo></mrow><mn>2</mn></msup>
+            </mrow>
+            <mn>5</mn>
+          </mfrac>
+        </math>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" style="white-space: nowrap;">분산 계산</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="분산은 편차 제곱의 합 5320을 5로 나눈 1064">
+          <msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo>
+          <mfrac><mrow><mn>361</mn><mo>+</mo><mn>1156</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>3721</mn><mo>+</mo><mn>81</mn></mrow><mn>5</mn></mfrac>
+          <mo>=</mo><mfrac><mn>5320</mn><mn>5</mn></mfrac><mo>=</mo><mn>1064</mn>
+        </math>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" style="white-space: nowrap;">표준편차</th>
+      <td>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 1.15em;" aria-label="표준편차는 1064의 제곱근으로 약 32.62">
+          <mi>σ</mi><mo>=</mo><msqrt><mn>1064</mn></msqrt><mo>≈</mo><mn>32.62</mn>
+        </math>
+      </td>
+    </tr>
+  </tbody>
+</table>
 <p>평균·편차·편차 제곱의 합·분산·표준편차를 저장할 변수는 <code>double</code>로 둡니다.</p>
 <p>Java에서 제곱근은 <code>Math.sqrt()</code>로 구합니다. <code>Math</code>는 기본 제공 클래스이므로 별도 <code>import</code> 없이 사용합니다. 분산을 계산한 뒤 다음 문장을 사용할 수 있습니다.</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">standardDeviation</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">Math</span><span class="syntax-p">.</span><span class="syntax-na">sqrt</span><span class="syntax-p">(</span><span class="syntax-n">variance</span><span class="syntax-p">);</span></code></pre></div>
@@ -930,7 +1018,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-19 09:58</small></li>
+    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-19 10:03</small></li>
   </ul>
 </section>
       </article>
