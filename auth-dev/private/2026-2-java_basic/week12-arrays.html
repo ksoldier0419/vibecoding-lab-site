@@ -44,6 +44,7 @@
               <li><a href="#3-1-문제-배열의-평균-구하기">3.1 문제: 배열의 평균 구하기</a></li>
               <li><a href="#3-2-문제-분산과-표준편차-구하기">3.2 문제: 분산과 표준편차 구하기</a></li>
               <li><a href="#3-3-문제-정렬해서-중간값-구하기">3.3 문제: 정렬해서 중간값 구하기</a></li>
+              <li><a href="#3-4-예제-반복문으로-통계-함께-구하기">3.4 예제: 반복문으로 통계 함께 구하기</a></li>
               </ol>
             </details>
           </li>
@@ -109,7 +110,7 @@
 <p>앞에서는 점수를 입력할 때마다 합계에 더했습니다. 이 방법으로는 입력이 끝난 뒤 각 점수를 다시 확인하기 어렵습니다. 이번에는 여러 점수를 배열에 보관합니다.</p>
 <ul>
   <li>배열을 만들고 인덱스로 원소에 접근합니다.</li>
-  <li>반복문으로 합계·평균·최댓값을 구합니다.</li>
+  <li>반복문으로 합계·평균·최솟값·최댓값을 구합니다.</li>
   <li>평균·분산·표준편차·중간값의 차이를 구분합니다.</li>
   <li>배열의 길이와 저장된 데이터 개수를 구분합니다.</li>
 </ul>
@@ -213,11 +214,15 @@
 <span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수가 없습니다.%n"</span><span class="syntax-p">);</span>
 <span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
 <span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">min</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
 <span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
 <span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">passed</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
 
 <span class="syntax-w">            </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
 <span class="syntax-w">                </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">min</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                    </span><span class="syntax-n">min</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-p">}</span>
 <span class="syntax-w">                </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
 <span class="syntax-w">                    </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
 <span class="syntax-w">                </span><span class="syntax-p">}</span>
@@ -227,6 +232,7 @@
 <span class="syntax-w">            </span><span class="syntax-p">}</span>
 <span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">double</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span>
 <span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합계: %d%n평균: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"최저점: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">min</span><span class="syntax-p">);</span>
 <span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"최고점: %d%n합격자: %d명%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">passed</span><span class="syntax-p">);</span>
 <span class="syntax-w">        </span><span class="syntax-p">}</span>
 <span class="syntax-w">    </span><span class="syntax-p">}</span>
@@ -234,9 +240,10 @@
 <p>예상 실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>합계: 235
 평균: 58.75
+최저점: 0
 최고점: 95
 합격자: 3명</code></pre></div>
-<p>최댓값은 첫 원소로 시작합니다. 첫 원소를 읽기 전에 빈 배열인지 검사합니다. <code>scores</code>를 <code>{}</code>로 바꾸면 <code>점수가 없습니다.</code>를 출력합니다.</p>
+<p>최솟값과 최댓값은 모두 첫 원소로 시작합니다. 현재 값보다 작으면 <code>min</code>, 크면 <code>max</code>를 바꿉니다. 같은 반복문에서 합계와 최솟값·최댓값을 함께 구할 수 있습니다. 최솟값을 무조건 <code>0</code>으로 시작하면 <code>{80, 95, 60}</code>처럼 0점이 없는 배열에서도 최저점이 0으로 남으므로 주의합니다. 첫 원소를 읽기 전에 빈 배열인지 검사합니다. <code>scores</code>를 <code>{}</code>로 바꾸면 <code>점수가 없습니다.</code>를 출력합니다.</p>
 <h3 id="3-1-문제-배열의-평균-구하기">3.1 문제: 배열의 평균 구하기</h3>
 <p><strong>평균</strong>은 모든 값의 합계를 값의 개수로 나눈 것입니다. 앞의 예제를 참고해 점수 배열의 평균을 직접 구해 봅니다.</p>
 <p>파일 이름은 <code>AverageScore.java</code>로 저장합니다.</p>
@@ -432,7 +439,7 @@
 </ul>
 <p>정렬에는 Java 표준 라이브러리의 <code>java.util.Arrays.sort()</code>를 사용합니다. <code>Arrays</code>는 배열을 다루는 도우미 클래스이고, <code>sort()</code>는 원소를 오름차순으로 정렬하는 메서드입니다. 다음 코드는 <code>scores</code> 배열을 만든 뒤 <code>main</code> 안에서 사용합니다.</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-n">java</span><span class="syntax-p">.</span><span class="syntax-na">util</span><span class="syntax-p">.</span><span class="syntax-na">Arrays</span><span class="syntax-p">.</span><span class="syntax-na">sort</span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-p">);</span></code></pre></div>
-<p>이 메서드는 원래 배열의 순서를 직접 바꿉니다. 새 배열을 반환하지 않으므로 <code>scores = java.util.Arrays.sort(scores);</code>처럼 대입하지 않습니다. 정렬 알고리즘을 직접 만드는 대신, 여기서는 정렬 전후의 원소 순서와 인덱스에 집중합니다.</p>
+<p>이 메서드는 원래 배열의 순서를 직접 바꿉니다. 새 배열을 반환하지 않으므로 <code>scores = java.util.Arrays.sort(scores);</code>처럼 대입하지 않습니다. 이 문제에서는 표준 정렬 기능으로 정렬 전후의 원소 순서와 인덱스를 확인합니다. 3.4에서는 같은 작업을 반복문으로 직접 구현해 비교합니다.</p>
 <p>예상 실행 결과:</p>
 <div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>중간값: 70</code></pre></div>
 <p>💡 힌트: 인덱스는 0부터 시작합니다. 원소 5개의 가운데는 인덱스 <code>2</code>, 원소 3개의 가운데는 인덱스 <code>1</code>입니다. 배열 길이를 2로 나눈 정수 몫과 연결해 봅니다.</p>
@@ -474,6 +481,200 @@
 </div>
 <p>⚠️ 정렬하지 않고 원래 배열의 가운데 원소를 읽으면 첫 예제에서는 <code>60</code>이 나옵니다. 입력 순서의 가운데와 정렬 후의 중간값을 구분합니다.</p>
 <p>확장 문제: 원소 개수가 짝수이면 가운데 두 값의 평균을 출력하도록 바꿉니다. 예를 들어 <code>{0, 59, 80, 100}</code>의 중간값은 <code>69.5</code>입니다. 정수 나눗셈으로 소수 부분이 사라지지 않게 확인합니다.</p>
+<h3 id="3-4-예제-반복문으로-통계-함께-구하기">3.4 예제: 반복문으로 통계 함께 구하기</h3>
+<p>앞의 평균·분산·표준편차·중간값을 하나의 프로그램에서 구해 봅니다. 최솟값과 최댓값도 함께 출력합니다. 배열의 모든 원소는 실제 점수이며, 점수 범위는 0~100입니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>구할 값</th>
+<th>계산 방법</th>
+<th>반복문의 역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>합계·최솟값·최댓값</td>
+<td>점수를 더하고 현재 최솟값·최댓값과 비교</td>
+<td>첫 번째 반복에서 함께 처리</td>
+</tr>
+    <tr>
+<td>평균</td>
+<td>합계 / 개수</td>
+<td>첫 번째 반복이 끝나면 계산</td>
+</tr>
+    <tr>
+<td>모분산</td>
+<td>편차 제곱의 합 / 개수</td>
+<td>평균을 구한 뒤 두 번째 반복으로 누적</td>
+</tr>
+    <tr>
+<td>모표준편차</td>
+<td>모분산의 제곱근</td>
+<td>누적한 분산에 <code>Math.sqrt()</code> 적용</td>
+</tr>
+    <tr>
+<td>중간값</td>
+<td>정렬한 배열의 가운데 값</td>
+<td>중첩 반복문으로 정렬한 뒤 가운데 인덱스로 접근</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>분산을 구할 때는 <strong>평균이 먼저 필요하므로 배열을 한 번 더 읽습니다.</strong> 표준편차는 이 반복문으로 구한 분산에 <code>Math.sqrt()</code>를 적용합니다. 제곱근 계산 자체를 반복문으로 구현하는 예제는 아닙니다.</p>
+<p>중간값을 위한 정렬에는 <strong>선택 정렬</strong>을 사용합니다. 아직 정렬하지 않은 구간에서 가장 작은 값의 위치를 찾아, 그 구간의 맨 앞 값과 자리를 바꾸는 방법입니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>단계</th>
+<th>하는 일</th>
+<th>배열의 상태</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>시작</td>
+<td>정렬 전</td>
+<td><code>80, 95, 60, 0, 70</code></td>
+</tr>
+    <tr>
+<td><code>i = 0</code></td>
+<td>전체에서 최솟값 0을 찾아 첫 원소와 교환</td>
+<td><code>0, 95, 60, 80, 70</code></td>
+</tr>
+    <tr>
+<td><code>i = 1</code></td>
+<td>뒤의 네 값 중 최솟값 60을 찾아 두 번째 원소와 교환</td>
+<td><code>0, 60, 95, 80, 70</code></td>
+</tr>
+    <tr>
+<td><code>i = 2</code></td>
+<td>뒤의 세 값 중 최솟값 70을 찾아 세 번째 원소와 교환</td>
+<td><code>0, 60, 70, 80, 95</code></td>
+</tr>
+    <tr>
+<td><code>i = 3</code></td>
+<td>남은 두 값 중 80이 이미 앞에 있으므로 유지</td>
+<td><code>0, 60, 70, 80, 95</code></td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>원래 점수의 입력 순서를 보존하려고 <code>sorted</code> 배열을 새로 만들고, 첫 번째 반복에서 값을 하나씩 복사합니다. <code>int[] sorted = scores;</code>는 같은 배열을 가리키므로 복사가 아닙니다.</p>
+<p>파일 이름은 <code>LoopStatistics.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">LoopStatistics</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">80</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">95</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">70</span><span class="syntax-p">};</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수가 없습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">min</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">sorted</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-o">[</span><span class="syntax-n">count</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">            </span><span class="syntax-c1">// 1. 합계·최솟값·최댓값을 구하고 정렬용 배열에 복사</span>
+<span class="syntax-w">            </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">min</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                    </span><span class="syntax-n">min</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-p">}</span>
+<span class="syntax-w">                </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                    </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-p">}</span>
+<span class="syntax-w">                </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">double</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">            </span><span class="syntax-c1">// 2. 평균과의 차이를 제곱하여 누적</span>
+<span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">squaredSum</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">diff</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-n">squaredSum</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">diff</span><span class="syntax-w"> </span><span class="syntax-o">*</span><span class="syntax-w"> </span><span class="syntax-n">diff</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">variance</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">squaredSum</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">standardDeviation</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">Math</span><span class="syntax-p">.</span><span class="syntax-na">sqrt</span><span class="syntax-p">(</span><span class="syntax-n">variance</span><span class="syntax-p">);</span>
+
+<span class="syntax-w">            </span><span class="syntax-c1">// 3. 선택 정렬: 남은 구간의 최솟값을 앞으로 이동</span>
+<span class="syntax-w">            </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">minIndex</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">j</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">j</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">j</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                    </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">j</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">minIndex</span><span class="syntax-o">]</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                        </span><span class="syntax-n">minIndex</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">j</span><span class="syntax-p">;</span>
+<span class="syntax-w">                    </span><span class="syntax-p">}</span>
+<span class="syntax-w">                </span><span class="syntax-p">}</span>
+<span class="syntax-w">                </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">temp</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">minIndex</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">minIndex</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">temp</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">            </span><span class="syntax-c1">// 4. 홀수 개이면 가운데 값, 짝수 개이면 가운데 두 값의 평균</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">middle</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">median</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">%</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">median</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">middle</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">median</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">middle</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">sorted</span><span class="syntax-o">[</span><span class="syntax-n">middle</span><span class="syntax-o">]</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-mf">2.0</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합계: %d%n평균: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"최저점: %d%n최고점: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">min</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"분산: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">variance</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"표준편차: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">standardDeviation</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"중간값: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">median</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>합계: 305
+평균: 61.00
+최저점: 0
+최고점: 95
+분산: 1064.00
+표준편차: 32.62
+중간값: 70.00</code></pre></div>
+<p><code>min</code>은 <strong>가장 작은 점수</strong>, <code>minIndex</code>는 <strong>정렬 중 남은 구간에서 가장 작은 값의 위치</strong>입니다. 안쪽 반복문의 <code>j</code>가 나머지 원소를 확인하고, 바깥 반복문의 <code>i</code>가 이번에 채울 위치를 정합니다. <code>temp</code>는 두 원소를 바꿀 때 먼저 저장한 값이 덮어써지지 않도록 잠시 보관합니다. 마지막 원소는 앞의 자리가 정해지면 자동으로 정해지므로 <code>i &lt; count - 1</code>까지만 반복합니다.</p>
+<p>중간 인덱스는 정수 나눗셈 <code>count / 2</code>로 구합니다. 원소가 5개이면 인덱스 2의 값을 읽고, 4개이면 인덱스 1과 2의 평균을 구합니다. 짝수일 때는 <code>/ 2.0</code>을 사용해 <code>69.5</code> 같은 소수 부분을 유지합니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>비교</th>
+<th><code>Arrays.sort()</code> 사용</th>
+<th>반복문으로 선택 정렬</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>정렬 코드</td>
+<td><code>java.util.Arrays.sort(sorted);</code> 한 문장</td>
+<td>가장 작은 위치를 찾고 두 값을 바꾸는 중첩 반복문</td>
+</tr>
+    <tr>
+<td>학습할 내용</td>
+<td>정렬 결과를 이용해 중간값 구하기</td>
+<td>비교·인덱스·교환으로 정렬 과정을 직접 이해하기</td>
+</tr>
+    <tr>
+<td>원래 순서 보존</td>
+<td>별도 배열에 복사한 뒤 정렬</td>
+<td>위 예제처럼 별도 배열에 복사한 뒤 정렬</td>
+</tr>
+    <tr>
+<td>계산 결과</td>
+<td>같은 입력이면 같은 중간값</td>
+<td>같은 입력이면 같은 중간값</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>위 코드의 3번 중첩 반복문 전체를 <code>java.util.Arrays.sort(sorted);</code>로 바꾸어 결과를 비교해 봅니다. 평균·분산·표준편차 계산은 그대로 둡니다. 실제 작업에서는 표준 정렬 기능을 사용하고, 선택 정렬은 반복문의 동작을 이해하는 데 활용합니다.</p>
+<p>📌 평균과 중간값은 다른 기준입니다. 이 배열의 평균은 <code>61.00</code>, 중간값은 <code>70.00</code>입니다. 분산과 표준편차는 크기순 가운데가 아니라 <strong>평균에서 얼마나 떨어져 있는지</strong>로 계산합니다.</p>
+<p>확인 문제:</p>
+<ul>
+  <li><code>{80, 95, 60}</code>: 최저점은 <code>60</code>이어야 합니다. <code>min</code>을 0으로 시작하면 이 경우를 틀립니다.</li>
+  <li><code>{80, 80, 80}</code>: 최저점·최고점·평균·중간값은 모두 80이고, 분산·표준편차는 0입니다.</li>
+  <li><code>{0, 59, 80, 100}</code>: 중간값은 <code>69.50</code>입니다. 짝수 개일 때 가운데 두 값을 사용했는지 확인합니다.</li>
+  <li><code>{0}</code>: 최저점·최고점·평균·분산·표준편차·중간값이 모두 0입니다.</li>
+  <li><code>{}</code>: <code>점수가 없습니다.</code>만 출력하고, 원소 접근과 나누기를 모두 건너뜁니다.</li>
+</ul>
 <h2 id="4-인덱스가-필요-없는-반복과-값-검색">4. 인덱스가 필요 없는 반복과 값 검색</h2>
 <p>앞의 통계 계산에서는 <code>scores[i]</code>의 값을 더했습니다. 그런데 모든 점수를 출력하거나 더하기만 한다면, 그 값이 몇 번째 원소인지 알 필요는 없습니다. <strong>값이 필요한 작업인지, 위치까지 필요한 작업인지</strong>에 따라 반복문을 선택할 수 있습니다.</p>
 <h3 id="4-1-값만-읽을-때-향상된-for문">4.1 값만 읽을 때: 향상된 for문</h3>
@@ -970,7 +1171,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-19 09:36</small></li>
+    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-19 09:41</small></li>
 <li><span>teaching/materials/java/9-1_methods.md</span><small>최종 수정일: 2026-11-12 10:47</small></li>
   </ul>
 </section>
