@@ -184,7 +184,33 @@
 </table>
 </div>
 <p>편차에는 양수와 음수가 있어 단순히 더하면 서로 상쇄됩니다. 따라서 각 편차를 제곱해 평균을 구합니다. <strong>제곱근</strong>은 어떤 수를 제곱했을 때 주어진 값이 되는 수이며, 여기서는 0 이상의 값을 사용합니다.</p>
-<p>📌 이번 문제는 배열의 점수 전체를 대상으로 하는 <strong>모분산·모표준편차</strong>를 구합니다. 편차 제곱의 합을 원소 개수 <code>N</code>으로 나눕니다. 일부 자료로 전체의 분산을 추정할 때 쓰는 <code>N - 1</code> 기준의 표본분산과 구분합니다.</p>
+<p>📌 이번 문제는 배열의 점수 전체를 대상으로 하는 <strong>모분산·모표준편차</strong>를 구합니다. 편차 제곱의 합을 원소 개수 <code>n</code>으로 나눕니다. 일부 자료로 전체의 분산을 추정할 때 쓰는 <code>n - 1</code> 기준의 표본분산과 구분합니다.</p>
+<p><strong>분산과 표준편차의 계산식</strong></p>
+<p>점수의 개수를 <strong>n</strong>, 각 점수를 <strong>xᵢ</strong>, 평균을 <strong>μ(뮤)</strong>라고 하면 다음과 같습니다. <code>n</code>은 1 이상입니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>구할 값</th>
+<th>수식</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>평균 μ</td>
+<td>μ = (x₁ + x₂ + ⋯ + xₙ) / n</td>
+</tr>
+    <tr>
+<td>모분산 σ²</td>
+<td>σ² = [(x₁ − μ)² + (x₂ − μ)² + ⋯ + (xₙ − μ)²] / n</td>
+</tr>
+    <tr>
+<td>모표준편차 σ</td>
+<td>σ = √(σ²)</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p><strong>σ²(시그마 제곱)</strong>은 분산, <strong>σ(시그마)</strong>는 표준편차입니다. <code>²</code>는 제곱, <code>√</code>는 제곱근을 뜻합니다. <strong>∑(합 기호)</strong>를 쓰면 분산 식을 <strong>σ² = (1 / n) × ∑(xᵢ − μ)²</strong>로 줄여 쓸 수 있습니다. <code>i = 1</code>부터 <code>n</code>까지의 편차 제곱을 모두 더한다는 뜻입니다.</p>
+<p>수식은 첫 점수를 <code>x₁</code>로 나타내지만 Java 배열의 첫 인덱스는 0입니다. <code>x₁</code>은 <code>scores[0]</code>, <code>x₂</code>는 <code>scores[1]</code>에 해당합니다.</p>
 <p>파일 이름은 <code>ScoreSpread.java</code>로 저장합니다. 3.1과 같은 배열 <code>{80, 95, 60, 0, 70}</code>을 사용합니다.</p>
 <ol>
   <li>첫 번째 반복문으로 합계를 구하고 실수 평균을 계산합니다.</li>
@@ -234,7 +260,14 @@
   </tbody>
 </table>
 </div>
-<p>분산은 <code>5320 / 5 = 1064.0</code>이고, 표준편차는 약 <code>32.62</code>입니다. 평균·편차·편차 제곱의 합·분산·표준편차를 저장할 변수는 <code>double</code>로 둡니다.</p>
+<p>위 점수를 수식에 대입하면 다음과 같습니다.</p>
+<ul>
+  <li>평균: <strong>μ = (80 + 95 + 60 + 0 + 70) / 5 = 61</strong></li>
+  <li>분산: <strong>σ² = [(80 − 61)² + (95 − 61)² + (60 − 61)² + (0 − 61)² + (70 − 61)²] / 5</strong></li>
+  <li>편차 제곱의 합을 계산하면 <strong>σ² = (361 + 1156 + 1 + 3721 + 81) / 5 = 5320 / 5 = 1064</strong></li>
+  <li>표준편차: <strong>σ = √1064 ≈ 32.62</strong></li>
+</ul>
+<p>평균·편차·편차 제곱의 합·분산·표준편차를 저장할 변수는 <code>double</code>로 둡니다.</p>
 <p>Java에서 제곱근은 <code>Math.sqrt()</code>로 구합니다. <code>Math</code>는 기본 제공 클래스이므로 별도 <code>import</code> 없이 사용합니다. 분산을 계산한 뒤 다음 문장을 사용할 수 있습니다.</p>
 <p class="code-image-wrap"><img class="code-image" src="./images/code-8-1_arrays-0a66b0f98018.png" alt="java 코드 예제"></p>
 <p>예상 실행 결과:</p>
@@ -687,7 +720,7 @@
 <section class="source-note" aria-label="원본 문서">
   <strong>원본</strong>
   <ul>
-    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-19 09:41</small></li>
+    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-19 09:58</small></li>
   </ul>
 </section>
       </article>
