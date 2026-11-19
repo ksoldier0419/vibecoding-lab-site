@@ -37,7 +37,11 @@
   },
   {
     "id": "week12-arrays.html",
-    "title": "배열과 메서드"
+    "title": "8-1. 배열과 데이터 처리"
+  },
+  {
+    "id": "week12-2-methods.html",
+    "title": "9-1. 메서드로 기능 나누기"
   },
   {
     "id": "week13-classes-objects.html",
