@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/auth-assets/instructor.css"><script src="/auth-assets/instructor.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>12주차. 8-1. 배열과 데이터 처리</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 12주차</p>
+        <h1>8-1. 배열과 데이터 처리</h1>
+      </div>
+    </header>
+
+
+<div class="wrap"><p><a href="/courses.html">내 강의자료</a> · <a href="/2026-2-java_basic/">학생용 화면</a> · 강사용</p>
+<details class="instructor-notes"><summary>수업 메모 (관리자·조교 전용)</summary>
+<label for="lesson-note">준비 사항, 분반별 진행 상황, 다음 시간에 할 일을 적으세요.</label>
+<textarea id="lesson-note" rows="8" maxlength="20000" disabled></textarea>
+<p id="note-status" role="status">메모를 불러오고 있습니다.</p>
+<button id="save-note" type="button" disabled>지금 저장</button>
+<button id="reload-note" type="button">다시 불러오기</button>
+<a href="/login.html" target="_blank" rel="noopener">로그인 새 창</a>
+</details></div><main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-배열-만들기와-인덱스">1. 배열 만들기와 인덱스</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-공간부터-만들고-값-저장하기">2. 공간부터 만들고 값 저장하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-배열에서-통계-구하기">3. 배열에서 통계 구하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-인덱스가-필요-없는-반복과-값-검색">4. 인덱스가 필요 없는 반복과 값 검색</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-다른-언어와-비교하기">5. 다른 언어와 비교하기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#5-1-배열-비교도-를-주의하기">5.1 배열 비교도 ==를 주의하기</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-연습-저장한-점수-다시-분석하기">6. 연습: 저장한 점수 다시 분석하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#7-메서드의-입력-처리-결과">7. 메서드의 입력·처리·결과</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#8-반환값이-없는-void-메서드">8. 반환값이 없는 void 메서드</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#9-배열을-전달해-통계-구하기">9. 배열을 전달해 통계 구하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#10-지역변수와-값-전달">10. 지역변수와 값 전달</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#11-다른-언어의-함수와-비교하기">11. 다른 언어의 함수와 비교하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#12-연습-최고점-메서드-추가하기">12. 연습: 최고점 메서드 추가하기</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>앞에서는 점수를 입력할 때마다 합계에 더했습니다. 이 방법으로는 입력이 끝난 뒤 각 점수를 다시 확인하기 어렵습니다. 이번에는 여러 점수를 배열에 보관합니다.</p>
+<ul>
+  <li>배열을 만들고 인덱스로 원소에 접근합니다.</li>
+  <li>반복문으로 합계·평균·최댓값을 구합니다.</li>
+  <li>배열의 길이와 저장된 데이터 개수를 구분합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-배열-만들기와-인덱스">1. 배열 만들기와 인덱스</h2>
+<p><strong>배열</strong>은 같은 자료형의 값을 정해진 개수만큼 담는 객체입니다. 각 값을 <strong>원소</strong>, 원소의 위치를 <strong>인덱스</strong>라고 합니다. 인덱스는 0부터 시작합니다.</p>
+<p>파일 이름은 <code>ArrayBasics.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ArrayBasics</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">80</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">95</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">};</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"첫 점수: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"배열 길이: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">);</span>
+
+<span class="syntax-w">        </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">1</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d번 점수: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>첫 점수: 80
+배열 길이: 3
+1번 점수: 80
+2번 점수: 100
+3번 점수: 60</code></pre></div>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>표현</th>
+<th>의미</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>int[] scores</code></td>
+<td>정수 배열을 가리킬 변수 선언</td>
+</tr>
+    <tr>
+<td><code>{80, 95, 60}</code></td>
+<td>초기 원소 세 개로 배열 생성</td>
+</tr>
+    <tr>
+<td><code>scores[1]</code></td>
+<td>두 번째 원소</td>
+</tr>
+    <tr>
+<td><code>scores.length</code></td>
+<td>배열의 길이. 괄호를 붙이지 않음</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>⚠️ 길이가 3이면 인덱스는 0~2입니다. <code>scores[3]</code>에 접근하면 <code>ArrayIndexOutOfBoundsException</code>이라는 범위 오류가 발생합니다. 반복 조건은 <code>i &lt;= scores.length</code>가 아니라 <code>i &lt; scores.length</code>입니다.</p>
+<h2 id="2-공간부터-만들고-값-저장하기">2. 공간부터 만들고 값 저장하기</h2>
+<p><code>new int[5]</code>는 정수 다섯 개를 담을 배열을 만듭니다. 처음 원소는 모두 <code>0</code>입니다. 만들어진 배열의 길이는 바뀌지 않습니다.</p>
+<p>파일 이름은 <code>ScoreArrayInput.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
+
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ScoreArrayInput</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-o">[</span><span class="syntax-mi">5</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">        </span><span class="syntax-k">while</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"점수 입력 (0~100, -1: 종료): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-w"> </span><span class="syntax-o">||</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"범위를 확인하세요.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">                </span><span class="syntax-k">continue</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">count</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-n">count</span><span class="syntax-o">++</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"저장한 점수: %d개%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d번: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 화면:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>점수 입력 (0~100, -1: 종료): 80
+점수 입력 (0~100, -1: 종료): 0
+점수 입력 (0~100, -1: 종료): -1
+저장한 점수: 2개
+1번: 80
+2번: 0</code></pre></div>
+<p>📌 <code>scores.length</code>는 저장 공간 5개, <code>count</code>는 실제 점수 2개입니다. 나머지 원소의 초기값 <code>0</code>을 실제 입력한 0점과 혼동하지 않습니다. 배열이 가득 차면 입력 반복은 끝납니다.</p>
+<h2 id="3-배열에서-통계-구하기">3. 배열에서 통계 구하기</h2>
+<p>이미 저장된 배열이라면 입력 없이 반복해서 계산할 수 있습니다. 파일 이름은 <code>ArrayStatistics.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ArrayStatistics</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">80</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">95</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">};</span>
+
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수가 없습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">passed</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">            </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                    </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-p">}</span>
+<span class="syntax-w">                </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                    </span><span class="syntax-n">passed</span><span class="syntax-o">++</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">double</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합계: %d%n평균: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"최고점: %d%n합격자: %d명%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">passed</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>합계: 235
+평균: 58.75
+최고점: 95
+합격자: 3명</code></pre></div>
+<p>최댓값은 첫 원소로 시작합니다. 첫 원소를 읽기 전에 빈 배열인지 검사합니다. <code>scores</code>를 <code>{}</code>로 바꾸면 <code>점수가 없습니다.</code>를 출력합니다.</p>
+<h2 id="4-인덱스가-필요-없는-반복과-값-검색">4. 인덱스가 필요 없는 반복과 값 검색</h2>
+<p>값을 읽기만 할 때는 <strong>향상된 for문</strong>을 사용할 수 있습니다. 다음 코드는 <code>scores</code> 배열이 있는 메서드 안에서 사용합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-p">:</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p><code>score</code>에는 이번 원소의 값이 복사됩니다. <code>score = 100;</code>으로 바꿔도 정수 배열의 원소가 바뀌지 않습니다. 원소를 바꾸거나 위치를 기록하려면 인덱스 반복문을 사용합니다.</p>
+<p>파일 이름은 <code>ScoreSearch.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ScoreSearch</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">80</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">95</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">};</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">target</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">found</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-n">target</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">found</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">found</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수를 찾지 못했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"첫 위치: %d번%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">found</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 출력은 <code>첫 위치: 1번</code>입니다. 인덱스가 될 수 없는 <code>-1</code>을 못 찾았다는 표시로 사용합니다.</p>
+<h2 id="5-다른-언어와-비교하기">5. 다른 언어와 비교하기</h2>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>비교</th>
+<th>Java 배열</th>
+<th>Python 리스트</th>
+<th>JavaScript 배열</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>만들기</td>
+<td><code>int[] a = {1, 2};</code></td>
+<td><code>a = [1, 2]</code></td>
+<td><code>const a = [1, 2];</code></td>
+</tr>
+    <tr>
+<td>길이</td>
+<td><code>a.length</code></td>
+<td><code>len(a)</code></td>
+<td><code>a.length</code></td>
+</tr>
+    <tr>
+<td>첫 값</td>
+<td><code>a[0]</code></td>
+<td><code>a[0]</code></td>
+<td><code>a[0]</code></td>
+</tr>
+    <tr>
+<td>원소 추가</td>
+<td>기존 배열의 길이를 늘릴 수 없음</td>
+<td><code>a.append(3)</code></td>
+<td><code>a.push(3)</code></td>
+</tr>
+    <tr>
+<td>음수 인덱스</td>
+<td><code>a[-1]</code>은 범위 오류</td>
+<td><code>a[-1]</code>은 마지막 값</td>
+<td><code>a[-1]</code>은 마지막 원소가 아님. <code>a.at(-1)</code> 사용</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>Java 배열은 Python 리스트나 JavaScript 배열과 같은 기능을 모두 제공하지 않습니다.</p>
+<h3 id="5-1-배열-비교도-를-주의하기">5.1 배열 비교도 ==를 주의하기</h3>
+<p>6-1의 문자열 비교처럼 배열에서도 <code>==</code>는 같은 객체인지 확인합니다. 일차원 정수 배열의 내용 비교에는 <code>java.util.Arrays.equals(a, b)</code>를 사용합니다. <code>Arrays</code>는 Java 표준 라이브러리의 배열 도우미 클래스입니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">a</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">1</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">};</span>
+<span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">b</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">1</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">};</span>
+<span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-n">a</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-n">b</span><span class="syntax-p">);</span><span class="syntax-w">                       </span><span class="syntax-c1">// false</span>
+<span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">println</span><span class="syntax-p">(</span><span class="syntax-n">java</span><span class="syntax-p">.</span><span class="syntax-na">util</span><span class="syntax-p">.</span><span class="syntax-na">Arrays</span><span class="syntax-p">.</span><span class="syntax-na">equals</span><span class="syntax-p">(</span><span class="syntax-n">a</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">b</span><span class="syntax-p">));</span><span class="syntax-w"> </span><span class="syntax-o">//</span><span class="syntax-w"> </span><span class="syntax-kc">true</span></code></pre></div>
+<p>이 코드는 <code>main</code> 안에 넣어 실행합니다. <code>int[] b = a;</code>는 새 배열을 복사하지 않고 같은 배열을 가리키게 합니다.</p>
+<h2 id="6-연습-저장한-점수-다시-분석하기">6. 연습: 저장한 점수 다시 분석하기</h2>
+<ul>
+  <li><code>ScoreArrayInput.java</code>를 복사해 <code>StoredScoreSummary.java</code>로 만듭니다. 클래스 이름도 바꿉니다.</li>
+  <li>저장이 끝난 뒤 <code>i &lt; count</code>인 원소만 사용해 합계·평균·최고점을 구합니다.</li>
+  <li><code>count == 0</code>이면 계산하지 않고 안내합니다.</li>
+  <li><code>0</code>, <code>60</code>, <code>100</code>, <code>-1</code>의 결과는 개수 3, 합계 160, 평균 약 53.33, 최고점 100입니다.</li>
+</ul>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li>저장 공간 5개와 입력 개수의 차이를 설명합니다.</li>
+  <li>빈 입력, 한 개 입력, 다섯 개 입력, 범위 밖 입력을 확인합니다.</li>
+  <li>배열은 프로그램 실행 중 메모리에 보관됩니다. 파일에 저장하는 기능은 없습니다.</li>
+</ul>
+<p>참고: <a href="https://dev.java/learn/language/constructs/basics/arrays/">Java 배열</a></p>
+
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>앞에서는 <code>main</code> 안에서 입력, 계산, 출력을 모두 처리했습니다. 이번에는 배열의 점수를 처리하는 코드를 기능별로 나눕니다.</p>
+<ul>
+  <li>메서드의 선언과 호출을 구분합니다.</li>
+  <li>매개변수와 반환값을 사용합니다.</li>
+  <li>지역변수와 배열 전달의 동작을 확인합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="7-메서드의-입력-처리-결과">7. 메서드의 입력·처리·결과</h2>
+<p><strong>메서드(method)</strong>는 이름을 붙여 묶어 둔 실행 코드입니다. <code>System.out.printf()</code>와 <code>scanner.nextInt()</code>도 메서드 호출입니다. 이제 직접 메서드를 정의합니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>용어</th>
+<th>의미</th>
+<th>예</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>선언</td>
+<td>메서드의 동작을 정의</td>
+<td><code>static int add(int a, int b) { ... }</code></td>
+</tr>
+    <tr>
+<td>호출</td>
+<td>정의한 동작을 실행</td>
+<td><code>add(3, 4)</code></td>
+</tr>
+    <tr>
+<td>매개변수</td>
+<td>전달받은 값을 사용하는 변수</td>
+<td>선언의 <code>a</code>, <code>b</code></td>
+</tr>
+    <tr>
+<td>인수</td>
+<td>호출할 때 전달하는 값</td>
+<td>호출의 <code>3</code>, <code>4</code></td>
+</tr>
+    <tr>
+<td>반환값</td>
+<td>호출한 곳으로 돌려주는 결과</td>
+<td><code>return a + b;</code>의 계산값</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>파일 이름은 <code>MethodBasics.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">MethodBasics</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-nf">add</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">a</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">b</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">a</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-n">b</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">add</span><span class="syntax-p">(</span><span class="syntax-mi">3</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">4</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"결과: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">result</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 출력은 <code>결과: 7</code>입니다. 프로그램은 <code>main</code>에서 시작하고, <code>add(3, 4)</code>를 만나면 <code>add</code>를 실행한 뒤 돌아옵니다. <code>return</code>은 결과를 돌려주면서 현재 메서드를 끝냅니다.</p>
+<p>💡 참고: 이 장에서는 <code>main</code>과 같은 클래스에 <code>static</code> 메서드를 만듭니다. <code>static</code> 메서드는 그 클래스의 객체를 만들지 않고 호출할 수 있습니다. 객체마다 다르게 동작하는 메서드는 다음 클래스 교안에서 배웁니다.</p>
+<p>⚠️ 새 메서드는 <code>main</code>의 중괄호 <strong>밖</strong>, 클래스의 중괄호 <strong>안</strong>에 작성합니다. Java에서는 메서드 안에 다른 메서드를 선언할 수 없습니다.</p>
+<h2 id="8-반환값이-없는-void-메서드">8. 반환값이 없는 void 메서드</h2>
+<p><code>void</code>는 돌려주는 값이 없다는 뜻입니다. 화면 출력만 하는 동작은 반환값이 없어도 됩니다. 다음 선언은 <code>MethodBasics</code> 클래스 안에서 <code>main</code> 밖에 추가할 수 있습니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">printTitle</span><span class="syntax-p">()</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"성적 보고서%n"</span><span class="syntax-p">);</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p><code>main</code>에서 <code>printTitle();</code>로 호출합니다. <code>int result = printTitle();</code>처럼 반환값을 저장할 수는 없습니다. 화면에 출력하는 것과 값을 반환하는 것은 서로 다릅니다.</p>
+<h2 id="9-배열을-전달해-통계-구하기">9. 배열을 전달해 통계 구하기</h2>
+<p>8-1의 점수 통계를 메서드로 분리합니다. 배열에 유효한 점수만 들어 있다고 가정합니다. 비어 있을 때는 평균을 계산하지 않습니다.</p>
+<p>파일 이름은 <code>ScoreMethods.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ScoreMethods</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">boolean</span><span class="syntax-w"> </span><span class="syntax-nf">isValidScore</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-w"> </span><span class="syntax-o">&amp;&amp;</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&lt;=</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-nf">sum</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-p">:</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-nf">grade</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-o">!</span><span class="syntax-n">isValidScore</span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-p">))</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"범위 오류"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"A"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"B"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">70</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"C"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"재학습"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">printReport</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수가 없습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%d번: %d점, %s%n"</span><span class="syntax-p">,</span>
+<span class="syntax-w">                    </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">grade</span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">));</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">sum</span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">double</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">double</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"합계: %d%n평균: %.2f%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">average</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">scores</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">90</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-mi">60</span><span class="syntax-p">};</span>
+<span class="syntax-w">        </span><span class="syntax-n">printReport</span><span class="syntax-p">(</span><span class="syntax-n">scores</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>1번: 90점, A
+2번: 80점, B
+3번: 60점, 재학습
+합계: 230
+평균: 76.67</code></pre></div>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>메서드</th>
+<th>받는 값</th>
+<th>반환형</th>
+<th>역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>isValidScore</code></td>
+<td>정수 하나</td>
+<td><code>boolean</code></td>
+<td>점수 범위 검사</td>
+</tr>
+    <tr>
+<td><code>sum</code></td>
+<td>정수 배열</td>
+<td><code>int</code></td>
+<td>합계 계산</td>
+</tr>
+    <tr>
+<td><code>grade</code></td>
+<td>정수 하나</td>
+<td><code>String</code></td>
+<td>등급 문자열 반환</td>
+</tr>
+    <tr>
+<td><code>printReport</code></td>
+<td>정수 배열</td>
+<td><code>void</code></td>
+<td>보고서 출력</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p><code>return;</code>처럼 값 없이 쓰면 <code>void</code> 메서드를 바로 끝냅니다. 앞의 <code>return &quot;A&quot;;</code>는 결과를 반환하고 끝냅니다. <code>break</code>는 반복문이나 <code>switch</code>를 끝내므로 역할을 구분합니다.</p>
+<h2 id="10-지역변수와-값-전달">10. 지역변수와 값 전달</h2>
+<p><strong>지역변수</strong>는 메서드나 블록 안에 선언한 변수입니다. 서로 다른 메서드에 같은 이름의 변수가 있어도 각각 별개입니다. Java는 호출할 때 <strong>값을 복사해서 전달</strong>합니다. 배열은 배열을 가리키는 참조값이 복사됩니다.</p>
+<p>파일 이름은 <code>ArgumentCheck.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">ArgumentCheck</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">changeNumber</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">number</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">number</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">changeFirst</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">numbers</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">numbers</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">number</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">5</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">numbers</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-p">{</span><span class="syntax-mi">5</span><span class="syntax-p">};</span>
+<span class="syntax-w">        </span><span class="syntax-n">changeNumber</span><span class="syntax-p">(</span><span class="syntax-n">number</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">changeFirst</span><span class="syntax-p">(</span><span class="syntax-n">numbers</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"정수: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">number</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"배열 원소: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">numbers</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<p>예상 실행 결과:</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>정수: 5
+배열 원소: 100</code></pre></div>
+<p><code>changeFirst</code>의 매개변수와 호출한 곳의 배열 변수가 같은 배열을 가리켜 원소 변경이 보입니다. 반대로 매개변수에 <code>numbers = new int[] {100};</code>을 대입하면 매개변수만 새 배열을 가리키므로 호출한 곳의 배열 변수는 바뀌지 않습니다.</p>
+<p>📌 배열이 바뀔 수 있다는 이유로 Java가 참조에 의한 전달을 한다고 설명하지 않습니다. 참조값 자체를 복사해서 전달하는 방식입니다.</p>
+<h2 id="11-다른-언어의-함수와-비교하기">11. 다른 언어의 함수와 비교하기</h2>
+<p><strong>함수</strong>는 다른 언어에서 이름을 붙인 실행 단위를 부르는 일반적인 표현입니다. Java에서는 클래스 안의 메서드로 작성합니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>비교</th>
+<th>Java</th>
+<th>Python</th>
+<th>JavaScript</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>선언</td>
+<td><code>static int add(int a, int b) { return a + b; }</code></td>
+<td><code>def add(a, b):</code> 다음 줄 들여쓰기</td>
+<td><code>function add(a, b) { return a + b; }</code></td>
+</tr>
+    <tr>
+<td>호출</td>
+<td><code>add(3, 4)</code></td>
+<td><code>add(3, 4)</code></td>
+<td><code>add(3, 4)</code></td>
+</tr>
+    <tr>
+<td>결과 반환</td>
+<td><code>return 결과;</code></td>
+<td><code>return 결과</code></td>
+<td><code>return 결과;</code></td>
+</tr>
+    <tr>
+<td>반환 자료형</td>
+<td>선언에 명시</td>
+<td>보통 생략</td>
+<td>보통 생략</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>Java에서 결과를 돌려주는 메서드는 해당 경로에서 반환값이 있어야 합니다. 예를 들어 <code>int</code> 메서드를 선언하고 계산 결과를 출력만 하면 컴파일 오류가 납니다.</p>
+<h2 id="12-연습-최고점-메서드-추가하기">12. 연습: 최고점 메서드 추가하기</h2>
+<p><code>ScoreMethods.java</code>를 복사해 <code>ScoreMethodPractice.java</code>로 만들고 클래스 이름도 바꿉니다.</p>
+<ul>
+  <li><code>static int maxScore(int[] scores)</code>를 추가합니다.</li>
+  <li>원소가 하나 이상인 배열만 전달한다고 조건을 정합니다.</li>
+  <li>첫 원소를 최댓값으로 시작하고, 반복 후 결과를 반환합니다.</li>
+  <li><code>printReport</code>의 빈 배열 검사 뒤에서 호출해 최고점을 출력합니다.</li>
+</ul>
+<p>✅ 확인할 것:</p>
+<ul>
+  <li><code>{90, 80, 60}</code>에서는 최고점 90, <code>{0}</code>에서는 0입니다.</li>
+  <li>빈 배열에서는 <code>maxScore</code>를 호출하지 않습니다.</li>
+  <li><code>grade(89)</code>, <code>grade(90)</code>, <code>grade(-1)</code>, <code>grade(101)</code>의 결과를 확인합니다.</li>
+  <li>동일한 범위 검사나 등급 판정 코드를 여러 곳에 복사하지 않습니다.</li>
+</ul>
+<p>참고: <a href="https://dev.java/learn/language/oop/classes-objects/defining-methods/">Java 메서드</a></p>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/8-1_arrays.md</span><small>최종 수정일: 2026-11-12 10:41</small></li>
+<li><span>teaching/materials/java/9-1_methods.md</span><small>최종 수정일: 2026-11-12 10:47</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

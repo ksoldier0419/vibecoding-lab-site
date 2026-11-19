@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/auth-assets/instructor.css"><script src="/auth-assets/instructor.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>14주차. 11-1. 종합 실습: 성적 관리 프로그램</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260920-overview-cards">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <p class="eyebrow"><a href="./">2026-2 창의코딩-모두의자바</a> / 14주차</p>
+        <h1>11-1. 종합 실습: 성적 관리 프로그램</h1>
+      </div>
+    </header>
+
+
+<div class="wrap"><p><a href="/courses.html">내 강의자료</a> · <a href="/2026-2-java_basic/">학생용 화면</a> · 강사용</p>
+<details class="instructor-notes"><summary>수업 메모 (관리자·조교 전용)</summary>
+<label for="lesson-note">준비 사항, 분반별 진행 상황, 다음 시간에 할 일을 적으세요.</label>
+<textarea id="lesson-note" rows="8" maxlength="20000" disabled></textarea>
+<p id="note-status" role="status">메모를 불러오고 있습니다.</p>
+<button id="save-note" type="button" disabled>지금 저장</button>
+<button id="reload-note" type="button">다시 불러오기</button>
+<a href="/login.html" target="_blank" rel="noopener">로그인 새 창</a>
+</details></div><main class="wrap lesson-layout">
+      <aside class="toc" aria-label="목차">
+        <strong class="toc-title">목차</strong>
+        <ol>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#1-요구사항-정하기">1. 요구사항 정하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#2-데이터와-동작-나누기">2. 데이터와 동작 나누기</a></summary>
+              <ol class="toc-section-list">
+              <li><a href="#2-1-문자-입력을-다시-받기">2.1 문자 입력을 다시 받기</a></li>
+              </ol>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#3-완성-예제">3. 완성 예제</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#4-실행-흐름-따라가기">4. 실행 흐름 따라가기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#5-앞에서-배운-주의점-연결하기">5. 앞에서 배운 주의점 연결하기</a></summary>
+            </details>
+          </li>
+          <li>
+            <details class="toc-section" open>
+              <summary><a href="#6-기능별-확인과-확장-실습">6. 기능별 확인과 확장 실습</a></summary>
+            </details>
+          </li>
+        </ol>
+      </aside>
+      <article class="lesson">
+<section class="lesson-goals" aria-label="학습목표">
+  <strong>학습목표</strong>
+  <div>
+<p>조건문부터 클래스까지 배운 내용을 하나의 프로그램으로 연결합니다. 이번에는 새 문법을 많이 늘리기보다 기능을 나누고 경계 상황을 확인합니다.</p>
+<ul>
+  <li>메뉴를 반복하며 학생을 등록·조회·수정합니다.</li>
+  <li>객체 배열의 저장 공간과 실제 인원을 구분합니다.</li>
+  <li>메서드와 객체의 역할을 나누고 잘못된 입력을 처리합니다.</li>
+</ul>
+  </div>
+</section>
+<h2 id="1-요구사항-정하기">1. 요구사항 정하기</h2>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>메뉴</th>
+<th>기능</th>
+<th>확인할 조건</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>1</td>
+<td>학생 등록</td>
+<td>최대 5명, 중복 이름 금지, 점수 0~100</td>
+</tr>
+    <tr>
+<td>2</td>
+<td>전체 목록</td>
+<td>등록된 학생만 출력</td>
+</tr>
+    <tr>
+<td>3</td>
+<td>통계</td>
+<td>합계·평균·최고점, 빈 목록은 안내</td>
+</tr>
+    <tr>
+<td>4</td>
+<td>이름 검색</td>
+<td>문자열 내용을 <code>equals()</code>로 비교</td>
+</tr>
+    <tr>
+<td>5</td>
+<td>점수 수정</td>
+<td>없는 학생·범위 밖 점수는 안내</td>
+</tr>
+    <tr>
+<td>0</td>
+<td>종료</td>
+<td>메뉴 반복 종료</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>이름은 공백이 없는 한 단어를 사용합니다. 프로그램을 종료하면 데이터는 사라집니다. 파일·DB 저장 기능은 포함하지 않습니다.</p>
+<h2 id="2-데이터와-동작-나누기">2. 데이터와 동작 나누기</h2>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>대상</th>
+<th>담당하는 일</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>Student</code></td>
+<td>이름·점수 보관, 등급 계산, 점수 변경 검증</td>
+</tr>
+    <tr>
+<td><code>Student[] students</code></td>
+<td>학생 객체를 담는 공간 5개</td>
+</tr>
+    <tr>
+<td><code>count</code></td>
+<td>실제 등록 인원</td>
+</tr>
+    <tr>
+<td><code>GradeManager</code>의 메서드</td>
+<td>입력, 메뉴, 검색, 목록, 통계</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>10-1의 학생 객체와 같은 방식입니다. 복사해서 바로 실행할 수 있도록 아래 예제는 <code>Student</code> 정의도 포함합니다. 이전 <code>StudentDemo.java</code> 등과 같은 폴더에서 한꺼번에 컴파일하지 않습니다.</p>
+<h3 id="2-1-문자-입력을-다시-받기">2.1 문자 입력을 다시 받기</h3>
+<p>앞의 예제는 정수를 입력한다고 가정했습니다. 여기서는 <code>Scanner.hasNextInt()</code>로 다음 입력을 정수로 읽을 수 있는지 먼저 검사합니다.</p>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>표현</th>
+<th>역할</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td><code>scanner.hasNextInt()</code></td>
+<td>다음 입력이 <code>int</code>로 읽힐 수 있는지 검사. 입력을 소비하지 않음</td>
+</tr>
+    <tr>
+<td><code>scanner.next()</code></td>
+<td>잘못된 입력 한 단어를 읽어 버림</td>
+</tr>
+    <tr>
+<td><code>scanner.nextInt()</code></td>
+<td>정수를 실제로 읽음</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>⚠️ 잘못된 입력을 읽어 버리지 않으면 같은 입력을 계속 검사해 반복이 끝나지 않습니다. 이 예제는 사용자가 입력을 계속 제공한다고 가정합니다. 파일 입력의 끝이나 터미널 입력 종료 처리는 별도 주제입니다.</p>
+<h2 id="3-완성-예제">3. 완성 예제</h2>
+<p>파일 이름은 <code>GradeManager.java</code>로 저장합니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code><span class="syntax-kn">import</span><span class="syntax-w"> </span><span class="syntax-nn">java.util.Scanner</span><span class="syntax-p">;</span>
+
+<span class="syntax-kd">class</span> <span class="syntax-nc">Student</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">private</span><span class="syntax-w"> </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-kd">private</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">    </span><span class="syntax-n">Student</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-w"> </span><span class="syntax-o">||</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">throw</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">IllegalArgumentException</span><span class="syntax-p">(</span><span class="syntax-s">"점수는 0~100입니다."</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">this</span><span class="syntax-p">.</span><span class="syntax-na">name</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-k">this</span><span class="syntax-p">.</span><span class="syntax-na">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-nf">getName</span><span class="syntax-p">()</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-nf">getScore</span><span class="syntax-p">()</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kt">boolean</span><span class="syntax-w"> </span><span class="syntax-nf">changeScore</span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-w"> </span><span class="syntax-o">||</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-kc">false</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">this</span><span class="syntax-p">.</span><span class="syntax-na">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-kc">true</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-nf">grade</span><span class="syntax-p">()</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">90</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"A"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">80</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"B"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;=</span><span class="syntax-w"> </span><span class="syntax-mi">70</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"C"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-s">"재학습"</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span>
+
+<span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">class</span> <span class="syntax-nc">GradeManager</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-nf">readInt</span><span class="syntax-p">(</span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">prompt</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-n">prompt</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-k">while</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-o">!</span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">hasNextInt</span><span class="syntax-p">())</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">next</span><span class="syntax-p">();</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"정수로 입력하세요.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-n">prompt</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">nextInt</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-nf">findByName</span><span class="syntax-p">(</span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">.</span><span class="syntax-na">getName</span><span class="syntax-p">().</span><span class="syntax-na">equals</span><span class="syntax-p">(</span><span class="syntax-n">name</span><span class="syntax-p">))</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-nf">register</span><span class="syntax-p">(</span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">.</span><span class="syntax-na">length</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"저장 공간이 가득 찼습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"이름 (공백 없이): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">String</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">next</span><span class="syntax-p">();</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">findByName</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">name</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-o">!=</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"이미 등록된 이름입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">readInt</span><span class="syntax-p">(</span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-s">"점수 (0~100): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-w"> </span><span class="syntax-o">||</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-mi">100</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"점수 범위를 확인하세요. 등록하지 않았습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-n">count</span><span class="syntax-o">]</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Student</span><span class="syntax-p">(</span><span class="syntax-n">name</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"등록했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-k">return</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">+</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">;</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">printStudent</span><span class="syntax-p">(</span><span class="syntax-n">Student</span><span class="syntax-w"> </span><span class="syntax-n">student</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"%s: %d점, %s%n"</span><span class="syntax-p">,</span>
+<span class="syntax-w">                </span><span class="syntax-n">student</span><span class="syntax-p">.</span><span class="syntax-na">getName</span><span class="syntax-p">(),</span><span class="syntax-w"> </span><span class="syntax-n">student</span><span class="syntax-p">.</span><span class="syntax-na">getScore</span><span class="syntax-p">(),</span><span class="syntax-w"> </span><span class="syntax-n">student</span><span class="syntax-p">.</span><span class="syntax-na">grade</span><span class="syntax-p">());</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">printList</span><span class="syntax-p">(</span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"등록된 학생이 없습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">printStudent</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">printStatistics</span><span class="syntax-p">(</span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"등록된 학생이 없습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-mi">0</span><span class="syntax-o">]</span><span class="syntax-p">.</span><span class="syntax-na">getScore</span><span class="syntax-p">();</span>
+<span class="syntax-w">        </span><span class="syntax-k">for</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-w"> </span><span class="syntax-o">&lt;</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">;</span><span class="syntax-w"> </span><span class="syntax-n">i</span><span class="syntax-o">++</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-n">i</span><span class="syntax-o">]</span><span class="syntax-p">.</span><span class="syntax-na">getScore</span><span class="syntax-p">();</span>
+<span class="syntax-w">            </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">+=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">&gt;</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-n">max</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"인원: %d명%n합계: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"평균: %.2f%n최고점: %d%n"</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kt">double</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-n">total</span><span class="syntax-w"> </span><span class="syntax-o">/</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">max</span><span class="syntax-p">);</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">search</span><span class="syntax-p">(</span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"찾을 이름: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">index</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">findByName</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">next</span><span class="syntax-p">());</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">index</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"학생을 찾지 못했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">printStudent</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-n">index</span><span class="syntax-o">]</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">update</span><span class="syntax-p">(</span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">print</span><span class="syntax-p">(</span><span class="syntax-s">"수정할 이름: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">index</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">findByName</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">next</span><span class="syntax-p">());</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">index</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-o">-</span><span class="syntax-mi">1</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"학생을 찾지 못했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">return</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">score</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">readInt</span><span class="syntax-p">(</span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-s">"새 점수 (0~100): "</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-o">[</span><span class="syntax-n">index</span><span class="syntax-o">]</span><span class="syntax-p">.</span><span class="syntax-na">changeScore</span><span class="syntax-p">(</span><span class="syntax-n">score</span><span class="syntax-p">))</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"수정했습니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span><span class="syntax-w"> </span><span class="syntax-k">else</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"범위 밖 점수입니다. 기존 점수를 유지합니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+
+<span class="syntax-w">    </span><span class="syntax-kd">public</span><span class="syntax-w"> </span><span class="syntax-kd">static</span><span class="syntax-w"> </span><span class="syntax-kt">void</span><span class="syntax-w"> </span><span class="syntax-nf">main</span><span class="syntax-p">(</span><span class="syntax-n">String</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">args</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">        </span><span class="syntax-n">Scanner</span><span class="syntax-w"> </span><span class="syntax-n">scanner</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Scanner</span><span class="syntax-p">(</span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">in</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">Student</span><span class="syntax-o">[]</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-k">new</span><span class="syntax-w"> </span><span class="syntax-n">Student</span><span class="syntax-o">[</span><span class="syntax-mi">5</span><span class="syntax-o">]</span><span class="syntax-p">;</span>
+<span class="syntax-w">        </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">;</span>
+
+<span class="syntax-w">        </span><span class="syntax-k">while</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-kc">true</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">            </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"1. 등록  2. 목록  3. 통계  4. 검색  5. 수정  0. 종료%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-kt">int</span><span class="syntax-w"> </span><span class="syntax-n">menu</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">readInt</span><span class="syntax-p">(</span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-s">"메뉴: "</span><span class="syntax-p">);</span>
+<span class="syntax-w">            </span><span class="syntax-k">if</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">menu</span><span class="syntax-w"> </span><span class="syntax-o">==</span><span class="syntax-w"> </span><span class="syntax-mi">0</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">            </span><span class="syntax-k">switch</span><span class="syntax-w"> </span><span class="syntax-p">(</span><span class="syntax-n">menu</span><span class="syntax-p">)</span><span class="syntax-w"> </span><span class="syntax-p">{</span>
+<span class="syntax-w">                </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">1</span><span class="syntax-p">:</span>
+<span class="syntax-w">                    </span><span class="syntax-n">count</span><span class="syntax-w"> </span><span class="syntax-o">=</span><span class="syntax-w"> </span><span class="syntax-n">register</span><span class="syntax-p">(</span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">);</span>
+<span class="syntax-w">                    </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">2</span><span class="syntax-p">:</span>
+<span class="syntax-w">                    </span><span class="syntax-n">printList</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">);</span>
+<span class="syntax-w">                    </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">3</span><span class="syntax-p">:</span>
+<span class="syntax-w">                    </span><span class="syntax-n">printStatistics</span><span class="syntax-p">(</span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">);</span>
+<span class="syntax-w">                    </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">4</span><span class="syntax-p">:</span>
+<span class="syntax-w">                    </span><span class="syntax-n">search</span><span class="syntax-p">(</span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">);</span>
+<span class="syntax-w">                    </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">case</span><span class="syntax-w"> </span><span class="syntax-mi">5</span><span class="syntax-p">:</span>
+<span class="syntax-w">                    </span><span class="syntax-n">update</span><span class="syntax-p">(</span><span class="syntax-n">scanner</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">students</span><span class="syntax-p">,</span><span class="syntax-w"> </span><span class="syntax-n">count</span><span class="syntax-p">);</span>
+<span class="syntax-w">                    </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">                </span><span class="syntax-k">default</span><span class="syntax-p">:</span>
+<span class="syntax-w">                    </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"없는 메뉴입니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">                    </span><span class="syntax-k">break</span><span class="syntax-p">;</span>
+<span class="syntax-w">            </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-p">}</span>
+<span class="syntax-w">        </span><span class="syntax-n">System</span><span class="syntax-p">.</span><span class="syntax-na">out</span><span class="syntax-p">.</span><span class="syntax-na">printf</span><span class="syntax-p">(</span><span class="syntax-s">"종료합니다.%n"</span><span class="syntax-p">);</span>
+<span class="syntax-w">        </span><span class="syntax-n">scanner</span><span class="syntax-p">.</span><span class="syntax-na">close</span><span class="syntax-p">();</span>
+<span class="syntax-w">    </span><span class="syntax-p">}</span>
+<span class="syntax-p">}</span></code></pre></div>
+<h2 id="4-실행-흐름-따라가기">4. 실행 흐름 따라가기</h2>
+<p>다음은 메뉴 <code>1</code>, 이름 <code>가람</code>, 점수 <code>85</code>, 메뉴 <code>2</code>, 메뉴 <code>0</code> 순서로 입력한 화면입니다.</p>
+<div class="instructor-code"><button type="button" class="copy-code">코드 복사</button><pre><code>1. 등록  2. 목록  3. 통계  4. 검색  5. 수정  0. 종료
+메뉴: 1
+이름 (공백 없이): 가람
+점수 (0~100): 85
+등록했습니다.
+1. 등록  2. 목록  3. 통계  4. 검색  5. 수정  0. 종료
+메뉴: 2
+가람: 85점, B
+1. 등록  2. 목록  3. 통계  4. 검색  5. 수정  0. 종료
+메뉴: 0
+종료합니다.</code></pre></div>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>순서</th>
+<th>데이터 변화</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>처음</td>
+<td>배열 길이 5, <code>count = 0</code></td>
+</tr>
+    <tr>
+<td>등록 성공</td>
+<td><code>students[0]</code>에 객체 저장, 반환받은 <code>count = 1</code></td>
+</tr>
+    <tr>
+<td>목록</td>
+<td><code>i &lt; count</code>인 원소만 읽음</td>
+</tr>
+    <tr>
+<td>종료</td>
+<td>바깥 <code>while</code>을 끝내고 <code>Scanner</code>를 닫음</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>📌 <code>register</code>는 <code>count</code>의 복사본을 받습니다. 호출 후 <code>count = register(...)</code>로 반환값을 다시 저장해야 등록 인원이 유지됩니다. 배열 원소의 변경은 같은 배열에 반영됩니다.</p>
+<h2 id="5-앞에서-배운-주의점-연결하기">5. 앞에서 배운 주의점 연결하기</h2>
+<ul>
+  <li><code>default</code>가 있어 등록되지 않은 메뉴도 안내합니다.</li>
+  <li>메뉴의 <code>break</code>는 <code>switch</code>만 끝냅니다. 종료 메뉴는 <code>switch</code> 앞에서 반복문을 끝냅니다.</li>
+  <li>이름은 <code>==</code> 대신 <code>equals()</code>로 비교합니다.</li>
+  <li>빈 목록에서 평균과 첫 원소를 사용하지 않습니다.</li>
+  <li>사용하지 않는 배열 원소는 <code>null</code>이므로 <code>count</code>까지만 읽습니다.</li>
+  <li>점수 범위를 검사하고, 평균은 실수로 나눕니다.</li>
+  <li>패턴 매칭·레코드·스트림 없이 앞에서 배운 기본 문법을 연결합니다.</li>
+</ul>
+<h2 id="6-기능별-확인과-확장-실습">6. 기능별 확인과 확장 실습</h2>
+<div class="course-table-scroll">
+<table>
+  <thead><tr>
+<th>입력 상황</th>
+<th>예상 결과</th>
+</tr></thead>
+  <tbody>
+    <tr>
+<td>등록 전 메뉴 2·3</td>
+<td>등록된 학생이 없다는 안내</td>
+</tr>
+    <tr>
+<td>메뉴 <code>9</code></td>
+<td>없는 메뉴 안내 후 재입력</td>
+</tr>
+    <tr>
+<td>메뉴에 <code>abc</code></td>
+<td>정수 안내 후 재입력</td>
+</tr>
+    <tr>
+<td>점수 <code>-1</code>, <code>101</code></td>
+<td>등록하지 않고 인원도 유지</td>
+</tr>
+    <tr>
+<td>점수 <code>0</code>, <code>100</code></td>
+<td>등록 성공</td>
+</tr>
+    <tr>
+<td>같은 이름 재등록</td>
+<td>중복 이름 안내, 추가 등록 안 함</td>
+</tr>
+    <tr>
+<td>여섯 번째 등록</td>
+<td>저장 공간 안내, 범위 오류 없이 계속</td>
+</tr>
+    <tr>
+<td>없는 이름 검색·수정</td>
+<td>찾지 못했다는 안내</td>
+</tr>
+    <tr>
+<td>수정 점수 <code>101</code></td>
+<td>기존 점수 유지</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<p>확장 실습은 다음 순서로 진행합니다.</p>
+<ol>
+  <li>통계에 60점 이상인 학생 수를 추가합니다.</li>
+  <li>최고점 학생의 이름을 함께 출력합니다. 동점이면 모두 출력합니다.</li>
+  <li>이름 검색 결과를 입력과 출력으로 나눈 이유를 설명합니다.</li>
+</ol>
+<p>✅ 완료 기준:</p>
+<ul>
+  <li>0점과 미등록 공간을 구분합니다.</li>
+  <li>문자 입력·잘못된 메뉴·저장 공간 초과를 안내합니다.</li>
+  <li>등록 후 조회와 수정 후 재조회가 일치합니다.</li>
+  <li><code>Student</code>의 검증과 메뉴 프로그램의 입력 검증 역할을 설명합니다.</li>
+</ul>
+
+<section class="source-note" aria-label="원본 문서">
+  <strong>원본</strong>
+  <ul>
+    <li><span>teaching/materials/java/11-1_grade_manager.md</span><small>최종 수정일: 2026-11-12 10:43</small></li>
+  </ul>
+</section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><a href="./">과목 첫 화면</a></div>
+    </footer>
+  </body>
+</html>

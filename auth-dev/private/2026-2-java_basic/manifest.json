@@ -33,6 +33,18 @@
   },
   {
     "id": "week11-loops.html",
-    "title": "반복문"
+    "title": "반복문과 활용"
+  },
+  {
+    "id": "week12-arrays.html",
+    "title": "배열과 메서드"
+  },
+  {
+    "id": "week13-classes-objects.html",
+    "title": "클래스와 객체 기초"
+  },
+  {
+    "id": "week14-grade-manager.html",
+    "title": "종합 실습 - 성적 관리 프로그램"
   }
 ]
